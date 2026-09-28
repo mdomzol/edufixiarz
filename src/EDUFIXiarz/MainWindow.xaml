@@ -167,8 +167,8 @@
                                 <TextBlock Text="{Binding Cpu}" FontSize="15" FontWeight="SemiBold" Margin="0,7,0,0" TextWrapping="Wrap"/>
                                 <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Margin="0,14,0,0" Padding="0,10,0,0">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding CpuCores, StringFormat=Rdzenie: {0}}" FontSize="12" Foreground="{StaticResource MutedBrush}"/>
-                                        <TextBlock Text="{Binding CpuThreads, StringFormat=   |   Wątki: {0}}" FontSize="12" Foreground="{StaticResource MutedBrush}"/>
+                                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="9,5"><TextBlock Text="{Binding CpuCores, StringFormat=RDZENIE  {0}}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource MutedBrush}"/></Border>
+                                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="9,5" Margin="10,0,0,0"><TextBlock Text="{Binding CpuThreads, StringFormat=WĄTKI  {0}}" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource MutedBrush}"/></Border>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
