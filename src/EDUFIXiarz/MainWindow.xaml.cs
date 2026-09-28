@@ -183,13 +183,13 @@ foreach ($id in $officeIds) {
 
     private async Task InstallSelectedAppsAsync()
     {
-        Log($"Instalacja aplikacji bazowych ({BaseApps.Length})…");
+        Log($"Instalacja wybranych aplikacji ({Apps.Count(a => a.Selected(this))})…");
 
         foreach (var (id, name, selected) in Apps)
         {
             if (!selected(this))
                 continue;
-        {
+
             await RunProcess("winget.exe",
                 ["install", "--id", id, "--exact", "--silent",
                  "--accept-package-agreements", "--accept-source-agreements"],
@@ -238,9 +238,6 @@ foreach ($id in $officeIds) {
         AppsCheck.IsChecked = false;
         OfficeCheck.IsChecked = false;
         ClearAllAppsButton_Click(sender, e);
-        LibreOfficeCheck.IsChecked = false;
-        PuttyCheck.IsChecked = false;
-        GimpCheck.IsChecked = false;
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
 
