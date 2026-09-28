@@ -369,7 +369,7 @@
                             </Border>
                     <UniformGrid Columns="3">
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,10" Padding="14">
-                            <CheckBox x:Name="AdobeReaderCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="AdobeReaderCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20EC1C24" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource AdobeReaderIconGeometry}" Fill="#EC1C24" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -381,7 +381,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,0,5,10" Padding="14">
-                            <CheckBox x:Name="EverythingCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="EverythingCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20FF8C00" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource EverythingIconGeometry}" Fill="#FF8C00" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -393,7 +393,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,0,0,10" Padding="14">
-                            <CheckBox x:Name="ChromeCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="ChromeCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20EA4335" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource ChromeIconGeometry}" Fill="#EA4335" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -405,7 +405,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="14">
-                            <CheckBox x:Name="FirefoxCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="FirefoxCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20FF7139" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource FirefoxIconGeometry}" Fill="#FF7139" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -417,7 +417,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="14">
-                            <CheckBox x:Name="SevenZipCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="SevenZipCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20F2C94C" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource SevenZipIconGeometry}" Fill="#F2C94C" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -429,7 +429,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="14">
-                            <CheckBox x:Name="VscodeCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="VscodeCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20007ACC" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource VscodeIconGeometry}" Fill="#007ACC" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -441,7 +441,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="14">
-                            <CheckBox x:Name="VlcCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="VlcCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#20FF9800" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource VlcIconGeometry}" Fill="#FF9800" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -453,7 +453,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="14">
-                            <CheckBox x:Name="NotepadPlusPlusCheck" IsChecked="True" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="NotepadPlusPlusCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#2090E59A" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource NotepadPlusPlusIconGeometry}" Fill="#90E59A" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -465,7 +465,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="14">
-                            <CheckBox x:Name="LibreOfficeCheck" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="LibreOfficeCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#2018A303" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource LibreOfficeIconGeometry}" Fill="#18A303" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -477,7 +477,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,0" Padding="14">
-                            <CheckBox x:Name="PuttyCheck" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="PuttyCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#200000FC" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource PuttyIconGeometry}" Fill="#5A78FF" Stretch="Uniform" Width="25" Height="25"/></Border>
@@ -489,7 +489,7 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,0" Padding="14">
-                            <CheckBox x:Name="GimpCheck" VerticalContentAlignment="Center">
+                            <CheckBox x:Name="GimpCheck" Style="{StaticResource AppSelectionCheckBoxStyle}" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                                     <Border Width="40" Height="40" Background="#205C5543" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource GimpIconGeometry}" Fill="#C2B280" Stretch="Uniform" Width="25" Height="25"/></Border>
