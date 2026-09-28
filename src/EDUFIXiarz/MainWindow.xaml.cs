@@ -95,6 +95,7 @@ function SizeGB($bytes) {
             ? "Sesja posiada uprawnienia administratora."
             : "Uruchom aplikację jako administrator, aby wykonywać zmiany systemowe.");
 
+        ShowPage(ReportPage);
         Loaded += async (_, _) => await LoadHardwareReportAsync();
     }
 
@@ -111,20 +112,34 @@ function SizeGB($bytes) {
         LogBox.ScrollToEnd();
     }
 
+    private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportPage);
     private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
     private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
     private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
 
     private void ShowPage(UIElement page)
     {
+        ReportPage.Visibility = Visibility.Collapsed;
         SetupPage.Visibility = Visibility.Collapsed;
         AppsPage.Visibility = Visibility.Collapsed;
         LogPage.Visibility = Visibility.Collapsed;
+
+        ReportMenuButton.Tag = null;
         SetupMenuButton.Tag = null;
         AppsMenuButton.Tag = null;
         LogMenuButton.Tag = null;
+
         page.Visibility = Visibility.Visible;
-        var active = page == SetupPage ? SetupMenuButton : page == AppsPage ? AppsMenuButton : LogMenuButton;
+
+        var reportVisible = page == ReportPage;
+        ReportHeader.Visibility = reportVisible ? Visibility.Visible : Visibility.Collapsed;
+        ReportStatusHeader.Visibility = reportVisible ? Visibility.Visible : Visibility.Collapsed;
+        SetupHeader.Visibility = page == SetupPage ? Visibility.Visible : Visibility.Collapsed;
+
+        var active = page == ReportPage ? ReportMenuButton
+            : page == SetupPage ? SetupMenuButton
+            : page == AppsPage ? AppsMenuButton
+            : LogMenuButton;
         active.Tag = "Active";
     }
 
