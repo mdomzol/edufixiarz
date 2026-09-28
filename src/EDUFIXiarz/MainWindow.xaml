@@ -341,40 +341,139 @@
                     <TextBlock Text="Wybierz aplikacje instalowane przez winget." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,18"/>
 
                     <UniformGrid Columns="3">
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,10" Padding="16">
-                            <CheckBox x:Name="AdobeReaderCheck" Content="Adobe Acrobat Reader" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,10" Padding="14">
+                            <CheckBox x:Name="AdobeReaderCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20EC1C24" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource AdobeReaderIconGeometry}" Fill="#EC1C24" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Adobe Acrobat Reader" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="PDF · DOKUMENTY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,0,5,10" Padding="16">
-                            <CheckBox x:Name="EverythingCheck" Content="Everything" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,0,5,10" Padding="14">
+                            <CheckBox x:Name="EverythingCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20FF8C00" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource EverythingIconGeometry}" Fill="#FF8C00" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Everything" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="WYSZUKIWANIE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,0,0,10" Padding="16">
-                            <CheckBox x:Name="ChromeCheck" Content="Google Chrome" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,0,0,10" Padding="14">
+                            <CheckBox x:Name="ChromeCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20EA4335" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource ChromeIconGeometry}" Fill="#EA4335" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Google Chrome" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="PRZEGLĄDARKA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="16">
-                            <CheckBox x:Name="FirefoxCheck" Content="Mozilla Firefox" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="14">
+                            <CheckBox x:Name="FirefoxCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20FF7139" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource FirefoxIconGeometry}" Fill="#FF7139" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Mozilla Firefox" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="PRZEGLĄDARKA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="16">
-                            <CheckBox x:Name="SevenZipCheck" Content="7-Zip" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="14">
+                            <CheckBox x:Name="SevenZipCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20F2C94C" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource SevenZipIconGeometry}" Fill="#F2C94C" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="7-Zip" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="ARCHIWIZACJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="16">
-                            <CheckBox x:Name="VscodeCheck" Content="Visual Studio Code" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="14">
+                            <CheckBox x:Name="VscodeCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20007ACC" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource VscodeIconGeometry}" Fill="#007ACC" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Visual Studio Code" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="PROGRAMOWANIE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="16">
-                            <CheckBox x:Name="VlcCheck" Content="VLC" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="14">
+                            <CheckBox x:Name="VlcCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#20FF9800" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource VlcIconGeometry}" Fill="#FF9800" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="VLC" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="MEDIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="16">
-                            <CheckBox x:Name="NotepadPlusPlusCheck" Content="Notepad++" IsChecked="True" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="14">
+                            <CheckBox x:Name="NotepadPlusPlusCheck" IsChecked="True" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#2090E59A" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource NotepadPlusPlusIconGeometry}" Fill="#90E59A" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Notepad++" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="EDYTOR TEKSTU" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="16">
-                            <CheckBox x:Name="LibreOfficeCheck" Content="LibreOffice" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="14">
+                            <CheckBox x:Name="LibreOfficeCheck" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#2018A303" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource LibreOfficeIconGeometry}" Fill="#18A303" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="LibreOffice" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="BIURO" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,0" Padding="16">
-                            <CheckBox x:Name="PuttyCheck" Content="PuTTY" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,0" Padding="14">
+                            <CheckBox x:Name="PuttyCheck" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#200000FC" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource PuttyIconGeometry}" Fill="#5A78FF" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="PuTTY" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="SIEĆ · SSH" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,0" Padding="16">
-                            <CheckBox x:Name="GimpCheck" Content="GIMP" FontSize="14"/>
+                        <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,0" Padding="14">
+                            <CheckBox x:Name="GimpCheck" VerticalContentAlignment="Center">
+                                <Grid Margin="4,0,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <Border Width="40" Height="40" Background="#205C5543" CornerRadius="7" VerticalAlignment="Center"><Path Data="{StaticResource GimpIconGeometry}" Fill="#C2B280" Stretch="Uniform" Width="25" Height="25"/></Border>
+                                    <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="GIMP" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="GRAFIKA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </CheckBox>
                         </Border>
-                    </UniformGrid>
+                    </UniformGrid>      </UniformGrid>
 
                     <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,18,0,10">
                         <Grid>
