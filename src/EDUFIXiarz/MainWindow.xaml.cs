@@ -118,11 +118,62 @@ function SizeGB($bytes) {
 
     private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
     {
-        var selected = Apps.Where(a => a.Selected(this)).Select(a => "• " + a.Name).ToArray();
-        var message = selected.Length == 0
-            ? "Brak zaznaczonych aplikacji."
-            : "Aktualnie wskazane aplikacje:\n\n" + string.Join("\n", selected);
-        MessageBox.Show(message, "Wybrane aplikacje", MessageBoxButton.OK, MessageBoxImage.Information);
+        var selected = Apps.Where(a => a.Selected(this)).Select(a => a.Name).ToArray();
+
+        SelectedAppsCountText.Text = selected.Length.ToString();
+        AppsPreviewList.Children.Clear();
+
+        if (selected.Length == 0)
+        {
+            AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
+        }
+        else
+        {
+            AppsPreviewSummaryText.Text = $"{selected.Length} {selected.Length == 1 ? "aplikacja wskazana" : "aplikacje wskazane"} do instalacji.";
+
+            for (var index = 0; index < selected.Length; index++)
+            {
+                var item = new Border
+                {
+                    BorderBrush = FindResource("BorderBrush") as Brush,
+                    BorderThickness = new Thickness(0, index == 0 ? 0 : 1, 0, 0),
+                    Padding = new Thickness(0, index == 0 ? 0 : 8, 0, 8)
+                };
+
+                var row = new Grid();
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(24) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                var number = new TextBlock
+                {
+                    Text = $"{index + 1:00}",
+                    FontSize = 10,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = FindResource("AccentBrush") as Brush,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var name = new TextBlock
+                {
+                    Text = selected[index],
+                    FontSize = 12,
+                    Foreground = FindResource("TextBrush") as Brush,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                Grid.SetColumn(name, 1);
+                row.Children.Add(number);
+                row.Children.Add(name);
+                item.Child = row;
+                AppsPreviewList.Children.Add(item);
+            }
+        }
+
+        var isVisible = AppsPreviewPanel.Visibility == Visibility.Visible;
+        AppsPreviewPanel.Visibility = isVisible ? Visibility.Collapsed : Visibility.Visible;
+        PreviewAppsButton.Content = isVisible
+            ? "POKAŻ WYBRANE APLIKACJE  ›"
+            : "UKRYJ WYBRANE APLIKACJE  ‹";
     }
 
     private void DomainCheck_Click(object sender, RoutedEventArgs e)
