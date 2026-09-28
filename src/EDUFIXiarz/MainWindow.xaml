@@ -83,17 +83,35 @@
                                   Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
                         <CheckBox x:Name="BloatwareCheck" Content="Usuń bloatware / OEM"
                                   IsChecked="True" Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
-                        <CheckBox x:Name="AppsCheck" Content="Zainstaluj aplikacje bazowe"
+                        <CheckBox x:Name="AppsCheck" Content="Zainstaluj aplikacje"
                                   IsChecked="True" Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
-                        <TextBlock Text="DODATKOWE APLIKACJE" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,18,0,6"/>
-                        <WrapPanel>
-                            <CheckBox x:Name="LibreOfficeCheck" Content="LibreOffice" Margin="0,5,16,5"/>
-                            <CheckBox x:Name="PuttyCheck" Content="PuTTY" Margin="0,5,16,5"/>
-                            <CheckBox x:Name="GimpCheck" Content="GIMP" Margin="0,5,16,5"/>
-                        </WrapPanel>
+                        <Border Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,12,0,0">
+                            <StackPanel>
+                                <TextBlock Text="APLIKACJE" FontSize="11" FontWeight="Bold"
+                                           Foreground="{StaticResource MutedBrush}" Margin="0,0,0,8"/>
+                                <UniformGrid Columns="2">
+                                    <CheckBox x:Name="AdobeReaderCheck" Content="Adobe Acrobat Reader" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="EverythingCheck" Content="Everything" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="ChromeCheck" Content="Google Chrome" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="FirefoxCheck" Content="Mozilla Firefox" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="SevenZipCheck" Content="7-Zip" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="VscodeCheck" Content="Visual Studio Code" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="VlcCheck" Content="VLC" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="NotepadPlusPlusCheck" Content="Notepad++" IsChecked="True" Margin="0,5"/>
+                                    <CheckBox x:Name="LibreOfficeCheck" Content="LibreOffice" Margin="0,5"/>
+                                    <CheckBox x:Name="PuttyCheck" Content="PuTTY" Margin="0,5"/>
+                                    <CheckBox x:Name="GimpCheck" Content="GIMP" Margin="0,5"/>
+                                </UniformGrid>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Button Content="ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Padding="10,6" Margin="0,0,8,0"/>
+                                    <Button Content="ODZNACZ WSZYSTKIE" Click="ClearAllAppsButton_Click" Padding="10,6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
                         <Button Content="RESETUJ WYBÓR" Click="ResetSelectionButton_Click"
-                                HorizontalAlignment="Left" Margin="0,14,0,0" Padding="12,7"
-                                ToolTip="Odznacza zadania i wszystkie dodatkowe aplikacje."/>
+                                HorizontalAlignment="Left" Margin="0,12,0,0" Padding="12,7"
+                                ToolTip="Odznacza zadania i wszystkie aplikacje."/>
                         <CheckBox x:Name="OfficeCheck" Content="Wyczyść Microsoft Office / 365"
                                   Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"
                                   ToolTip="Usuwa wykryte składniki Office AppX oraz Microsoft 365 Apps przez winget."/>
