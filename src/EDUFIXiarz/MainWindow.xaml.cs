@@ -114,6 +114,21 @@ function SizeGB($bytes) {
 
     private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportPage);
     private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
+
+    private void DomainCheck_Checked(object sender, RoutedEventArgs e)
+    {
+        DomainCredentialsExpander.Visibility = Visibility.Visible;
+        DomainCredentialsExpander.IsExpanded = true;
+        Log("Włączono dołączenie stacji do domeny AD.");
+    }
+
+    private void DomainCheck_Unchecked(object sender, RoutedEventArgs e)
+    {
+        DomainCredentialsExpander.IsExpanded = false;
+        DomainCredentialsExpander.Visibility = Visibility.Collapsed;
+        DomainPasswordBox.Clear();
+        Log("Wyłączono dołączenie stacji do domeny AD.");
+    }
     private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
     private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
 
@@ -339,6 +354,8 @@ foreach ($id in $officeIds) {
     private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
     {
         HostnameCheck.IsChecked = false; DomainCheck.IsChecked = false; BloatwareCheck.IsChecked = false;
+        DomainCredentialsExpander.IsExpanded = false;
+        DomainCredentialsExpander.Visibility = Visibility.Collapsed;
         AppsCheck.IsChecked = false; OfficeCheck.IsChecked = false; ClearAllAppsButton_Click(sender, e);
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
