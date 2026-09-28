@@ -45,6 +45,16 @@
                 <StackPanel Grid.Column="1">
                     <TextBlock Text="DOMENA AD" FontSize="11" Foreground="{StaticResource MutedBrush}"/>
                     <TextBox x:Name="DomainBox" Margin="0,6,0,0" ToolTip="np. firma.local"/>
+                    <Grid Margin="0,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="DomainUserBox" Grid.Column="0" Margin="0,0,6,0"
+                                 ToolTip="konto z uprawnieniem do dołączenia stacji"/>
+                        <PasswordBox x:Name="DomainPasswordBox" Grid.Column="1"
+                                     ToolTip="hasło nie jest zapisywane"/>
+                    </Grid>
                 </StackPanel>
             </Grid>
         </Border>
