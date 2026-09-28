@@ -166,7 +166,9 @@ function SizeGB($bytes) {
                 Log("Początek odpowiedzi PowerShell: " + json[..Math.Min(json.Length, 500)]);
                 throw new InvalidOperationException("PowerShell zwrócił dane, których aplikacja nie potrafi odczytać. Szczegóły znajdują się w DZIENNIKU.", ex);
             }
-            report ??= throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
+            if (report is null)
+                throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
+
             DataContext = report;
             HardwareStatusText.Text = $"ODCZYTANO · {DateTime.Now:HH:mm:ss}";
             Log("Raport sprzętowy został odczytany.");
