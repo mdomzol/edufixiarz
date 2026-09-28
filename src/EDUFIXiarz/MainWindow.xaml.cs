@@ -22,6 +22,13 @@ public partial class MainWindow : Window
         ("Notepad++.Notepad++", "Notepad++")
     ];
 
+    private static readonly (string Id, string Name, Func<MainWindow, bool> Selected)[] OptionalApps =
+    [
+        ("TheDocumentFoundation.LibreOffice", "LibreOffice", w => w.LibreOfficeCheck.IsChecked == true),
+        ("PuTTY.PuTTY", "PuTTY", w => w.PuttyCheck.IsChecked == true),
+        ("GIMP.GIMP", "GIMP", w => w.GimpCheck.IsChecked == true)
+    ];
+
     public MainWindow()
     {
         InitializeComponent();
@@ -85,6 +92,8 @@ public partial class MainWindow : Window
 
             if (AppsCheck.IsChecked == true)
                 await InstallBaseAppsAsync();
+
+            await InstallOptionalAppsAsync();
 
             Log("Zakończono wybrane operacje.");
             MessageBox.Show("Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
@@ -188,6 +197,33 @@ foreach ($id in $officeIds) {
                  "--accept-package-agreements", "--accept-source-agreements"],
                 $"Instalacja {name}");
         }
+    }
+
+    private async Task InstallOptionalAppsAsync()
+    {
+        foreach (var (id, name, selected) in OptionalApps)
+        {
+            if (!selected(this))
+                continue;
+
+            await RunProcess("winget.exe",
+                ["install", "--id", id, "--exact", "--silent",
+                 "--accept-package-agreements", "--accept-source-agreements"],
+                $"Instalacja {name}");
+        }
+    }
+
+    private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
+    {
+        HostnameCheck.IsChecked = false;
+        DomainCheck.IsChecked = false;
+        BloatwareCheck.IsChecked = false;
+        AppsCheck.IsChecked = false;
+        OfficeCheck.IsChecked = false;
+        LibreOfficeCheck.IsChecked = false;
+        PuttyCheck.IsChecked = false;
+        GimpCheck.IsChecked = false;
+        Log("Wybór zadań i aplikacji został wyzerowany.");
     }
 
     private async Task RunPowerShell(string command, string label)
