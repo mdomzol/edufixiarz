@@ -85,6 +85,15 @@
                                   IsChecked="True" Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
                         <CheckBox x:Name="AppsCheck" Content="Zainstaluj aplikacje bazowe"
                                   IsChecked="True" Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
+                        <TextBlock Text="DODATKOWE APLIKACJE" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,18,0,6"/>
+                        <WrapPanel>
+                            <CheckBox x:Name="LibreOfficeCheck" Content="LibreOffice" Margin="0,5,16,5"/>
+                            <CheckBox x:Name="PuttyCheck" Content="PuTTY" Margin="0,5,16,5"/>
+                            <CheckBox x:Name="GimpCheck" Content="GIMP" Margin="0,5,16,5"/>
+                        </WrapPanel>
+                        <Button Content="RESETUJ WYBÓR" Click="ResetSelectionButton_Click"
+                                HorizontalAlignment="Left" Margin="0,14,0,0" Padding="12,7"
+                                ToolTip="Odznacza zadania i wszystkie dodatkowe aplikacje."/>
                         <CheckBox x:Name="OfficeCheck" Content="Wyczyść Microsoft Office / 365"
                                   Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"
                                   ToolTip="Usuwa wykryte składniki Office AppX oraz Microsoft 365 Apps przez winget."/>
