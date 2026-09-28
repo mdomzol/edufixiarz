@@ -515,14 +515,35 @@
                                 <Button Content="PROGRAMISTA&#10;IT / DEV" Click="DeveloperPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="4,0,2,0"/>
                                 <Button Content="MULTIMEDIA&#10;I GRAFIKA" Click="GraphicsPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="6,0,0,0"/>
                             </UniformGrid>
-                            <Grid Margin="0,12,0,0">
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <TextBlock Text="RĘCZNA SELEKCJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Button Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="13,8" Margin="0,0,8,0"/>
-                                    <Button Content="×  WYCZYŚĆ SELEKCJĘ" Click="ClearAllAppsButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,8"/>
-                                </StackPanel>
-                            </Grid>
+                            <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,12,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="0,0,20,0" VerticalAlignment="Center">
+                                        <TextBlock Text="RĘCZNA SELEKCJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                                        <TextBlock Text="Zarządzaj wyborem wszystkich aplikacji." FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <UniformGrid Grid.Column="1" Columns="2">
+                                        <Button Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="14,10" Margin="0,0,5,0">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="✓" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <StackPanel>
+                                                    <TextBlock Text="ZAZNACZ WSZYSTKIE" FontSize="10" FontWeight="Bold"/>
+                                                    <TextBlock Text="11 dostępnych programów" FontSize="9" Opacity="0.8" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="14,10" Margin="5,0,0,0">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="×" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                <StackPanel>
+                                                    <TextBlock Text="WYCZYŚĆ SELEKCJĘ" FontSize="10" FontWeight="Bold"/>
+                                                    <TextBlock Text="Usuń wszystkie zaznaczenia" FontSize="9" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Button>
+                                    </UniformGrid>
+                                </Grid>
+                            </Border>
                         </StackPanel>
                     </Border>        </StackPanel>
             </ScrollViewer>
