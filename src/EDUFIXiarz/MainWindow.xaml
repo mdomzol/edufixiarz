@@ -350,15 +350,15 @@
                                     <TextBlock Text="BIBLIOTEKA APLIKACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                                     <TextBlock Text="Zaznacz programy, które mają zostać zainstalowane na stacji." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/>
                                 </StackPanel>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Button Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="13,9">
-                                        <StackPanel Orientation="Horizontal">
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="13,9" Height="36" MinHeight="36">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Text="✓" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,7,0"/>
                                             <TextBlock Text="ZAZNACZ WSZYSTKIE" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Button>
-                                    <Button Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,9" Margin="6,0,0,0">
-                                        <StackPanel Orientation="Horizontal">
+                                    <Button Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,9" Height="36" MinHeight="36" Margin="6,0,0,0">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Text="×" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,7,0"/>
                                             <TextBlock Text="WYCZYŚĆ SELEKCJĘ" VerticalAlignment="Center"/>
                                         </StackPanel>
