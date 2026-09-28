@@ -10,11 +10,16 @@ public partial class MainWindow : Window
 {
     private readonly StringBuilder _log = new();
 
-    private static readonly string[] BaseApps =
+    private static readonly (string Id, string Name)[] BaseApps =
     [
-        "7zip.7zip",
-        "Mozilla.Firefox",
-        "VideoLAN.VLC"
+        ("Adobe.Acrobat.Reader.64-bit", "Adobe Acrobat Reader"),
+        ("voidtools.Everything", "Everything"),
+        ("Google.Chrome", "Google Chrome"),
+        ("Mozilla.Firefox", "Mozilla Firefox"),
+        ("7zip.7zip", "7-Zip"),
+        ("Microsoft.VisualStudioCode", "Visual Studio Code"),
+        ("VideoLAN.VLC", "VLC"),
+        ("Notepad++.Notepad++", "Notepad++")
     ];
 
     public MainWindow()
@@ -74,6 +79,9 @@ public partial class MainWindow : Window
 
             if (BloatwareCheck.IsChecked == true)
                 await RemoveBloatwareAsync();
+
+            if (OfficeCheck.IsChecked == true)
+                await RemoveOfficeAsync();
 
             if (AppsCheck.IsChecked == true)
                 await InstallBaseAppsAsync();
@@ -136,16 +144,49 @@ Get-AppxPackage -AllUsers |
         Log("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
     }
 
+    private async Task RemoveOfficeAsync()
+    {
+        Log("Czyszczenie Microsoft Office / Microsoft 365…");
+
+        const string script = @"
+$officeAppx = Get-AppxPackage -AllUsers -Name 'Microsoft.Office.Desktop' -ErrorAction SilentlyContinue
+foreach ($package in $officeAppx) {
+    Write-Output ('Usuwanie Office AppX: ' + $package.Name)
+    Remove-AppxPackage -Package $package.PackageFullName -AllUsers -ErrorAction Stop
+}
+
+$officeIds = @(
+    'Microsoft.Office',
+    'Microsoft.Office2016',
+    'Microsoft.Office2019',
+    'Microsoft.Office2021',
+    'Microsoft.Office2024'
+)
+
+foreach ($id in $officeIds) {
+    $installed = winget list --id $id --exact --accept-source-agreements 2>$null | Out-String
+    if ($installed -match [regex]::Escape($id)) {
+        Write-Output ('Usuwanie pakietu winget: ' + $id)
+        winget uninstall --id $id --exact --silent --accept-source-agreements
+    }
+}
+";
+
+        await RunPowerShell(script, "Czyszczenie Microsoft Office / Microsoft 365");
+        Log("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
+        Log("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
+    }
+
     private async Task InstallBaseAppsAsync()
     {
-        Log("Instalacja aplikacji bazowych…");
+        Log($"Instalacja aplikacji bazowych ({BaseApps.Length})…");
 
-        foreach (var app in BaseApps)
+        foreach (var (id, name) in BaseApps)
         {
             await RunProcess("winget.exe",
-                ["install", "--id", app, "--exact", "--silent",
+                ["install", "--id", id, "--exact", "--silent",
                  "--accept-package-agreements", "--accept-source-agreements"],
-                $"Instalacja {app}");
+                $"Instalacja {name}");
         }
     }
 
