@@ -116,6 +116,15 @@ function SizeGB($bytes) {
     private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportPage);
     private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
 
+    private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var selected = Apps.Where(a => a.Selected(this)).Select(a => "• " + a.Name).ToArray();
+        var message = selected.Length == 0
+            ? "Brak zaznaczonych aplikacji."
+            : "Aktualnie wskazane aplikacje:\n\n" + string.Join("\n", selected);
+        MessageBox.Show(message, "Wybrane aplikacje", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
     private void DomainCheck_Click(object sender, RoutedEventArgs e)
     {
         _joinDomainRequested = !_joinDomainRequested;
