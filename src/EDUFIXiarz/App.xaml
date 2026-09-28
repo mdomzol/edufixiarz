@@ -65,5 +65,31 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>
+
+        <!-- EDUFIXiarz vector icon set. The same geometries are also represented as SVG files in Assets/Icons. -->
+        <Geometry x:Key="SetupIconGeometry">M12 2.5A9.5 9.5 0 1 0 12 21.5A9.5 9.5 0 1 0 12 2.5M12 8A4 4 0 1 0 12 16A4 4 0 1 0 12 8M12 1V4M12 20V23M1 12H4M20 12H23M4.2 4.2L6.3 6.3M17.7 17.7L19.8 19.8M19.8 4.2L17.7 6.3M6.3 17.7L4.2 19.8</Geometry>
+        <Geometry x:Key="AppsIconGeometry">M3 3H10V10H3ZM14 3H21V10H14ZM3 14H10V21H3ZM14 14H21V21H14Z</Geometry>
+        <Geometry x:Key="LogIconGeometry">M5 3H19V21H5ZM8 7H16M8 11H16M8 15H13</Geometry>
+        <DrawingImage x:Key="AppIcon">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="#0B0D0F">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,32,32" RadiusX="7" RadiusY="7"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#F36B21">
+                        <GeometryDrawing.Geometry>
+                            <PathGeometry FillRule="EvenOdd" Figures="M6,7 L15,7 L15,10 L10,10 L10,13 L14,13 L14,16 L10,16 L10,25 L6,25 Z M17,7 L26,7 L26,10 L21,10 L21,13 L25,13 L25,16 L21,16 L21,22 L26,22 L26,25 L17,25 Z"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFF">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="23.5,19" RadiusX="1.5" RadiusY="1.5"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
     </Application.Resources>
 </Application>
