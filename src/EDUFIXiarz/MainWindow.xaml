@@ -6,7 +6,8 @@
         MinWidth="1100" MinHeight="720"
         Background="{StaticResource BackgroundBrush}"
         Foreground="{StaticResource TextBrush}"
-        WindowStartupLocation="CenterScreen"\n        Icon="{StaticResource AppIcon}">
+        WindowStartupLocation="CenterScreen"
+        Icon="{StaticResource AppIcon}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
