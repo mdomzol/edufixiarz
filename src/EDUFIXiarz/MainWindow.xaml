@@ -284,11 +284,23 @@
                                     </StackPanel>
                                 </Border>
                                 <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,8">
-                                    <Grid>
-                                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                                        <CheckBox x:Name="AppsCheck" Content="ZAINSTALUJ WYBRANE APLIKACJE" IsChecked="True" FontSize="13" FontWeight="SemiBold"/>
-                                        <Button Grid.Row="1" Content="PODGLĄD WYBRANYCH APLIKACJI  ›" Click="PreviewAppsButton_Click" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Foreground="{StaticResource AccentBrush}" FontSize="10" FontWeight="Bold" Padding="0" Margin="24,8,0,0"/>
-                                    </Grid>
+                                    <StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <CheckBox x:Name="AppsCheck" Content="ZAINSTALUJ WYBRANE APLIKACJE" IsChecked="True" FontSize="13" FontWeight="SemiBold"/>
+                                            <Border Grid.Column="1" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="7,3" VerticalAlignment="Center">
+                                                <TextBlock x:Name="SelectedAppsCountText" Text="11" FontSize="10" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                            </Border>
+                                        </Grid>
+                                        <Button x:Name="PreviewAppsButton" Content="POKAŻ WYBRANE APLIKACJE  ›" Click="PreviewAppsButton_Click" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Foreground="{StaticResource AccentBrush}" FontSize="10" FontWeight="Bold" Padding="0" Margin="24,8,0,0"/>
+                                        <Border x:Name="AppsPreviewPanel" Visibility="Collapsed" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="5" Padding="12" Margin="24,10,0,0">
+                                            <StackPanel>
+                                                <TextBlock Text="AKTUALNA SELEKCJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                                                <TextBlock x:Name="AppsPreviewSummaryText" Text="11 aplikacji wskazanych do instalacji." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
+                                                <StackPanel x:Name="AppsPreviewList"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
                                 </Border>
                                 <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12">
                                     <CheckBox x:Name="OfficeCheck" Content="WYCZYŚĆ MICROSOFT OFFICE / 365" FontSize="13" FontWeight="SemiBold"/>
