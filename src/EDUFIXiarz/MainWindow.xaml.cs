@@ -129,7 +129,8 @@ function SizeGB($bytes) {
         }
         else
         {
-            AppsPreviewSummaryText.Text = $"{selected.Length} {selected.Length == 1 ? "aplikacja wskazana" : "aplikacje wskazane"} do instalacji.";
+            var summary = selected.Length == 1 ? "aplikacja wskazana" : "aplikacje wskazane";
+            AppsPreviewSummaryText.Text = $"{selected.Length} {summary} do instalacji.";
 
             for (var index = 0; index < selected.Length; index++)
             {
