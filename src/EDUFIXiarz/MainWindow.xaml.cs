@@ -37,7 +37,7 @@ function SizeGB($bytes) {
 
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
-    SerialNumber = Safe $cs.SerialNumber
+    SerialNumber = Safe $bios.SerialNumber
     Manufacturer = Safe $cs.Manufacturer
     Model = Safe $cs.Model
     Architecture = Safe $os.OSArchitecture
@@ -154,6 +154,7 @@ function SizeGB($bytes) {
             if (string.IsNullOrWhiteSpace(json))
                 throw new InvalidOperationException("PowerShell nie zwrócił żadnych danych.");
 
+            json = SanitizeJson(json);
             Log($"Odebrano raport sprzętowy ({json.Length} znaków).");
             HardwareReport? report;
             try
@@ -178,6 +179,20 @@ function SizeGB($bytes) {
             HardwareStatusText.Text = "NIE UDAŁO SIĘ ODCZYTAĆ RAPORTU";
             Log("BŁĄD RAPORTU SPRZĘTOWEGO: " + ex.Message);
         }
+    }
+
+    private static string SanitizeJson(string json)
+    {
+        var builder = new StringBuilder(json.Length);
+        foreach (var character in json)
+        {
+            if (character == '\t' || character == '\r' || character == '\n' || character >= ' ')
+                builder.Append(character);
+            else
+                builder.Append(' ');
+        }
+
+        return builder.ToString().Trim();
     }
 
     private async Task<string> RunProcessForOutput(string fileName, IEnumerable<string> args)
