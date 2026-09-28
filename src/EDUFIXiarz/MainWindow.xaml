@@ -261,20 +261,20 @@
                                 <TextBlock Text="OPERACJE" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                                 <TextBlock Text="Zaznacz czynności, które ma wykonać EDUFIXiarz." FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,14"/>
 
-                                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,12">
-                                    <CheckBox x:Name="HostnameCheck" Content="Ustaw hostname" IsChecked="True" FontSize="14"/>
+                                <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,8">
+                                    <CheckBox x:Name="HostnameCheck" Content="USTAW HOSTNAME" IsChecked="True" FontSize="13" FontWeight="SemiBold"/>
                                 </Border>
-                                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,12">
-                                    <CheckBox x:Name="DomainCheck" Content="Dołącz do domeny AD" FontSize="14"/>
+                                <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,8">
+                                    <CheckBox x:Name="DomainCheck" Content="DOŁĄCZ DO DOMENY AD" FontSize="13" FontWeight="SemiBold"/>
                                 </Border>
-                                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,12">
-                                    <CheckBox x:Name="BloatwareCheck" Content="Usuń bloatware / OEM" IsChecked="True" FontSize="14"/>
+                                <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,8">
+                                    <CheckBox x:Name="BloatwareCheck" Content="USUŃ BLOATWARE / OEM" IsChecked="True" FontSize="13" FontWeight="SemiBold"/>
                                 </Border>
-                                <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,12">
-                                    <CheckBox x:Name="AppsCheck" Content="Zainstaluj wybrane aplikacje" IsChecked="True" FontSize="14"/>
+                                <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,8">
+                                    <CheckBox x:Name="AppsCheck" Content="ZAINSTALUJ WYBRANE APLIKACJE" IsChecked="True" FontSize="13" FontWeight="SemiBold"/>
                                 </Border>
-                                <Border Padding="0,12,0,0">
-                                    <CheckBox x:Name="OfficeCheck" Content="Wyczyść Microsoft Office / 365" FontSize="14"/>
+                                <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="14,12">
+                                    <CheckBox x:Name="OfficeCheck" Content="WYCZYŚĆ MICROSOFT OFFICE / 365" FontSize="13" FontWeight="SemiBold"/>
                                 </Border>
                             </StackPanel>
                         </Border>
