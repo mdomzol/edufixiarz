@@ -473,7 +473,7 @@
                                 </Grid>
                             </CheckBox>
                         </Border>
-                    </UniformGrid>      </UniformGrid>
+                    </UniformGrid>
 
                     <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,18,0,10">
                         <Grid>
