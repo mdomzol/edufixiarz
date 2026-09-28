@@ -361,7 +361,7 @@
             <Button Grid.Column="1" Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Height="38" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,0" Margin="4,0,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="3" Width="20" Height="20" Margin="0,0,8,0">
-                        <TextBlock Text="×" FontSize="12" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="×" FontSize="12" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Padding="0" Margin="0"/>
                     </Border>
                     <TextBlock Text="WYCZYŚĆ SELEKCJĘ" VerticalAlignment="Center"/>
                 </StackPanel>
