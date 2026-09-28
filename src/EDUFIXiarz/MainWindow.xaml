@@ -351,13 +351,13 @@
                                     <TextBlock Text="Zaznacz programy, które mają zostać zainstalowane na stacji." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Button x:Name="SelectAllAppsButton" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="13,9">
+                                    <Button Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="13,9">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="✓" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,7,0"/>
                                             <TextBlock Text="ZAZNACZ WSZYSTKIE" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Button>
-                                    <Button x:Name="ClearAllAppsButton" Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,9" Margin="6,0,0,0">
+                                    <Button Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,9" Margin="6,0,0,0">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="×" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,7,0"/>
                                             <TextBlock Text="WYCZYŚĆ SELEKCJĘ" VerticalAlignment="Center"/>
@@ -531,8 +531,8 @@
                                         <TextBlock Text="Zarządzaj wyborem wszystkich aplikacji." FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button x:Name="SelectAllAppsButton" Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="12,8" MinHeight="34"/>
-                                        <Button x:Name="ClearAllAppsButton" Content="WYCZYŚĆ SELEKCJĘ" Click="ClearAllAppsButton_Click" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="12,8" MinHeight="34" Margin="8,0,0,0"/>
+                                        <Button Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="12,8" MinHeight="34"/>
+                                        <Button Content="WYCZYŚĆ SELEKCJĘ" Click="ClearAllAppsButton_Click" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="12,8" MinHeight="34" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
