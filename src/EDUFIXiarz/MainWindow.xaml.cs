@@ -133,10 +133,25 @@ function SizeGB($bytes) {
         HardwareStatusText.Text = "ODCZYTYWANIE INFORMACJI…";
         try
         {
+            Log("Uruchamiam PowerShell/CIM do odczytu sprzętu…");
             var json = await RunProcessForOutput("powershell.exe",
                 ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", HardwareScript]);
-            var report = JsonSerializer.Deserialize<HardwareReport>(json, JsonOptions)
-                         ?? throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
+            if (string.IsNullOrWhiteSpace(json))
+                throw new InvalidOperationException("PowerShell nie zwrócił żadnych danych.");
+
+            Log($"Odebrano raport sprzętowy ({json.Length} znaków).");
+            HardwareReport? report;
+            try
+            {
+                report = JsonSerializer.Deserialize<HardwareReport>(json, JsonOptions);
+            }
+            catch (JsonException ex)
+            {
+                Log("Nieprawidłowy JSON raportu: " + ex.Message);
+                Log("Początek odpowiedzi PowerShell: " + json[..Math.Min(json.Length, 500)]);
+                throw new InvalidOperationException("PowerShell zwrócił dane, których aplikacja nie potrafi odczytać. Szczegóły znajdują się w DZIENNIKU.", ex);
+            }
+            report ??= throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
             DataContext = report;
             HardwareStatusText.Text = $"ODCZYTANO · {DateTime.Now:HH:mm:ss}";
             Log("Raport sprzętowy został odczytany.");
@@ -160,10 +175,16 @@ function SizeGB($bytes) {
         };
         foreach (var arg in args) psi.ArgumentList.Add(arg);
         using var process = Process.Start(psi) ?? throw new InvalidOperationException($"Nie można uruchomić {fileName}.");
-        var output = await process.StandardOutput.ReadToEndAsync();
-        var error = await process.StandardError.ReadToEndAsync();
+        var outputTask = process.StandardOutput.ReadToEndAsync();
+        var errorTask = process.StandardError.ReadToEndAsync();
         await process.WaitForExitAsync();
-        if (process.ExitCode != 0) throw new InvalidOperationException(error.Trim());
+        var output = await outputTask;
+        var error = await errorTask;
+        if (!string.IsNullOrWhiteSpace(error)) Log("PowerShell STDERR: " + error.Trim());
+        if (process.ExitCode != 0)
+            throw new InvalidOperationException(string.IsNullOrWhiteSpace(error)
+                ? $"PowerShell zakończył działanie kodem {process.ExitCode}."
+                : error.Trim());
         return output.Trim();
     }
 
