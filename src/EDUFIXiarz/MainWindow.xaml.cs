@@ -398,6 +398,53 @@ foreach ($id in $officeIds) {
             await RunProcess("winget.exe", ["install","--id",id,"--exact","--silent","--accept-package-agreements","--accept-source-agreements"], $"Instalacja {name}");
     }
 
+    private void SetAppSelection(params string[] ids)
+    {
+        var selected = ids.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        AdobeReaderCheck.IsChecked = selected.Contains("Adobe");
+        EverythingCheck.IsChecked = selected.Contains("Everything");
+        ChromeCheck.IsChecked = selected.Contains("Chrome");
+        FirefoxCheck.IsChecked = selected.Contains("Firefox");
+        SevenZipCheck.IsChecked = selected.Contains("7zip");
+        VscodeCheck.IsChecked = selected.Contains("VSCode");
+        VlcCheck.IsChecked = selected.Contains("VLC");
+        NotepadPlusPlusCheck.IsChecked = selected.Contains("Notepad++");
+        LibreOfficeCheck.IsChecked = selected.Contains("LibreOffice");
+        PuttyCheck.IsChecked = selected.Contains("PuTTY");
+        GimpCheck.IsChecked = selected.Contains("GIMP");
+        AppsCheck.IsChecked = selected.Count > 0;
+        UpdateSelectedAppsCount();
+    }
+
+    private void UpdateSelectedAppsCount()
+    {
+        SelectedAppsCountText.Text = Apps.Count(a => a.Selected(this)).ToString();
+    }
+
+    private void StandardPackageButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetAppSelection("Adobe", "Everything", "Chrome", "7zip", "VLC", "LibreOffice", "Notepad++");
+        Log("Wybrano pakiet: Standardowe stanowisko biurowe.");
+    }
+
+    private void BasicPackageButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetAppSelection("Chrome", "7zip", "VLC", "Notepad++");
+        Log("Wybrano pakiet: Podstawowy komputer.");
+    }
+
+    private void DeveloperPackageButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetAppSelection("Everything", "Chrome", "Firefox", "7zip", "VSCode", "PuTTY", "Notepad++");
+        Log("Wybrano pakiet: Programista IT / DEV.");
+    }
+
+    private void GraphicsPackageButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetAppSelection("Adobe", "Chrome", "7zip", "VLC", "LibreOffice", "GIMP", "Notepad++");
+        Log("Wybrano pakiet: Multimedia i grafika.");
+    }
+
     private void SelectAllAppsButton_Click(object sender, RoutedEventArgs e)
     {
         AdobeReaderCheck.IsChecked = true; EverythingCheck.IsChecked = true; ChromeCheck.IsChecked = true;
