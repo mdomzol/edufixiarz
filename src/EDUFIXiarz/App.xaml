@@ -95,7 +95,6 @@
                                 <Setter TargetName="CheckMarkBox" Property="Background" Value="{StaticResource AccentBrush}"/>
                                 <Setter TargetName="CheckMarkBox" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
                                 <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
                                 <Setter TargetName="Card" Property="Background" Value="#14F36B21"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
