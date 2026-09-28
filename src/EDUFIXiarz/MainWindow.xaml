@@ -340,6 +340,33 @@
                     <TextBlock Text="PAKIETY OPROGRAMOWANIA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                     <TextBlock Text="Wybierz aplikacje instalowane przez winget." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,18"/>
 
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="BIBLIOTEKA APLIKACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                                    <TextBlock Text="Zaznacz programy, które mają zostać zainstalowane na stacji." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Button x:Name="SelectAllAppsButton" Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="12,8" Margin="0,0,8,0"/>
+                                    <Button x:Name="ClearAllAppsButton" Content="×  WYCZYŚĆ" Click="ClearAllAppsButton_Click" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="12,8"/>
+                                </StackPanel>
+                            </Grid>
+                            <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="INSTALACJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                        <TextBlock Text="  ·  " FontSize="9" Foreground="{StaticResource BorderBrush}"/>
+                                        <TextBlock Text="WINGET" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="AppsLibraryCountText" Grid.Column="1" Text="11 PROGRAMÓW" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                </Grid>
+                            </Border>
                     <UniformGrid Columns="3">
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,10" Padding="14">
                             <CheckBox x:Name="AdobeReaderCheck" IsChecked="True" VerticalContentAlignment="Center">
@@ -474,6 +501,8 @@
                             </CheckBox>
                         </Border>
                     </UniformGrid>
+                        </StackPanel>
+                    </Border>
 
                     <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,18,0,10">
                         <Grid>
