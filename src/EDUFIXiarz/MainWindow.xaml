@@ -36,10 +36,14 @@
                     <TextBlock Text="INWENTARY · WDROŻENIE · LOG" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Margin="0,34,0,0">
-                    <TextBlock Text="NAWIGACJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="10,0,0,8"/>
-                    <Button x:Name="SetupMenuButton" Style="{StaticResource NavButton}" Click="SetupMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="STACJA"/></StackPanel>
+                    <TextBlock Text="STACJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="10,0,0,8"/>
+                    <Button x:Name="ReportMenuButton" Style="{StaticResource NavButton}" Click="ReportMenuButton_Click">
+                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
                     </Button>
+                    <Button x:Name="SetupMenuButton" Style="{StaticResource NavButton}" Click="SetupMenuButton_Click">
+                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="PRZYGOTOWANIE"/></StackPanel>
+                    </Button>
+                    <TextBlock Text="NARZĘDZIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="10,22,0,8"/>
                     <Button x:Name="AppsMenuButton" Style="{StaticResource NavButton}" Click="AppsMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AppsIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="APLIKACJE"/></StackPanel>
                     </Button>
@@ -59,17 +63,21 @@
         <Grid Grid.Column="1" Margin="38,30,38,24">
             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="0,0,0,24">
-                <StackPanel>
-                    <TextBlock Text="STACJA ROBOCZA" FontSize="34" FontWeight="SemiBold"/>
-                    <TextBlock Text="Automatyczny odczyt podzespołów i parametrów systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                <StackPanel x:Name="ReportHeader">
+                    <TextBlock Text="RAPORT STACJI" FontSize="34" FontWeight="SemiBold"/>
+                    <TextBlock Text="Identyfikacja komputera, podzespoły i parametry systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
-                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel x:Name="ReportStatusHeader" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock Text="RAPORT SPRZĘTOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right"/>
                     <TextBlock x:Name="HardwareStatusText" Text="URUCHAMIANIE…" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,4,0,0"/>
                 </StackPanel>
+                <StackPanel x:Name="SetupHeader" Visibility="Collapsed">
+                    <TextBlock Text="PRZYGOTOWANIE STACJI" FontSize="34" FontWeight="SemiBold"/>
+                    <TextBlock Text="Konfiguracja stanowiska, domeny, oprogramowania i czyszczenie systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
             </Grid>
 
-            <ScrollViewer x:Name="SetupPage" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="ReportPage" Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock Text="IDENTYFIKACJA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                     <Grid Margin="0,10,0,24">
@@ -85,7 +93,7 @@
                         <StackPanel Grid.Column="0" Margin="0,0,28,0">
                             <TextBlock Text="PROCESOR" FontSize="9" Foreground="{StaticResource MutedBrush}"/>
                             <TextBlock Text="{Binding Cpu}" FontSize="16" TextWrapping="Wrap" Margin="0,3,0,0"/>
-                            <TextBlock Text="{Binding CpuCores, StringFormat=Rdżenie: {0}  ·  Wątki: {1}}" FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0"><TextBlock Text="{Binding CpuCores, StringFormat=Rdzenie: {0}}" FontSize="12" Foreground="{StaticResource MutedBrush}"/><TextBlock Text="{Binding CpuThreads, StringFormat=  ·  Wątki: {0}}" FontSize="12" Foreground="{StaticResource MutedBrush}"/></StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="PAMIĘĆ RAM" FontSize="9" Foreground="{StaticResource MutedBrush}"/>
@@ -120,6 +128,11 @@
                         <StackPanel Grid.Column="2"><TextBlock Text="CZAS PRACY" FontSize="9" Foreground="{StaticResource MutedBrush}"/><TextBlock Text="{Binding Uptime}" FontSize="15" Margin="0,3,0,0"/></StackPanel>
                     </Grid>
 
+                </StackPanel>
+            </ScrollViewer>
+
+            <ScrollViewer x:Name="SetupPage" Grid.Row="1" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
                     <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Margin="0,12,0,0" Padding="0,18,0,0">
                         <StackPanel>
                             <TextBlock Text="PRZYGOTOWANIE STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
@@ -145,6 +158,7 @@
                             </Grid>
                         </StackPanel>
                     </Border>
+
                 </StackPanel>
             </ScrollViewer>
 
