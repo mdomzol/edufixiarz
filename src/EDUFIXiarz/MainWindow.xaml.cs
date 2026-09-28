@@ -11,6 +11,7 @@ namespace EDUFIXiarz;
 public partial class MainWindow : Window
 {
     private readonly StringBuilder _log = new();
+    private bool _joinDomainRequested;
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
     private const string HardwareScript = @"
@@ -115,19 +116,21 @@ function SizeGB($bytes) {
     private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportPage);
     private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
 
-    private void DomainCheck_Checked(object sender, RoutedEventArgs e)
+    private void DomainCheck_Click(object sender, RoutedEventArgs e)
     {
-        DomainCredentialsExpander.Visibility = Visibility.Visible;
-        DomainCredentialsExpander.IsExpanded = true;
-        Log("Włączono dołączenie stacji do domeny AD.");
-    }
+        _joinDomainRequested = !_joinDomainRequested;
+        DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+        DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
+        DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+        DomainCheck.Background = _joinDomainRequested ? FindResource("PanelAltBrush") as Brush : FindResource("InputBrush") as Brush;
+        DomainCheck.BorderBrush = _joinDomainRequested ? FindResource("AccentBrush") as Brush : FindResource("BorderBrush") as Brush;
 
-    private void DomainCheck_Unchecked(object sender, RoutedEventArgs e)
-    {
-        DomainCredentialsExpander.IsExpanded = false;
-        DomainCredentialsExpander.Visibility = Visibility.Collapsed;
-        DomainPasswordBox.Clear();
-        Log("Wyłączono dołączenie stacji do domeny AD.");
+        if (!_joinDomainRequested)
+            DomainPasswordBox.Clear();
+
+        Log(_joinDomainRequested
+            ? "Włączono konfigurację dołączenia stacji do domeny AD."
+            : "Wyłączono konfigurację dołączenia stacji do domeny AD.");
     }
     private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
     private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
@@ -253,7 +256,7 @@ function SizeGB($bytes) {
                     throw new InvalidOperationException("Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
                 await RunPowerShell($"Rename-Computer -NewName '{Escape(hostname)}' -Force", "Zmiana hostname");
             }
-            if (DomainCheck.IsChecked == true) await JoinDomainAsync();
+            if (_joinDomainRequested) await JoinDomainAsync();
             if (BloatwareCheck.IsChecked == true) await RemoveBloatwareAsync();
             if (OfficeCheck.IsChecked == true) await RemoveOfficeAsync();
             if (AppsCheck.IsChecked == true) await InstallSelectedAppsAsync();
@@ -353,9 +356,15 @@ foreach ($id in $officeIds) {
 
     private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
     {
-        HostnameCheck.IsChecked = false; DomainCheck.IsChecked = false; BloatwareCheck.IsChecked = false;
+        HostnameCheck.IsChecked = false;
+        _joinDomainRequested = false;
         DomainCredentialsExpander.IsExpanded = false;
         DomainCredentialsExpander.Visibility = Visibility.Collapsed;
+        DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
+        DomainCheck.Background = FindResource("InputBrush") as Brush;
+        DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
+        DomainPasswordBox.Clear();
+        BloatwareCheck.IsChecked = false;
         AppsCheck.IsChecked = false; OfficeCheck.IsChecked = false; ClearAllAppsButton_Click(sender, e);
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
