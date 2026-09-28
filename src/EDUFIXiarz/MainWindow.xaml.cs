@@ -10,20 +10,16 @@ public partial class MainWindow : Window
 {
     private readonly StringBuilder _log = new();
 
-    private static readonly (string Id, string Name)[] BaseApps =
+    private static readonly (string Id, string Name, Func<MainWindow, bool> Selected)[] Apps =
     [
-        ("Adobe.Acrobat.Reader.64-bit", "Adobe Acrobat Reader"),
-        ("voidtools.Everything", "Everything"),
-        ("Google.Chrome", "Google Chrome"),
-        ("Mozilla.Firefox", "Mozilla Firefox"),
-        ("7zip.7zip", "7-Zip"),
-        ("Microsoft.VisualStudioCode", "Visual Studio Code"),
-        ("VideoLAN.VLC", "VLC"),
-        ("Notepad++.Notepad++", "Notepad++")
-    ];
-
-    private static readonly (string Id, string Name, Func<MainWindow, bool> Selected)[] OptionalApps =
-    [
+        ("Adobe.Acrobat.Reader.64-bit", "Adobe Acrobat Reader", w => w.AdobeReaderCheck.IsChecked == true),
+        ("voidtools.Everything", "Everything", w => w.EverythingCheck.IsChecked == true),
+        ("Google.Chrome", "Google Chrome", w => w.ChromeCheck.IsChecked == true),
+        ("Mozilla.Firefox", "Mozilla Firefox", w => w.FirefoxCheck.IsChecked == true),
+        ("7zip.7zip", "7-Zip", w => w.SevenZipCheck.IsChecked == true),
+        ("Microsoft.VisualStudioCode", "Visual Studio Code", w => w.VscodeCheck.IsChecked == true),
+        ("VideoLAN.VLC", "VLC", w => w.VlcCheck.IsChecked == true),
+        ("Notepad++.Notepad++", "Notepad++", w => w.NotepadPlusPlusCheck.IsChecked == true),
         ("TheDocumentFoundation.LibreOffice", "LibreOffice", w => w.LibreOfficeCheck.IsChecked == true),
         ("PuTTY.PuTTY", "PuTTY", w => w.PuttyCheck.IsChecked == true),
         ("GIMP.GIMP", "GIMP", w => w.GimpCheck.IsChecked == true)
@@ -91,9 +87,8 @@ public partial class MainWindow : Window
                 await RemoveOfficeAsync();
 
             if (AppsCheck.IsChecked == true)
-                await InstallBaseAppsAsync();
-
-            await InstallOptionalAppsAsync();
+                if (AppsCheck.IsChecked == true)
+                await InstallSelectedAppsAsync();
 
             Log("Zakończono wybrane operacje.");
             MessageBox.Show("Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
@@ -186,11 +181,14 @@ foreach ($id in $officeIds) {
         Log("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
     }
 
-    private async Task InstallBaseAppsAsync()
+    private async Task InstallSelectedAppsAsync()
     {
         Log($"Instalacja aplikacji bazowych ({BaseApps.Length})…");
 
-        foreach (var (id, name) in BaseApps)
+        foreach (var (id, name, selected) in Apps)
+        {
+            if (!selected(this))
+                continue;
         {
             await RunProcess("winget.exe",
                 ["install", "--id", id, "--exact", "--silent",
@@ -199,18 +197,37 @@ foreach ($id in $officeIds) {
         }
     }
 
-    private async Task InstallOptionalAppsAsync()
-    {
-        foreach (var (id, name, selected) in OptionalApps)
-        {
-            if (!selected(this))
-                continue;
 
-            await RunProcess("winget.exe",
-                ["install", "--id", id, "--exact", "--silent",
-                 "--accept-package-agreements", "--accept-source-agreements"],
-                $"Instalacja {name}");
-        }
+    private void SelectAllAppsButton_Click(object sender, RoutedEventArgs e)
+    {
+        AdobeReaderCheck.IsChecked = true;
+        EverythingCheck.IsChecked = true;
+        ChromeCheck.IsChecked = true;
+        FirefoxCheck.IsChecked = true;
+        SevenZipCheck.IsChecked = true;
+        VscodeCheck.IsChecked = true;
+        VlcCheck.IsChecked = true;
+        NotepadPlusPlusCheck.IsChecked = true;
+        LibreOfficeCheck.IsChecked = true;
+        PuttyCheck.IsChecked = true;
+        GimpCheck.IsChecked = true;
+        Log("Zaznaczono wszystkie aplikacje.");
+    }
+
+    private void ClearAllAppsButton_Click(object sender, RoutedEventArgs e)
+    {
+        AdobeReaderCheck.IsChecked = false;
+        EverythingCheck.IsChecked = false;
+        ChromeCheck.IsChecked = false;
+        FirefoxCheck.IsChecked = false;
+        SevenZipCheck.IsChecked = false;
+        VscodeCheck.IsChecked = false;
+        VlcCheck.IsChecked = false;
+        NotepadPlusPlusCheck.IsChecked = false;
+        LibreOfficeCheck.IsChecked = false;
+        PuttyCheck.IsChecked = false;
+        GimpCheck.IsChecked = false;
+        Log("Odznaczono wszystkie aplikacje.");
     }
 
     private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
@@ -220,6 +237,7 @@ foreach ($id in $officeIds) {
         BloatwareCheck.IsChecked = false;
         AppsCheck.IsChecked = false;
         OfficeCheck.IsChecked = false;
+        ClearAllAppsButton_Click(sender, e);
         LibreOfficeCheck.IsChecked = false;
         PuttyCheck.IsChecked = false;
         GimpCheck.IsChecked = false;
