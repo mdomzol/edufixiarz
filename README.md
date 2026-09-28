@@ -29,3 +29,25 @@ dotnet build EDUFIXiarz.sln -c Release
 ```
 
 The GitHub Actions workflow also builds the Windows application automatically.
+
+
+### Standardowy zestaw aplikacji
+
+EDUFIXiarz przygotowuje stację z następującym zestawem:
+
+- Adobe Acrobat Reader (64-bit)
+- Everything
+- Google Chrome
+- Mozilla Firefox
+- 7-Zip
+- Visual Studio Code
+- VLC
+- Notepad++
+
+### Czyszczenie Office
+
+Opcja **„Wyczyść Microsoft Office / 365”** jest celowo wyłączona domyślnie. Po zaznaczeniu EDUFIXiarz usuwa wykryty pakiet Microsoft 365 Apps przez WinGet oraz pakiet Microsoft 365 z Microsoft Store/AppX, jeśli jest obecny.
+
+Po operacji należy wykonać restart przed wdrożeniem właściwego pakietu Office zakupionego przez jednostkę.
+
+Docelowo funkcję warto rozszerzyć o Office Deployment Tool (ODT), aby obsłużyć również pełne czyszczenie instalacji Click-to-Run i starszych instalacji MSI.
