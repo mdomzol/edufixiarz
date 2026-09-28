@@ -67,6 +67,7 @@
         </Style>
 
         <!-- EDUFIXiarz vector icon set. The same geometries are also represented as SVG files in Assets/Icons. -->
+        <Geometry x:Key="ReportIconGeometry">M12 3V21M5 6H19M5 12H19M5 18H19</Geometry>
         <Geometry x:Key="SetupIconGeometry">M12 2.5A9.5 9.5 0 1 0 12 21.5A9.5 9.5 0 1 0 12 2.5M12 8A4 4 0 1 0 12 16A4 4 0 1 0 12 8M12 1V4M12 20V23M1 12H4M20 12H23M4.2 4.2L6.3 6.3M17.7 17.7L19.8 19.8M19.8 4.2L17.7 6.3M6.3 17.7L4.2 19.8</Geometry>
         <Geometry x:Key="AppsIconGeometry">M3 3H10V10H3ZM14 3H21V10H14ZM3 14H10V21H3ZM14 14H21V21H14Z</Geometry>
         <Geometry x:Key="LogIconGeometry">M5 3H19V21H5ZM8 7H16M8 11H16M8 15H13</Geometry>
