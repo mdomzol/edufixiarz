@@ -3,6 +3,7 @@ using System.Security;
 using System.Security.Principal;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 
 namespace EDUFIXiarz;
 
@@ -31,8 +32,8 @@ public partial class MainWindow : Window
         HostnameBox.Text = Environment.MachineName;
         PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
         PrivilegeText.Foreground = IsAdministrator()
-            ? System.Windows.Media.Brushes.LightGreen
-            : System.Windows.Media.Brushes.Orange;
+            ? Brushes.LightGreen
+            : Brushes.Orange;
 
         Log("EDUFIXiarz uruchomiony.");
         Log($"Stacja: {Environment.MachineName}");
@@ -52,6 +53,30 @@ public partial class MainWindow : Window
         _log.AppendLine($"[{DateTime.Now:HH:mm:ss}] {message}");
         LogBox.Text = _log.ToString();
         LogBox.ScrollToEnd();
+    }
+
+    private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
+    private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
+    private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
+
+    private void ShowPage(UIElement page)
+    {
+        SetupPage.Visibility = Visibility.Collapsed;
+        AppsPage.Visibility = Visibility.Collapsed;
+        LogPage.Visibility = Visibility.Collapsed;
+
+        SetupMenuButton.Background = (Brush)FindResource("PanelAltBrush");
+        AppsMenuButton.Background = (Brush)FindResource("PanelAltBrush");
+        LogMenuButton.Background = (Brush)FindResource("PanelAltBrush");
+
+        page.Visibility = Visibility.Visible;
+
+        var activeButton = page == SetupPage ? SetupMenuButton
+            : page == AppsPage ? AppsMenuButton
+            : LogMenuButton;
+
+        activeButton.Background = (Brush)FindResource("AccentBrush");
+        activeButton.Foreground = Brushes.White;
     }
 
     private async void RunButton_Click(object sender, RoutedEventArgs e)
@@ -87,16 +112,17 @@ public partial class MainWindow : Window
                 await RemoveOfficeAsync();
 
             if (AppsCheck.IsChecked == true)
-                if (AppsCheck.IsChecked == true)
                 await InstallSelectedAppsAsync();
 
             Log("Zakończono wybrane operacje.");
+            ShowPage(LogPage);
             MessageBox.Show("Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
                 "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
             Log("BŁĄD: " + ex.Message);
+            ShowPage(LogPage);
             MessageBox.Show(ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
@@ -183,20 +209,17 @@ foreach ($id in $officeIds) {
 
     private async Task InstallSelectedAppsAsync()
     {
-        Log($"Instalacja wybranych aplikacji ({Apps.Count(a => a.Selected(this))})…");
+        var selectedApps = Apps.Where(a => a.Selected(this)).ToArray();
+        Log($"Instalacja wybranych aplikacji ({selectedApps.Length})…");
 
-        foreach (var (id, name, selected) in Apps)
+        foreach (var (id, name, _) in selectedApps)
         {
-            if (!selected(this))
-                continue;
-
             await RunProcess("winget.exe",
                 ["install", "--id", id, "--exact", "--silent",
                  "--accept-package-agreements", "--accept-source-agreements"],
                 $"Instalacja {name}");
         }
     }
-
 
     private void SelectAllAppsButton_Click(object sender, RoutedEventArgs e)
     {
@@ -211,6 +234,7 @@ foreach ($id in $officeIds) {
         LibreOfficeCheck.IsChecked = true;
         PuttyCheck.IsChecked = true;
         GimpCheck.IsChecked = true;
+        AppsCheck.IsChecked = true;
         Log("Zaznaczono wszystkie aplikacje.");
     }
 
