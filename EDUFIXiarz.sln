@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{60DC8134-DBF1-4B7E-8F5B-5F6F9A8B4A5E}") = "EDUFIXiarz", "src\EDUFIXiarz\EDUFIXiarz.csproj", "{E5F9B4E1-7B8E-4C6E-9A3A-0B8B0B5D5F01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5F9B4E1-7B8E-4C6E-9A3A-0B8B0B5D5F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F9B4E1-7B8E-4C6E-9A3A-0B8B0B5D5F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F9B4E1-7B8E-4C6E-9A3A-0B8B0B5D5F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F9B4E1-7B8E-4C6E-9A3A-0B8B0B5D5F01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
