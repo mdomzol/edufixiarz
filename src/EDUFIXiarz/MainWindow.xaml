@@ -506,19 +506,25 @@
                     </Border>
 
                     <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,18,0,10">
-                        <Grid>
-                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="SELEKCJA PAKIETÓW" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                                <TextBlock Text="Możesz zaznaczyć lub wyczyścić cały zestaw jednym kliknięciem." FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Button Content="ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Padding="12,8" Margin="0,0,10,0"/>
-                                <Button Content="ODZNACZ WSZYSTKIE" Click="ClearAllAppsButton_Click" Padding="12,8"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="SELEKCJA PAKIETÓW" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                            <TextBlock Text="Skorzystaj z gotowego zestawu albo wyczyść wybór i skonfiguruj własny pakiet." FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,14"/>
+                            <UniformGrid Columns="4">
+                                <Button Content="STANDARDOWY&#10;STANOWISKO BIUROWE" Click="StandardPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="0,0,6,0"/>
+                                <Button Content="PODSTAWOWY&#10;KOMPUTER" Click="BasicPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="2,0,4,0"/>
+                                <Button Content="PROGRAMISTA&#10;IT / DEV" Click="DeveloperPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="4,0,2,0"/>
+                                <Button Content="MULTIMEDIA&#10;I GRAFIKA" Click="GraphicsPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="6,0,0,0"/>
+                            </UniformGrid>
+                            <Grid Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="RĘCZNA SELEKCJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Button Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="13,8" Margin="0,0,8,0"/>
+                                    <Button Content="×  WYCZYŚĆ SELEKCJĘ" Click="ClearAllAppsButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,8"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>        </StackPanel>
             </ScrollViewer>
 
             <Grid x:Name="LogPage" Grid.Row="1" Visibility="Collapsed">
