@@ -11,8 +11,8 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="10,12"/>
-            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="Padding" Value="12,11"/>
+            <Setter Property="Margin" Value="0,3,0,3"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="{StaticResource TextBrush}"/></Trigger>
@@ -20,30 +20,29 @@
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
                     <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-                    <Setter Property="BorderThickness" Value="3,0,0,0"/>
+                    <Setter Property="BorderThickness" Value="1,0,0,0"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions><ColumnDefinition Width="230"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
-            <Grid Margin="20">
+        <Border Grid.Column="0" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
+            <Grid Margin="18">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                 <StackPanel>
-                    <TextBlock Text="EDU-FIX IT" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                    <TextBlock Text="EDUFIXiarz" FontSize="27" FontWeight="SemiBold" Margin="0,2,0,0"/>
-                    <TextBlock Text="INWENTARY · WDROŻENIE · LOG" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="11,9" Margin="0,0,0,4"><StackPanel><TextBlock Text="EDU-FIX IT" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/><TextBlock Text="EDUFIXiarz" FontSize="22" FontWeight="SemiBold" Margin="0,1,0,0"/><TextBlock Text="ADMINISTRACJA STACJI" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/></StackPanel></Border>
+                    
                 </StackPanel>
                 <StackPanel Grid.Row="1" Margin="0,34,0,0">
-                    <TextBlock Text="STACJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="10,0,0,8"/>
+                    <TextBlock Text="STACJA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="12,0,0,8"/>
                     <Button x:Name="ReportMenuButton" Style="{StaticResource NavButton}" Click="ReportMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
                     </Button>
                     <Button x:Name="SetupMenuButton" Style="{StaticResource NavButton}" Click="SetupMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="PRZYGOTOWANIE"/></StackPanel>
                     </Button>
-                    <TextBlock Text="NARZĘDZIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="10,22,0,8"/>
+                    <TextBlock Text="NARZĘDZIA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="12,22,0,8"/>
                     <Button x:Name="AppsMenuButton" Style="{StaticResource NavButton}" Click="AppsMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AppsIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="APLIKACJE"/></StackPanel>
                     </Button>
@@ -55,7 +54,7 @@
                     <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,14,0,0">
                         <TextBlock x:Name="PrivilegeText" Text="SPRAWDZANIE…" FontSize="10" FontWeight="Bold" TextWrapping="Wrap"/>
                     </Border>
-                    <TextBlock Text="EDUFIXiarz · narzędzie administracyjne" FontSize="9" Foreground="{StaticResource MutedBrush}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Text="EDUFIXiarz · narzędzie administracyjne" FontSize="8" Foreground="{StaticResource MutedBrush}" Margin="0,8,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -352,8 +351,10 @@
                                     <TextBlock Text="Zaznacz programy, które mają zostać zainstalowane na stacji." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <Button x:Name="SelectAllAppsButton" Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="13,8" Margin="0,0,8,0"/>
-                                    <Button x:Name="ClearAllAppsButton" Content="×  WYCZYŚĆ" Click="ClearAllAppsButton_Click" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="13,8"/>
+                                    <Border Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="3">
+                                        <Button x:Name="SelectAllAppsButton" Content="✓  ZAZNACZ WSZYSTKIE" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Padding="12,8"/>
+                                    </Border>
+                                    <Button x:Name="ClearAllAppsButton" Content="WYCZYŚĆ SELEKCJĘ" Click="ClearAllAppsButton_Click" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Padding="12,8" Margin="8,0,0,0"/>
                                 </StackPanel>
                             </Grid>
                             <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,12">
