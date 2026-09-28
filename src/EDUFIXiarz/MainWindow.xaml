@@ -85,6 +85,9 @@
                                   IsChecked="True" Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
                         <CheckBox x:Name="AppsCheck" Content="Zainstaluj aplikacje bazowe"
                                   IsChecked="True" Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"/>
+                        <CheckBox x:Name="OfficeCheck" Content="Wyczyść Microsoft Office / 365"
+                                  Foreground="{StaticResource TextBrush}" FontSize="15" Margin="0,8"
+                                  ToolTip="Usuwa wykryte składniki Office AppX oraz Microsoft 365 Apps przez winget."/>
                     </StackPanel>
                     <Button Grid.Row="2" x:Name="RunButton" Content="URUCHOM PRZYGOTOWANIE"
                             Click="RunButton_Click" HorizontalAlignment="Left"
