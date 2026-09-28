@@ -6,7 +6,7 @@
         MinWidth="1100" MinHeight="720"
         Background="{StaticResource BackgroundBrush}"
         Foreground="{StaticResource TextBrush}"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"\n        Icon="{StaticResource AppIcon}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
@@ -35,16 +35,34 @@
                 <StackPanel Grid.Row="1" Margin="0,38,0,0">
                     <TextBlock Text="MENU" FontSize="10" FontWeight="Bold"
                                Foreground="{StaticResource MutedBrush}" Margin="2,0,0,10"/>
-                    <Button x:Name="SetupMenuButton" Content="  ⚙   PRZYGOTOWANIE"
+                    <Button x:Name="SetupMenuButton"
                             Click="SetupMenuButton_Click" HorizontalContentAlignment="Left"
                             Background="{StaticResource AccentBrush}" Foreground="White"
-                            Padding="14,12" Margin="0,0,0,8"/>
-                    <Button x:Name="AppsMenuButton" Content="  ▦   APLIKACJE"
+                            Padding="14,12" Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource SetupIconGeometry}" Fill="White" Stretch="Uniform"
+                                  Width="18" Height="18" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="PRZYGOTOWANIE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="AppsMenuButton"
                             Click="AppsMenuButton_Click" HorizontalContentAlignment="Left"
-                            Padding="14,12" Margin="0,0,0,8"/>
-                    <Button x:Name="LogMenuButton" Content="  ≡   DZIENNIK"
+                            Padding="14,12" Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource AppsIconGeometry}" Fill="{StaticResource TextBrush}" Stretch="Uniform"
+                                  Width="18" Height="18" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="APLIKACJE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="LogMenuButton"
                             Click="LogMenuButton_Click" HorizontalContentAlignment="Left"
-                            Padding="14,12" Margin="0,0,0,8"/>
+                            Padding="14,12" Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource LogIconGeometry}" Fill="{StaticResource TextBrush}" Stretch="Uniform"
+                                  Width="18" Height="18" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="DZIENNIK" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
                 <Border Grid.Row="2" Background="{StaticResource PanelAltBrush}"
