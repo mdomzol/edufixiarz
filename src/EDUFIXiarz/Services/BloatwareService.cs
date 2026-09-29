@@ -8,24 +8,31 @@ public sealed class BloatwareService
 
     public Task RemoveAsync(Action<string>? output = null, Action<string>? error = null) =>
         _powerShell.RunAsync(@"
-$patterns = 'McAfee','WildTangent','Booking','Spotify','Clipchamp'
+$patterns = @('McAfee','WildTangent','Booking','Spotify','Clipchamp')
+
 $packages = Get-AppxPackage -AllUsers |
     Where-Object {
         $name = $_.Name
         $patterns | Where-Object { $name -like ('*' + $_ + '*') }
-    }
+    } |
+    Sort-Object PackageFullName -Unique
 
 if (-not $packages) {
-    Write-Output 'Nie znaleziono znanych pakietów bloatware.'
+    Write-Output 'Nie znaleziono znanych pakietów AppX objętych profilem czyszczenia.'
     return
 }
 
+Write-Output ('Znaleziono pakietów AppX: ' + $packages.Count)
+
 $removed = 0
+
 foreach ($package in $packages) {
     Write-Output ('Usuwanie AppX: ' + $package.Name)
+
     try {
         Remove-AppxPackage -Package $package.PackageFullName -AllUsers -ErrorAction Stop
         $removed++
+        Write-Output ('Usunięto AppX — OK: ' + $package.Name)
     }
     catch {
         throw ('Nie udało się usunąć AppX ' + $package.Name + ': ' + $_.Exception.Message)
@@ -33,5 +40,5 @@ foreach ($package in $packages) {
 }
 
 Write-Output ('Usunięto pakietów AppX: ' + $removed)
-", output, error); 
+", output, error);
 }
