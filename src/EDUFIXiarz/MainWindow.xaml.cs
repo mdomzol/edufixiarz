@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     private readonly BloatwareService _bloatwareService;
     private readonly OfficeService _officeService;
     private readonly ApplicationService _applicationService;
+    private readonly SetupService _setupService;
     private bool _joinDomainRequested;
 
     private static readonly Dictionary<string, string> AppSelectionAliases = new(StringComparer.OrdinalIgnoreCase)
@@ -47,6 +48,7 @@ public partial class MainWindow : Window
         _bloatwareService = new BloatwareService(_powerShellService);
         _officeService = new OfficeService(_powerShellService);
         _applicationService = new ApplicationService(_processService);
+        _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
 
         HostnameBox.Text = Environment.MachineName;
         PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
@@ -170,62 +172,23 @@ public partial class MainWindow : Window
         }
 
         RunButton.IsEnabled = false;
-
         try
         {
-            if (HostnameCheck.IsChecked == true)
+            var options = new SetupOptions
             {
-                var hostname = HostnameBox.Text.Trim();
-                if (!HostnameValidator.IsValid(hostname))
-                    throw new InvalidOperationException(
-                        "Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
+                ChangeHostname = HostnameCheck.IsChecked == true,
+                Hostname = HostnameBox.Text.Trim(),
+                JoinDomain = _joinDomainRequested,
+                Domain = DomainBox.Text.Trim(),
+                DomainUser = DomainUserBox.Text.Trim(),
+                DomainPassword = DomainPasswordBox.SecurePassword,
+                RemoveBloatware = BloatwareCheck.IsChecked == true,
+                RemoveOffice = OfficeCheck.IsChecked == true,
+                InstallApplications = AppsCheck.IsChecked == true
+            };
 
-                Log("Zmiana hostname…");
-                await _powerShellService.RunAsync(
-                    $"Rename-Computer -NewName '{Escape(hostname)}' -Force",
-                    LogOutput,
-                    LogError);
-                Log("Zmiana hostname — OK.");
-            }
-
-            if (_joinDomainRequested)
-            {
-                var domain = DomainBox.Text.Trim();
-                var user = DomainUserBox.Text.Trim();
-
-                Log($"Dołączanie do domeny {domain}…");
-                await _domainService.JoinAsync(
-                    domain,
-                    user,
-                    DomainPasswordBox.SecurePassword,
-                    LogOutput,
-                    LogError);
-                DomainPasswordBox.Clear();
-                Log("Dołączenie do domeny — OK.");
-            }
-
-            if (BloatwareCheck.IsChecked == true)
-            {
-                Log("Usuwanie wybranych pakietów OEM…");
-                await _bloatwareService.RemoveAsync(LogOutput, LogError);
-                Log("Bloatware — etap AppX zakończony.");
-                Log("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
-            }
-
-            if (OfficeCheck.IsChecked == true)
-            {
-                Log("Czyszczenie Microsoft Office / Microsoft 365…");
-                await _officeService.RemoveAsync(LogOutput, LogError);
-                Log("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
-                Log("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
-            }
-
-            if (AppsCheck.IsChecked == true)
-            {
-                var selectedApps = GetSelectedApps();
-                Log($"Instalacja wybranych aplikacji ({selectedApps.Count})…");
-                await _applicationService.InstallAsync(selectedApps, LogOutput, LogError);
-            }
+            await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError);
+            DomainPasswordBox.Clear();
 
             Log("Zakończono wybrane operacje.");
             ShowPage(LogPage);
