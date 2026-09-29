@@ -1,0 +1,127 @@
+using System.Globalization;
+using System.Net;
+using System.Text;
+using EDUFIXiarz.Models;
+
+namespace EDUFIXiarz.Services;
+
+public sealed class StationSnapshotExportService
+{
+    public string ToCsv(StationSnapshot snapshot)
+    {
+        var h = snapshot.Hardware;
+        var builder = new StringBuilder();
+        builder.AppendLine("SnapshotFormatVersion;ApplicationVersion;SnapshotId;CapturedAt;Stage;Hostname;Sekcja;Pole;Wartość");
+
+        void Add(string section, string field, string value)
+        {
+            builder.AppendLine(string.Join(";",
+                Csv(snapshot.FormatVersion.ToString(CultureInfo.InvariantCulture)),
+                Csv(snapshot.ApplicationVersion),
+                Csv(snapshot.SnapshotId),
+                Csv(snapshot.CapturedAt.ToString("O", CultureInfo.InvariantCulture)),
+                Csv(snapshot.Stage),
+                Csv(h.Hostname),
+                Csv(section),
+                Csv(field),
+                Csv(value)));
+        }
+
+        Add("META", "Producent", h.Manufacturer);
+        Add("META", "Model", h.Model);
+        Add("META", "Numer seryjny", h.SerialNumber);
+        Add("SYSTEM", "System operacyjny", h.OperatingSystem);
+        Add("SYSTEM", "Wersja", h.OsVersion);
+        Add("SYSTEM", "Architektura", h.Architecture);
+        Add("SYSTEM", "Czas pracy", h.Uptime);
+        Add("CPU", "Procesor", h.Cpu);
+        Add("CPU", "Rdzenie", h.CpuCores.ToString(CultureInfo.InvariantCulture));
+        Add("CPU", "Wątki", h.CpuThreads.ToString(CultureInfo.InvariantCulture));
+        Add("RAM", "Pamięć", h.Ram);
+        Add("RAM", "Sloty", $"{h.RamUsedSlots}/{h.RamSlots}");
+        Add("PŁYTA", "Płyta główna", h.Motherboard);
+        Add("PŁYTA", "BIOS", h.Bios);
+        Add("BEZPIECZEŃSTWO", "TPM", h.Tpm);
+        Add("BEZPIECZEŃSTWO", "Secure Boot", h.SecureBoot);
+        Add("BEZPIECZEŃSTWO", "BitLocker", h.BitLocker);
+
+        foreach (var value in h.Gpus) Add("GPU", "Karta graficzna", value);
+        foreach (var value in h.PhysicalDisks) Add("DYSK_FIZYCZNY", "Dysk", value);
+        foreach (var value in h.LogicalDisks) Add("DYSK_LOGICZNY", "Dysk", value);
+        foreach (var value in h.NetworkAdapters) Add("SIEĆ", "Adapter", value);
+        foreach (var value in h.Antivirus) Add("BEZPIECZEŃSTWO", "Antywirus", value);
+
+        return builder.ToString();
+    }
+
+    public string ToHtml(StationSnapshot snapshot)
+    {
+        var h = snapshot.Hardware;
+        var list = (IEnumerable<string> values) => E(string.Join(" · ", values));
+
+        return $@"<!doctype html>
+<html lang=""pl""><head><meta charset=""utf-8"">
+<meta name=""viewport"" content=""width=device-width,initial-scale=1"">
+<title>EDUFIXiarz — odczyt stacji {E(h.Hostname)}</title>
+<style>
+body{{font-family:Segoe UI,Arial,sans-serif;background:#f4f5f6;color:#17191c;margin:0;padding:32px}}
+main{{max-width:1100px;margin:auto;background:#fff;padding:40px;border:1px solid #ddd}}
+h1{{margin:0;font-size:30px}}h2{{margin-top:32px;border-bottom:2px solid #f36b21;padding-bottom:8px}}
+.meta{{color:#666;margin:6px 0 24px}}table{{width:100%;border-collapse:collapse}}
+th,td{{text-align:left;padding:9px 10px;border-bottom:1px solid #ddd;vertical-align:top}}
+th{{background:#f7f7f7}}.grid{{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+.card{{border:1px solid #ddd;padding:16px;border-radius:7px}}.label{{font-size:11px;color:#777;text-transform:uppercase}}
+.value{{font-size:16px;font-weight:600;margin-top:5px}}footer{{margin-top:35px;color:#777;font-size:12px}}
+@media(max-width:700px){{body{{padding:12px}}main{{padding:20px}}.grid{{grid-template-columns:1fr}}}}
+</style></head><body><main>
+<h1>ODCZYT STACJI</h1>
+<div class=""meta"">EDUFIXiarz · EDU-FIX IT · {E(snapshot.Stage)} · format {snapshot.FormatVersion} · odczyt {snapshot.CapturedAt:yyyy-MM-dd HH:mm:ss}</div>
+
+<h2>Identyfikacja</h2>
+<div class=""grid"">
+<div class=""card""><div class=""label"">Hostname</div><div class=""value"">{E(h.Hostname)}</div></div>
+<div class=""card""><div class=""label"">Numer seryjny</div><div class=""value"">{E(h.SerialNumber)}</div></div>
+<div class=""card""><div class=""label"">Producent</div><div class=""value"">{E(h.Manufacturer)}</div></div>
+<div class=""card""><div class=""label"">Model</div><div class=""value"">{E(h.Model)}</div></div>
+</div>
+
+<h2>System</h2>
+<table><tr><th>Parametr</th><th>Wartość</th></tr>
+<tr><td>System operacyjny</td><td>{E(h.OperatingSystem)}</td></tr>
+<tr><td>Wersja</td><td>{E(h.OsVersion)}</td></tr>
+<tr><td>Architektura</td><td>{E(h.Architecture)}</td></tr>
+<tr><td>Czas pracy</td><td>{E(h.Uptime)}</td></tr>
+</table>
+
+<h2>Podzespoły</h2>
+<table><tr><th>Parametr</th><th>Wartość</th></tr>
+<tr><td>Procesor</td><td>{E(h.Cpu)}</td></tr>
+<tr><td>Rdzenie / wątki</td><td>{h.CpuCores} / {h.CpuThreads}</td></tr>
+<tr><td>Pamięć RAM</td><td>{E(h.Ram)} · sloty: {h.RamUsedSlots}/{h.RamSlots}</td></tr>
+<tr><td>Płyta główna</td><td>{E(h.Motherboard)}</td></tr>
+<tr><td>BIOS</td><td>{E(h.Bios)}</td></tr>
+</table>
+
+<h2>Grafika i magazyn</h2>
+<table><tr><th>Kategoria</th><th>Wartość</th></tr>
+<tr><td>GPU</td><td>{list(h.Gpus)}</td></tr>
+<tr><td>Dyski fizyczne</td><td>{list(h.PhysicalDisks)}</td></tr>
+<tr><td>Dyski logiczne</td><td>{list(h.LogicalDisks)}</td></tr>
+</table>
+
+<h2>Sieć i zabezpieczenia</h2>
+<table><tr><th>Kategoria</th><th>Wartość</th></tr>
+<tr><td>Adaptery sieciowe</td><td>{list(h.NetworkAdapters)}</td></tr>
+<tr><td>Antywirus</td><td>{list(h.Antivirus)}</td></tr>
+<tr><td>TPM</td><td>{E(h.Tpm)}</td></tr>
+<tr><td>Secure Boot</td><td>{E(h.SecureBoot)}</td></tr>
+<tr><td>BitLocker</td><td>{E(h.BitLocker)}</td></tr>
+</table>
+
+<footer>EDUFIXiarz · identyfikator odczytu: {E(snapshot.SnapshotId)}</footer>
+</main></body></html>";
+    }
+
+    private static string Csv(string value) => """ + (value ?? string.Empty).Replace(""", """") + """;
+    private static string E(string value) => WebUtility.HtmlEncode(value ?? string.Empty);
+}
