@@ -50,7 +50,7 @@ function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1
 
     public async Task<HardwareReport> GetReportAsync(Action<string>? error = null)
     {
-        var json = await _powerShell.RunAsync(null, error);
+        var json = await RunAsync(error);
         if (string.IsNullOrWhiteSpace(json))
             throw new InvalidOperationException("PowerShell nie zwrócił żadnych danych.");
 
