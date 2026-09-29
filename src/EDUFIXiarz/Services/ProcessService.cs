@@ -53,11 +53,11 @@ public sealed class ProcessService
         using var process = Process.Start(psi)
             ?? throw new InvalidOperationException($"Nie można uruchomić {fileName}.");
 
-        await process.StandardInput.WriteLineAsync(input);
-        process.StandardInput.Close();
-
         var outputTask = process.StandardOutput.ReadToEndAsync();
         var errorTask = process.StandardError.ReadToEndAsync();
+
+        await process.StandardInput.WriteLineAsync(input);
+        process.StandardInput.Close();
 
         await process.WaitForExitAsync();
 
