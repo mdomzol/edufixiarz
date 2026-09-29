@@ -18,6 +18,7 @@ $ramModules = @(Get-CimInstance Win32_PhysicalMemory)
 $ramArray = Get-CimInstance Win32_PhysicalMemoryArray | Select-Object -First 1
 $gpus = @(Get-CimInstance Win32_VideoController)
 $disks = @(Get-CimInstance Win32_DiskDrive)
+$logicalDisks = @(Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3")
 $nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true -and $_.NetEnabled -eq $true })
 $av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
 function Safe($value) { if ($null -eq $value -or [string]::IsNullOrWhiteSpace([string]$value)) { return '—' }; return [string]$value }
@@ -39,6 +40,33 @@ $antivirusNames = @($av | ForEach-Object { if ($_.displayName) { $_.displayName 
 if ($antivirusNames.Count -eq 0) {
     $antivirusNames = @('—')
 }
+$logicalDiskInfo = @($logicalDisks | ForEach-Object {
+    $size = SizeGB $_.Size
+    $free = SizeGB $_.FreeSpace
+    (Safe $_.DeviceID) + ' · ' + $free + ' wolne / ' + $size
+})
+$tpm = '—'
+try {
+    $tpmInfo = Get-Tpm -ErrorAction Stop
+    if ($tpmInfo.TpmPresent) {
+        $tpm = if ($tpmInfo.TpmReady) { 'Obecny · gotowy' } else { 'Obecny · wymaga uwagi' }
+    } else {
+        $tpm = 'Brak'
+    }
+} catch { $tpm = 'Niedostępne' }
+$secureBoot = 'Niedostępne'
+try {
+    $secureBoot = if (Confirm-SecureBootUEFI -ErrorAction Stop) { 'Włączony' } else { 'Wyłączony' }
+} catch { $secureBoot = 'Niedostępne' }
+$bitLocker = @()
+try {
+    $bitLocker = @(Get-BitLockerVolume -ErrorAction Stop | ForEach-Object {
+        $mount = Safe $_.MountPoint
+        $status = Safe $_.VolumeStatus
+        $protection = Safe $_.ProtectionStatus
+        $mount + ' · ' + $status + ' · ochrona: ' + $protection
+    })
+} catch { $bitLocker = @('Niedostępne') }
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
     SerialNumber = Safe $bios.SerialNumber
@@ -56,8 +84,12 @@ if ($antivirusNames.Count -eq 0) {
     RamUsedSlots = [int]$ramModules.Count
     Motherboard = Safe (($board.Manufacturer + ' ' + $board.Product).Trim())
     Bios = Safe (($bios.Manufacturer + ' ' + $bios.SMBIOSBIOSVersion).Trim())
+    Tpm = $tpm
+    SecureBoot = $secureBoot
+    BitLocker = $bitLocker -join ' | '
     Gpus = $gpuNames
     PhysicalDisks = $physicalDisks
+    LogicalDisks = $logicalDiskInfo
     NetworkAdapters = $networkAdapters
     Antivirus = $antivirusNames
 } | ConvertTo-Json -Depth 4 -Compress
