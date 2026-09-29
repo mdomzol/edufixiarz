@@ -26,6 +26,7 @@ public partial class MainWindow : Window
     private readonly AuditHistoryService _auditHistoryService;
     private readonly AuditComparisonService _auditComparisonService;
     private StationAudit? _currentAudit;
+    private StationPreparation? _currentPreparation;
     private StationAudit? _previousAudit;
     private HardwareReport? _currentReport;
     private bool _joinDomainRequested;
