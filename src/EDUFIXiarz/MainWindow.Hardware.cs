@@ -38,6 +38,53 @@ public partial class MainWindow : Window
         }
     }
 
+    private void ExportBeforeSnapshotButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_hardwareBeforePreparation is null)
+        {
+            MessageBox.Show("Brak zapisanego odczytu bazowego. Odczyt bazowy powstaje przy rozpoczęciu przygotowania stacji.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        ExportSnapshot(_hardwareBeforePreparation, "PRZED-PRZYGOTOWANIEM");
+    }
+
+    private void ExportSnapshot(HardwareReport report, string stage)
+    {
+        var snapshot = new StationSnapshot
+        {
+            Stage = stage,
+            Hardware = report,
+            CapturedAt = DateTime.Now
+        };
+
+        var dialog = new SaveFileDialog
+        {
+            FileName = $"EDUFIXiarz-Odczyt-{report.Hostname}-{stage}-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+            Filter = "Odczyt stacji — CSV + HTML (*.csv)|*.csv",
+            DefaultExt = "csv",
+            AddExtension = true,
+            OverwritePrompt = true
+        };
+
+        if (dialog.ShowDialog() != true) return;
+
+        try
+        {
+            var csvPath = dialog.FileName;
+            var htmlPath = Path.ChangeExtension(csvPath, ".html");
+            File.WriteAllText(csvPath, _stationSnapshotExportService.ToCsv(snapshot), new UTF8Encoding(true));
+            File.WriteAllText(htmlPath, _stationSnapshotExportService.ToHtml(snapshot), new UTF8Encoding(false));
+            Log($"Wyeksportowano niezależny odczyt {stage}: {csvPath} + {htmlPath}");
+            MessageBox.Show($"Zapisano odczyt {stage} jako CSV + HTML.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            LogException("EKSPORTU ODCZYTU STACJI", ex);
+            MessageBox.Show("Nie udało się zapisać odczytu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
     private void ExportStationSnapshotButton_Click(object sender, RoutedEventArgs e)
     {
         if (_currentReport is null)
