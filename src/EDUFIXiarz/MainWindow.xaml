@@ -68,6 +68,7 @@
                     <TextBlock Text="Identyfikacja komputera, podzespoły i parametry systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
                 <StackPanel x:Name="ReportStatusHeader" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="RefreshReportButton" x:FieldModifier="public" Content="↻  ODŚWIEŻ RAPORT" Padding="12,7" HorizontalAlignment="Right" Margin="0,0,0,8" Click="RefreshReportButton_Click"/>
                     <TextBlock Text="RAPORT SPRZĘTOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right"/>
                     <TextBlock x:Name="HardwareStatusText" Text="URUCHAMIANIE…" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,4,0,0"/>
                 </StackPanel>
