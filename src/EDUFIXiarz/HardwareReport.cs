@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace EDUFIXiarz;
 
 public sealed class HardwareReport
