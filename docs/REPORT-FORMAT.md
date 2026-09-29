@@ -1,73 +1,98 @@
-# EDUFIXiarz — format raportu stacji
+# Format raportów EDUFIXiarz
 
 ## Cel
 
-Raport EDUFIXiarza jest artefaktem przekazywanym później do EDUFIX Reader.
+EDUFIXiarz zbiera stan stacji i wykonuje przygotowanie stanowiska. Dane są zapisywane w formatach przeznaczonych do dalszego odczytu przez przyszły EDUFIX Reader.
 
-- CSV jest formatem źródłowym do odczytu maszynowego.
-- HTML jest prezentacją dla człowieka.
-- Reader nie powinien traktować HTML jako źródła danych.
-- Jedno uruchomienie eksportu tworzy jeden identyfikator ReportId.
+Źródłem danych dla Readera są CSV snapshotów. HTML jest prezentacją dla technika i nie powinien być parsowany jako źródło danych.
+
+## Snapshot stacji
+
+Każdy odczyt jest niezależnym artefaktem:
+
+- CSV — dane maszynowe,
+- HTML — czytelny raport,
+- SnapshotId — identyfikator konkretnego odczytu,
+- SessionId — identyfikator procesu/serii odczytów,
+- StationId — identyfikator urządzenia,
+- Stage — ODCZYT, PRZED-PRZYGOTOWANIEM albo PO-PRZYGOTOWANIU,
+- FormatVersion — wersja kontraktu danych,
+- ApplicationVersion — wersja EDUFIXiarz.
+
+Dwa snapshoty wykonane w ramach jednego przygotowania mają ten sam SessionId, ale różne SnapshotId.
+
+Snapshot może zostać wykonany bez żadnego wdrożenia. Dzięki temu technik może wyłącznie zebrać dane i przekazać CSV/HTML dalej.
+
+## Dane stacji
+
+Snapshot zawiera:
+
+- identyfikację urządzenia: StationId, UUID, hostname, użytkownik, domena/workgroup, producent, model, numer seryjny,
+- system: Windows, wersję/build, architekturę, uptime, aktywację i stan usługi Windows Update,
+- CPU i RAM,
+- płytę główną i BIOS,
+- GPU,
+- dyski fizyczne i logiczne,
+- adaptery sieciowe,
+- TPM, Secure Boot i BitLocker,
+- zarejestrowany antywirus,
+- listę zainstalowanych aplikacji.
+
+## Full Station Report
+
+Pełny raport procesu jest kontenerem:
+
+Raport → Snapshot BEFORE → Preparation → Snapshot AFTER → Audit
+
+StationReport nie jest źródłem pojedynczego stanu stacji. Snapshoty pozostają niezależne i mogą być używane bez raportu procesu.
 
 ## Wersjonowanie
 
-Pole ReportFormatVersion określa wersję kontraktu danych, a ApplicationVersion określa wersję programu EDUFIXiarz.
+SnapshotFormatVersion opisuje kontrakt CSV snapshotu. Zmiana struktury danych wymagająca zmian w Readerze powoduje zwiększenie wersji.
 
-Reader powinien:
-1. odczytać ReportFormatVersion,
-2. obsłużyć znane wersje,
-3. dla nieznanej wersji wyświetlić komunikat zamiast zgadywać znaczenie pól.
+ReportFormatVersion opisuje kontrakt pełnego raportu procesu.
 
-Aktualna wersja formatu: 2.
+ApplicationVersion opisuje wersję programu, który wygenerował dane. Nie należy używać jej do wyboru parsera.
 
 ## CSV
 
-CSV używa separatora ; i nagłówka:
+Separator: ;
 
-ReportFormatVersion;ApplicationVersion;ReportId;GeneratedAt;Hostname;Sekcja;Pole;Wartość;Status;Szczegóły
+Każda wartość jest poprawnie cytowana. CSV jest zapisywany z UTF-8 BOM, aby poprawnie otwierał się w Excelu i innych narzędziach Windows.
 
-Każda wartość jest poprawnie cytowana zgodnie z CSV. Plik jest zapisywany jako UTF-8 z BOM, aby poprawnie otwierał się również w typowych narzędziach Windows.
+Reader powinien modelować dane jako:
 
-### Sekcje
+Snapshot → sekcja → pole → wartość
 
-- META — identyfikacja producenta, modelu i numeru seryjnego.
-- SYSTEM — system operacyjny i parametry środowiska.
-- CPU — procesor, rdzenie i wątki.
-- RAM — pamięć i zajętość slotów.
-- PŁYTA — płyta główna i BIOS.
-- GPU — karty graficzne.
-- DYSK_FIZYCZNY — dyski fizyczne.
-- DYSK_LOGICZNY — woluminy logiczne.
-- SIEĆ — aktywne adaptery sieciowe.
-- BEZPIECZEŃSTWO — TPM, Secure Boot, BitLocker i antywirus.
-- PRZYGOTOWANIE — zaplanowane i wykonane etapy przygotowania stacji.
-- AUDYT — wynik kontroli stacji.
+Nie powinien zależeć od kolejności rekordów.
 
-## Zasada interpretacji
+## Magazyn lokalny
 
-Reader powinien budować wewnętrzny model raportu na podstawie:
+Automatyczne snapshoty z przygotowania są zapisywane w:
 
-Raport → sekcja → pole → wartość/status/szczegóły
+%ProgramData%\EDU-FIX\EDUFIXiarz\Snapshots\<StationId>\
 
-Nie należy polegać na numerze wiersza ani kolejności rekordów. Nowe pola mogą być dodawane w kolejnych wersjach bez zmiany znaczenia istniejących pól.
+W katalogu znajdują się pary CSV + HTML.
 
-## Dane wrażliwe
+## Przygotowanie i audyt
 
-Raport nie zapisuje hasła użytego do dołączenia stacji do domeny. Domain może być zapisane jako informacja konfiguracyjna, natomiast dane uwierzytelniające nie są częścią raportu.
+Preparation opisuje wykonane operacje i ich statusy.
 
-## HTML
+Audit opisuje stan kontrolny po operacjach.
 
-HTML jest generowany z tego samego modelu StationReport co CSV. Jego układ, CSS i kolejność sekcji mogą zmieniać się niezależnie od kontraktu CSV.
+Reader może na tej podstawie porównać BEFORE/AFTER, ale nie powinien zakładać, że każde przygotowanie posiada oba snapshoty.
 
-## Kierunek dla EDUFIX Reader
+## Przyszły EDUFIX Reader
 
-Reader powinien docelowo umożliwiać:
-- wskazanie katalogu z raportami,
-- wykrycie plików CSV,
-- walidację ReportFormatVersion,
-- grupowanie raportów po ReportId i stacji,
-- porównanie wielu stacji,
-- filtrowanie po sekcjach i statusach,
-- generowanie zbiorczego raportu dla technika lub placówki.
+Reader powinien:
 
-Nie należy uzależniać powyższych funkcji od struktury HTML.
+1. pozwalać wskazać katalog,
+2. wyszukiwać pliki CSV snapshotów,
+3. odrzucać nieobsługiwane wersje formatu,
+4. grupować snapshoty po StationId i SessionId,
+5. rozpoznawać etap po Stage,
+6. porównywać BEFORE/AFTER,
+7. umożliwiać filtrowanie wielu stacji,
+8. generować zbiorcze podsumowanie.
+
+Reader nie powinien wymagać uruchomionego EDUFIXiarz ani dostępu do jego lokalnego magazynu.
