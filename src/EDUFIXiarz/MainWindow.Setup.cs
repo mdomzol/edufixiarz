@@ -59,8 +59,15 @@ public partial class MainWindow : Window
                 Hardware = _hardwareBeforePreparation,
                 CapturedAt = DateTime.Now
             };
-            var beforePaths = _stationSnapshotStorageService.Save(beforeSnapshot, _stationSnapshotExportService);
-            Log($"Zapisano automatyczny snapshot bazowy: {beforePaths.CsvPath}");
+            try
+            {
+                var beforePaths = _stationSnapshotStorageService.Save(beforeSnapshot, _stationSnapshotExportService);
+                Log($"Zapisano automatyczny snapshot bazowy: {beforePaths.CsvPath}");
+            }
+            catch (Exception snapshotEx)
+            {
+                LogException("ZAPISU SNAPSHOTU BAZOWEGO", snapshotEx);
+            }
 
             var beforeSnapshot = new StationSnapshot
             {
@@ -88,8 +95,15 @@ public partial class MainWindow : Window
                 Hardware = afterPreparation,
                 CapturedAt = DateTime.Now
             };
-            var afterPaths = _stationSnapshotStorageService.Save(afterSnapshot, _stationSnapshotExportService);
-            Log($"Zapisano automatyczny snapshot końcowy: {afterPaths.CsvPath}");
+            try
+            {
+                var afterPaths = _stationSnapshotStorageService.Save(afterSnapshot, _stationSnapshotExportService);
+                Log($"Zapisano automatyczny snapshot końcowy: {afterPaths.CsvPath}");
+            }
+            catch (Exception snapshotEx)
+            {
+                LogException("ZAPISU SNAPSHOTU KOŃCOWEGO", snapshotEx);
+            }
             ExportBeforeSnapshotButton.IsEnabled = _hardwareBeforePreparation is not null;
             Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
