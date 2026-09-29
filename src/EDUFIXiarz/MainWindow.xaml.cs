@@ -45,6 +45,10 @@ public partial class MainWindow : Window
         SetupView.PreviewAppsButton.Click += PreviewAppsButton_Click;
         SetupView.ResetSelectionButton.Click += ResetSelectionButton_Click;
         SetupView.RunButton.Click += RunButton_Click;
+        SetupView.SchoolProfileButton.Click += SchoolProfileButton_Click;
+        SetupView.OfficeProfileButton.Click += OfficeProfileButton_Click;
+        SetupView.DeveloperProfileButton.Click += DeveloperProfileButton_Click;
+        SetupView.FullProfileButton.Click += FullProfileButton_Click;
 
         AppsView.SelectAllAppsButton.Click += SelectAllAppsButton_Click;
         AppsView.ClearAllAppsButton.Click += ClearAllAppsButton_Click;
