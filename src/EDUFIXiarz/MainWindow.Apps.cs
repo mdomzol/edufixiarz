@@ -108,7 +108,6 @@ private void SetAppSelection(params string[] aliases)
         }
 
         SetupView.AppsCheck.IsChecked = aliases.Length > 0;
-        UpdateSelectedAppsCount();
     }
 
 private void UpdateSelectedAppsCount()
