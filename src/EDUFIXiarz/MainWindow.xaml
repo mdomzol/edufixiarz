@@ -40,6 +40,9 @@
                     <Button x:Name="ReportMenuButton" Style="{StaticResource NavButton}" Click="ReportMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
                     </Button>
+                    <Button x:Name="AuditMenuButton" Style="{StaticResource NavButton}" Click="AuditMenuButton_Click">
+                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="AUDYT"/></StackPanel>
+                    </Button>
                     <Button x:Name="SetupMenuButton" Style="{StaticResource NavButton}" Click="SetupMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="PRZYGOTOWANIE"/></StackPanel>
                     </Button>
@@ -76,6 +79,10 @@
                     <TextBlock Text="RAPORT SPRZĘTOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right"/>
                     <TextBlock x:Name="HardwareStatusText" Text="URUCHAMIANIE…" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,4,0,0"/>
                 </StackPanel>
+                <StackPanel x:Name="AuditHeader" Visibility="Collapsed">
+                    <TextBlock Text="AUDYT STACJI" FontSize="34" FontWeight="SemiBold"/>
+                    <TextBlock Text="Weryfikacja bezpieczeństwa, usług i gotowości stanowiska." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
                 <StackPanel x:Name="SetupHeader" Visibility="Collapsed">
                     <TextBlock Text="PRZYGOTOWANIE STACJI" FontSize="34" FontWeight="SemiBold"/>
                     <TextBlock Text="Konfiguracja stanowiska, domeny, oprogramowania i czyszczenie systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
@@ -88,6 +95,7 @@
             </Grid>
 
             <views:ReportView x:Name="ReportView" Grid.Row="1"/>
+            <views:AuditView x:Name="AuditView" Grid.Row="1" Visibility="Collapsed"/>
             <views:SetupView x:Name="SetupView" Grid.Row="1" Visibility="Collapsed"/>
             <views:AppsView x:Name="AppsView" Grid.Row="1" Visibility="Collapsed"/>
             <views:LogView x:Name="LogView" Grid.Row="1" Visibility="Collapsed"/>
