@@ -5,29 +5,29 @@ namespace EDUFIXiarz;
 public partial class MainWindow : Window
 {
 
-private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportPage);
+private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportView);
 
-private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
+private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupView);
 
-private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
+private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsView);
 
-private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
+private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogView);
 
 private void DomainCheck_Click(object sender, RoutedEventArgs e)
     {
         _joinDomainRequested = !_joinDomainRequested;
-        DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
-        DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
-        DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
-        DomainCheck.Background = _joinDomainRequested
+        SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+        SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
+        SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+        SetupView.DomainCheck.Background = _joinDomainRequested
             ? FindResource("PanelAltBrush") as Brush
             : FindResource("InputBrush") as Brush;
-        DomainCheck.BorderBrush = _joinDomainRequested
+        SetupView.DomainCheck.BorderBrush = _joinDomainRequested
             ? FindResource("AccentBrush") as Brush
             : FindResource("BorderBrush") as Brush;
 
         if (!_joinDomainRequested)
-            DomainPasswordBox.Clear();
+            SetupView.DomainPasswordBox.Clear();
 
         Log(_joinDomainRequested
             ? "Włączono konfigurację dołączenia stacji do domeny AD."
@@ -36,10 +36,10 @@ private void DomainCheck_Click(object sender, RoutedEventArgs e)
 
 private void ShowPage(UIElement page)
     {
-        ReportPage.Visibility = Visibility.Collapsed;
-        SetupPage.Visibility = Visibility.Collapsed;
-        AppsPage.Visibility = Visibility.Collapsed;
-        LogPage.Visibility = Visibility.Collapsed;
+        ReportView.Visibility = Visibility.Collapsed;
+        SetupView.Visibility = Visibility.Collapsed;
+        AppsView.Visibility = Visibility.Collapsed;
+        LogView.Visibility = Visibility.Collapsed;
 
         ReportMenuButton.Tag = null;
         SetupMenuButton.Tag = null;
@@ -48,14 +48,14 @@ private void ShowPage(UIElement page)
 
         page.Visibility = Visibility.Visible;
 
-        var reportVisible = page == ReportPage;
+        var reportVisible = page == ReportView;
         ReportHeader.Visibility = reportVisible ? Visibility.Visible : Visibility.Collapsed;
         ReportStatusHeader.Visibility = reportVisible ? Visibility.Visible : Visibility.Collapsed;
-        SetupHeader.Visibility = page == SetupPage ? Visibility.Visible : Visibility.Collapsed;
+        SetupHeader.Visibility = page == SetupView ? Visibility.Visible : Visibility.Collapsed;
 
-        var active = page == ReportPage ? ReportMenuButton
-            : page == SetupPage ? SetupMenuButton
-            : page == AppsPage ? AppsMenuButton
+        var active = page == ReportView ? ReportMenuButton
+            : page == SetupView ? SetupMenuButton
+            : page == AppsView ? AppsMenuButton
             : LogMenuButton;
         active.Tag = "Active";
     }
