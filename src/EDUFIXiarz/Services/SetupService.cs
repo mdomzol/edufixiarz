@@ -40,7 +40,7 @@ public sealed class SetupService
         if (options.ChangeHostname)
         {
             output?.Invoke("Zmiana hostname…");
-            await RunPowerShellAsync(
+            await _powerShell.RunAsync(
                 $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
                 output,
                 error);
@@ -111,13 +111,6 @@ public sealed class SetupService
             throw new InvalidOperationException("Włączono instalację aplikacji, ale nie wybrano żadnego programu.");
     }
 
-    private Task<string> RunPowerShellAsync(
-        string command,
-        Action<string>? output,
-        Action<string>? error) =>
-        _powerShell.RunAsync(command, output, error);
-
-    private readonly PowerShellService _domainPowerShell;
 
     private static string Escape(string value) => value.Replace("'", "''");
 }
