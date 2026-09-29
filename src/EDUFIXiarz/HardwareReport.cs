@@ -3,6 +3,9 @@ namespace EDUFIXiarz;
 public sealed class HardwareReport
 {
     public string Hostname { get; set; } = "—";
+    public string StationId { get; set; } = "—";
+    public string UserName { get; set; } = "—";
+    public string Domain { get; set; } = "—";
     public string SerialNumber { get; set; } = "—";
     public string Manufacturer { get; set; } = "—";
     public string Model { get; set; } = "—";
@@ -10,6 +13,8 @@ public sealed class HardwareReport
     public string OperatingSystem { get; set; } = "—";
     public string OsVersion { get; set; } = "—";
     public string Uptime { get; set; } = "—";
+    public string Activation { get; set; } = "—";
+    public string WindowsUpdate { get; set; } = "—";
     public string Cpu { get; set; } = "—";
     public int CpuCores { get; set; }
     public int CpuThreads { get; set; }
@@ -26,4 +31,5 @@ public sealed class HardwareReport
     public List<string> LogicalDisks { get; set; } = [];
     public List<string> NetworkAdapters { get; set; } = [];
     public List<string> Antivirus { get; set; } = [];
+    public List<string> InstalledApplications { get; set; } = [];
 }
