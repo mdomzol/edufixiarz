@@ -1,4 +1,5 @@
 using System.Security.Principal;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -17,6 +18,8 @@ public partial class MainWindow : Window
     private readonly OfficeService _officeService;
     private readonly ApplicationService _applicationService;
     private readonly SetupService _setupService;
+    private readonly ReportExportService _reportExportService;
+    private HardwareReport? _currentReport;
     private bool _joinDomainRequested;
 
     private static readonly Dictionary<string, string> AppSelectionAliases = new(StringComparer.OrdinalIgnoreCase)
@@ -58,6 +61,7 @@ public partial class MainWindow : Window
         _officeService = new OfficeService(_powerShellService);
         _applicationService = new ApplicationService(_processService);
         _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
+        _reportExportService = new ReportExportService();
 
         SetupView.HostnameBox.Text = Environment.MachineName;
         UpdateSelectedAppsCount();
@@ -83,9 +87,21 @@ public partial class MainWindow : Window
 
     private void Log(string message)
     {
-        _log.AppendLine($"[{DateTime.Now:HH:mm:ss}] {message}");
+        var line = $"[{DateTime.Now:HH:mm:ss}] {message}";
+        _log.AppendLine(line);
         LogView.LogBox.Text = _log.ToString();
         LogView.LogBox.ScrollToEnd();
+
+        try
+        {
+            var directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "EDU-FIX", "EDUFIXiarz", "Logs");
+            Directory.CreateDirectory(directory);
+            File.AppendAllText(Path.Combine(directory, $"{DateTime.Now:yyyy-MM-dd}.log"), line + Environment.NewLine, Encoding.UTF8);
+        }
+        catch
+        {
+            // Logowanie do pliku nie może przerwać operacji administracyjnej.
+        }
     }
 
     private void LogOutput(string output)
