@@ -21,7 +21,7 @@
                         </Grid>
                     </Border>
                     <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14">
-                        <TextBox x:Name="LogBox" x:FieldModifier="public" x:FieldModifier="public" IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" FontFamily="Cascadia Mono" FontSize="13" BorderThickness="0" Background="Transparent" Foreground="{StaticResource TextBrush}" Padding="4"/>
+                        <TextBox x:Name="LogBox" x:FieldModifier="public" IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" FontFamily="Cascadia Mono" FontSize="13" BorderThickness="0" Background="Transparent" Foreground="{StaticResource TextBrush}" Padding="4"/>
                     </Border>
                 </Grid>
             </Grid>
