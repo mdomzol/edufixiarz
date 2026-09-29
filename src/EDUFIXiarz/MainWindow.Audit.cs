@@ -10,10 +10,12 @@ public partial class MainWindow : Window
     {
         AuditView.RunAuditButton.IsEnabled = false;
         AuditView.ExportProtocolButton.IsEnabled = false;
+        AuditView.LoadLastAuditButton.IsEnabled = false;
         try
         {
             var audit = await _auditService.RunAsync(LogOutput);
             _currentAudit = audit;
+            _auditHistoryService.Save(audit);
             AuditView.AuditGrid.ItemsSource = audit.Items;
             AuditView.OkCountText.Text = audit.OkCount.ToString();
             AuditView.WarningCountText.Text = audit.WarningCount.ToString();
@@ -29,8 +31,28 @@ public partial class MainWindow : Window
         finally
         {
             AuditView.RunAuditButton.IsEnabled = true;
+            AuditView.LoadLastAuditButton.IsEnabled = true;
             AuditView.ExportProtocolButton.IsEnabled = _currentAudit is not null && _currentReport is not null;
         }
+    }
+
+    private void LoadLastAuditButton_Click(object sender, RoutedEventArgs e)
+    {
+        var audit = _auditHistoryService.Load();
+        if (audit is null)
+        {
+            MessageBox.Show("Brak zapisanego audytu tej stacji.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        _currentAudit = audit;
+        AuditView.AuditGrid.ItemsSource = audit.Items;
+        AuditView.OkCountText.Text = audit.OkCount.ToString();
+        AuditView.WarningCountText.Text = audit.WarningCount.ToString();
+        AuditView.ErrorCountText.Text = audit.ErrorCount.ToString();
+        AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
+        AuditView.ExportProtocolButton.IsEnabled = _currentReport is not null;
+        Log($"Wczytano ostatni zapisany audyt: {audit.Hostname}, {audit.CheckedAt:yyyy-MM-dd HH:mm:ss}.");
     }
 
     private void ExportProtocolButton_Click(object sender, RoutedEventArgs e)
