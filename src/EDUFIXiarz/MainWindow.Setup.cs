@@ -62,6 +62,17 @@ public partial class MainWindow : Window
             var beforePaths = _stationSnapshotStorageService.Save(beforeSnapshot, _stationSnapshotExportService);
             Log($"Zapisano automatyczny snapshot bazowy: {beforePaths.CsvPath}");
 
+            var beforeSnapshot = new StationSnapshot
+            {
+                Stage = StationSnapshot.Stages.BeforePreparation,
+                SessionId = _sessionId,
+                StationId = _hardwareBeforePreparation.StationId,
+                Hardware = _hardwareBeforePreparation,
+                CapturedAt = DateTime.Now
+            };
+            var beforePaths = _stationSnapshotStorageService.Save(beforeSnapshot, _stationSnapshotExportService);
+            Log($"Zapisano automatyczny snapshot bazowy: {beforePaths.CsvPath}");
+
             OperationProgressBar.Value = 0;
             OperationProgressText.Text = "PRZYGOTOWANIE W TOKU…";
             _currentPreparation = await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError, UpdateOperationProgress);
