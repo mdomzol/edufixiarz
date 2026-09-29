@@ -82,6 +82,15 @@ public sealed class SetupService
 
     private static void ValidateOptions(SetupOptions options, IReadOnlyCollection<AppDefinition> applications)
     {
+        if (!options.ChangeHostname &&
+            !options.JoinDomain &&
+            !options.RemoveBloatware &&
+            !options.RemoveOffice &&
+            !options.InstallApplications)
+        {
+            throw new InvalidOperationException("Nie wybrano żadnej operacji do wykonania.");
+        }
+
         if (options.ChangeHostname && !HostnameValidator.IsValid(options.Hostname))
             throw new InvalidOperationException(
                 "Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
