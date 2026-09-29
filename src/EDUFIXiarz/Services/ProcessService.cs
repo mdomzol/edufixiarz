@@ -9,7 +9,7 @@ public sealed class ProcessService
         IEnumerable<string> arguments,
         Action<string>? output = null,
         Action<string>? error = null) =>
-        RunCoreAsync(fileName, arguments, output, error, []);
+        RunCoreAsync(fileName, arguments, output, error, new HashSet<int>());
 
     public Task<string> RunAllowingExitCodesAsync(
         string fileName,
