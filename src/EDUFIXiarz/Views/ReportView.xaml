@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,24">
+                <StackPanel Margin="0,0,0,4">
                     <TextBlock Text="INFORMACJE O STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,10,0,24" Padding="20,18">
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Margin="0,10,0,24" Padding="22,20">
                         <Grid>
                             <Grid.ColumnDefinitions><ColumnDefinition Width="1.2*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="0,0,30,0">
@@ -29,9 +29,9 @@
                         </Grid>
                     </Border>
 
-                    <Grid Margin="0,0,0,24">
+                    <Grid Margin="0,0,0,20">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,12,0" Padding="20,18">
+                        <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,14,0" Padding="20,18">
                             <StackPanel>
                                 <TextBlock Text="SYSTEM WINDOWS" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                                 <Grid Margin="0,14,0,0">
@@ -60,7 +60,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="12,0,0,0" Padding="20,18">
+                        <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="14,0,0,0" Padding="20,18">
                             <StackPanel>
                                 <TextBlock Text="IDENTYFIKACJA SPRZĘTU" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                                 <Grid Margin="0,14,0,0">
