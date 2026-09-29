@@ -94,6 +94,19 @@ public partial class MainWindow : Window
         }
     }
 
+    private void HistoryButton_Click(object sender, RoutedEventArgs e)
+    {
+        var history = _auditHistoryService.LoadHistory();
+        if (history.Count == 0)
+        {
+            MessageBox.Show("Brak zapisanej historii audytów.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        new Views.AuditHistoryWindow(history) { Owner = this }.ShowDialog();
+        Log($"Otwarto historię audytów: {history.Count} zapisanych kontroli.");
+    }
+
     private void CompareAuditButton_Click(object sender, RoutedEventArgs e)
     {
         if (_currentAudit is null || _previousAudit is null)
