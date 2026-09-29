@@ -31,6 +31,12 @@ public sealed class SetupService
         Action<string>? output = null,
         Action<string>? error = null)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(applications);
+
+        var selectedApplications = applications.ToList();
+        ValidateOptions(options, selectedApplications);
+
         if (options.ChangeHostname)
         {
             if (!HostnameValidator.IsValid(options.Hostname))
@@ -68,12 +74,29 @@ public sealed class SetupService
             output?.Invoke("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
         }
 
-        if (options.InstallApplications)
+        if (options.InstallApplications && selectedApplications.Count > 0)
         {
-            var selected = applications.ToList();
-            output?.Invoke($"Instalacja wybranych aplikacji ({selected.Count})…");
-            await _applications.InstallAsync(selected, output, error);
+            output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
+            await _applications.InstallAsync(selectedApplications, output, error);
         }
+    }
+
+    private static void ValidateOptions(SetupOptions options, IReadOnlyCollection<AppDefinition> applications)
+    {
+        if (options.JoinDomain)
+        {
+            if (string.IsNullOrWhiteSpace(options.Domain))
+                throw new InvalidOperationException("Podaj nazwę domeny AD.");
+
+            if (string.IsNullOrWhiteSpace(options.DomainUser))
+                throw new InvalidOperationException("Podaj konto używane do dołączenia stacji do domeny AD.");
+
+            if (options.DomainPassword is null || options.DomainPassword.Length == 0)
+                throw new InvalidOperationException("Podaj hasło do konta domenowego.");
+        }
+
+        if (options.InstallApplications && applications.Count == 0)
+            throw new InvalidOperationException("Włączono instalację aplikacji, ale nie wybrano żadnego programu.");
     }
 
     private static string Escape(string value) => value.Replace("'", "''");
