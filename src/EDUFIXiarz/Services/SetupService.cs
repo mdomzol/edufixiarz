@@ -29,13 +29,26 @@ public sealed class SetupService
         SetupOptions options,
         IEnumerable<AppDefinition> applications,
         Action<string>? output = null,
-        Action<string>? error = null)
+        Action<string>? error = null,
+        Action<int, int, string>? progress = null)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(applications);
 
         var selectedApplications = applications.ToList();
         ValidateOptions(options, selectedApplications);
+
+        var totalStages = (options.ChangeHostname ? 1 : 0)
+            + (options.RemoveBloatware ? 1 : 0)
+            + (options.RemoveOffice ? 1 : 0)
+            + (options.InstallApplications && selectedApplications.Count > 0 ? 1 : 0)
+            + (options.JoinDomain ? 1 : 0);
+        var completedStages = 0;
+        void ReportProgress(string label)
+        {
+            completedStages++;
+            progress?.Invoke(completedStages, totalStages, label);
+        }
 
         if (options.ChangeHostname)
         {
@@ -45,6 +58,7 @@ public sealed class SetupService
                 output,
                 error);
             output?.Invoke("Zmiana hostname — OK.");
+            ReportProgress("Zmiana nazwy stacji");
         }
 
         if (options.RemoveBloatware)
@@ -53,6 +67,7 @@ public sealed class SetupService
             await _bloatware.RemoveAsync(output, error);
             output?.Invoke("Bloatware — etap AppX zakończony.");
             output?.Invoke("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
+            ReportProgress("Czyszczenie pakietów AppX");
         }
 
         if (options.RemoveOffice)
@@ -61,12 +76,14 @@ public sealed class SetupService
             await _office.RemoveAsync(output, error);
             output?.Invoke("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
             output?.Invoke("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
+            ReportProgress("Czyszczenie Office / Microsoft 365");
         }
 
         if (options.InstallApplications && selectedApplications.Count > 0)
         {
             output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
             await _applications.InstallAsync(selectedApplications, output, error);
+            ReportProgress($"Instalacja aplikacji ({selectedApplications.Count})");
         }
 
         if (options.JoinDomain)
@@ -75,6 +92,7 @@ public sealed class SetupService
             await _domain.JoinAsync(options.Domain, options.DomainUser, options.DomainPassword!, output, error);
             output?.Invoke("Dołączenie do domeny — OK.");
             output?.Invoke("Dołączenie do domeny może wymagać ponownego uruchomienia stacji.");
+            ReportProgress("Dołączenie do domeny AD");
         }
 
         output?.Invoke("Wszystkie zaplanowane etapy zostały wykonane. Sprawdź dziennik pod kątem ostrzeżeń.");
