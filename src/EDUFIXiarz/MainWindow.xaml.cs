@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using EDUFIXiarz.Models;
 using EDUFIXiarz.Services;
 
 namespace EDUFIXiarz;
