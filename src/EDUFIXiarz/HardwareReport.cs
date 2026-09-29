@@ -4,6 +4,7 @@ public sealed class HardwareReport
 {
     public string Hostname { get; set; } = "—";
     public string StationId { get; set; } = "—";
+    public string DeviceUuid { get; set; } = "—";
     public string UserName { get; set; } = "—";
     public string Domain { get; set; } = "—";
     public string SerialNumber { get; set; } = "—";
