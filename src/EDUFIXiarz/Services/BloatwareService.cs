@@ -25,6 +25,7 @@ if (-not $packages) {
 Write-Output ('Znaleziono pakietów AppX: ' + $packages.Count)
 
 $removed = 0
+$failed = 0
 
 foreach ($package in $packages) {
     Write-Output ('Usuwanie AppX: ' + $package.Name)
@@ -35,10 +36,13 @@ foreach ($package in $packages) {
         Write-Output ('Usunięto AppX — OK: ' + $package.Name)
     }
     catch {
-        throw ('Nie udało się usunąć AppX ' + $package.Name + ': ' + $_.Exception.Message)
+        $failed++
+        Write-Output ('OSTRZEŻENIE: Nie udało się usunąć AppX ' + $package.Name + ': ' + $_.Exception.Message)
     }
 }
 
-Write-Output ('Usunięto pakietów AppX: ' + $removed)
-", output, error);
+Write-Output ('Usunięto pakietów AppX: ' + $removed + ' · nieudane: ' + $failed)
+if ($failed -gt 0) {
+    Write-Output 'Czyszczenie AppX zakończono z ostrzeżeniami — pozostałe pakiety zostały przetworzone.'
 }
+", output, error);
