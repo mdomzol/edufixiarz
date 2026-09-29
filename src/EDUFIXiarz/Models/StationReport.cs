@@ -2,14 +2,14 @@ namespace EDUFIXiarz.Models;
 
 public sealed class StationReport
 {
-    public const int CurrentFormatVersion = 2;
+    public const int CurrentFormatVersion = 3;
 
     public string ReportId { get; init; } = Guid.NewGuid().ToString("N");
     public int FormatVersion { get; init; } = CurrentFormatVersion;
-    public string ApplicationVersion { get; init; } = "1.3.0";
+    public string ApplicationVersion { get; init; } = AppInfo.Version;
     public DateTime GeneratedAt { get; init; } = DateTime.Now;
-    public HardwareReport Hardware { get; init; } = new();
-    public HardwareReport? HardwareBeforePreparation { get; init; }
+    public StationSnapshot? BeforeSnapshot { get; init; }
     public StationPreparation? Preparation { get; init; }
+    public StationSnapshot? AfterSnapshot { get; init; }
     public StationAudit? Audit { get; init; }
 }
