@@ -49,14 +49,18 @@ public partial class MainWindow : Window
         ExportSnapshot(_hardwareBeforePreparation, "PRZED-PRZYGOTOWANIEM");
     }
 
+    private StationSnapshot CreateSnapshot(HardwareReport report, string stage) => new()
+    {
+        Stage = stage,
+        Hardware = report,
+        StationId = report.StationId,
+        SessionId = _sessionId,
+        CapturedAt = DateTime.Now
+    };
+
     private void ExportSnapshot(HardwareReport report, string stage)
     {
-        var snapshot = new StationSnapshot
-        {
-            Stage = stage,
-            Hardware = report,
-            CapturedAt = DateTime.Now
-        };
+        var snapshot = CreateSnapshot(report, stage);
 
         var dialog = new SaveFileDialog
         {
@@ -99,12 +103,7 @@ public partial class MainWindow : Window
                 ? "PO-PRZYGOTOWANIU"
                 : "ODCZYT";
 
-        var snapshot = new StationSnapshot
-        {
-            Stage = stage,
-            Hardware = _currentReport,
-            CapturedAt = DateTime.Now
-        };
+        var snapshot = CreateSnapshot(_currentReport, stage);
 
         var dialog = new SaveFileDialog
         {
@@ -191,11 +190,11 @@ public partial class MainWindow : Window
     {
         ReportId = Guid.NewGuid().ToString("N"),
         FormatVersion = StationReport.CurrentFormatVersion,
-        ApplicationVersion = "1.3.0",
+        ApplicationVersion = Models.AppInfo.Version,
         GeneratedAt = DateTime.Now,
-        Hardware = _currentReport!,
-        HardwareBeforePreparation = _hardwareBeforePreparation,
+        BeforeSnapshot = _hardwareBeforePreparation is null ? null : CreateSnapshot(_hardwareBeforePreparation, StationSnapshot.Stages.BeforePreparation),
         Preparation = _currentPreparation,
+        AfterSnapshot = _currentReport is null ? null : CreateSnapshot(_currentReport, _currentPreparation is null ? StationSnapshot.Stages.Read : StationSnapshot.Stages.AfterPreparation),
         Audit = _currentAudit
     };
 
