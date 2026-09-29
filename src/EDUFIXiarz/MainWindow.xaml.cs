@@ -22,6 +22,7 @@ public partial class MainWindow : Window
     private readonly FullStationReportExportService _fullStationReportExportService;
     private readonly StationSnapshotExportService _stationSnapshotExportService;
     private readonly StationSnapshotStorageService _stationSnapshotStorageService;
+    private readonly SnapshotComparisonService _snapshotComparisonService;
     private string _sessionId = Guid.NewGuid().ToString("N");
     private readonly ProfileService _profileService;
     private readonly StationAuditService _auditService;
@@ -88,6 +89,7 @@ public partial class MainWindow : Window
         _fullStationReportExportService = new FullStationReportExportService();
         _stationSnapshotExportService = new StationSnapshotExportService();
         _stationSnapshotStorageService = new StationSnapshotStorageService();
+        _snapshotComparisonService = new SnapshotComparisonService();
         _profileService = new ProfileService();
         _auditService = new StationAuditService(_powerShellService);
         _protocolExportService = new ProtocolExportService();
