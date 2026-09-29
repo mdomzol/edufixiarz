@@ -1,39 +1,79 @@
 # EDUFIXiarz
 
-EDUFIXiarz is a Windows workstation preparation tool for EDU-FIX IT.
+EDUFIXiarz is a native Windows workstation preparation and inventory tool for EDU-FIX IT. It automates repeatable setup tasks and produces a hardware/security report that can be exported for documentation.
 
-## Initial build
+## Funkcje
 
-The first build provides a native Windows desktop interface for:
+### Raport stacji
+- hostname, producent, model i numer seryjny,
+- Windows, architektura, wersja/build i czas pracy,
+- CPU, rdzenie/wątki i RAM,
+- płyta główna i BIOS,
+- GPU,
+- dyski fizyczne oraz wolne miejsce na dyskach logicznych,
+- aktywne interfejsy sieciowe i adresy MAC,
+- TPM, Secure Boot i BitLocker,
+- wykryte produkty antywirusowe,
+- eksport aktualnego raportu do JSON lub CSV.
 
-- changing the workstation hostname,
-- joining an Active Directory domain,
-- removing selected OEM/bloatware packages,
-- installing a predefined application set,
-- viewing execution status and logs.
+Raport jest odświeżany przy starcie oraz ręcznie przyciskiem **ODŚWIEŻ RAPORT**.
 
-Administrative actions require elevation. Domain credentials are never stored by the application.
+### Przygotowanie stacji
+- zmiana hostname,
+- dołączenie do domeny Active Directory,
+- usuwanie wybranych pakietów AppX/OEM,
+- czyszczenie wykrytych składników Office / Microsoft 365,
+- instalacja aplikacji przez WinGet,
+- walidacja konfiguracji przed startem,
+- blokada zmian UI podczas wykonywania operacji,
+- pasek postępu etapów,
+- końcowe potwierdzenie wykonania.
 
-## Requirements
+Dołączanie do domeny jest wykonywane jako ostatni etap. Hasło domenowe jest przekazywane tylko na czas operacji i nie jest zapisywane.
 
-- Windows 10/11
-- .NET 8 Desktop Runtime / SDK for development
-- Administrator privileges for system changes
+### Profile stanowisk
+Dostępne są profile:
+- **Szkoła** — hostname, czyszczenie AppX i standardowy zestaw aplikacji,
+- **Biuro** — jak wyżej + czyszczenie Office / Microsoft 365,
+- **Developer** — hostname, czyszczenie AppX i narzędzia developerskie,
+- **Pełne przygotowanie** — wszystkie bezpieczne etapy oraz pełny katalog aplikacji.
+
+Profile można również zapisywać i wczytywać jako pliki JSON. Pliki profilu nie zawierają haseł.
+
+### Dziennik
+Dziennik operacji jest dostępny w aplikacji i dodatkowo zapisywany lokalnie w:
+
+`C:\ProgramData\EDU-FIX\EDUFIXiarz\Logs\YYYY-MM-DD.log`
+
+Błędy zapisu dziennika nie przerywają operacji administracyjnych.
+
+## Wymagania
+
+- Windows 10/11,
+- .NET 8 Desktop Runtime do uruchomienia opublikowanej aplikacji,
+- .NET 8 SDK do developmentu,
+- uprawnienia administratora do wykonywania zmian systemowych,
+- WinGet dla instalacji aplikacji i części operacji Office.
 
 ## Build
 
-Open `EDUFIXiarz.sln` in Visual Studio 2022 or run:
+Otwórz `EDUFIXiarz.sln` w Visual Studio 2022 lub uruchom:
 
 ```powershell
 dotnet build EDUFIXiarz.sln -c Release
 ```
 
-The GitHub Actions workflow also builds the Windows application automatically.
+GitHub Actions wykonuje automatyczny build rozwiązania.
 
+## Bezpieczeństwo
 
-### Standardowy zestaw aplikacji
+Aplikacja wymaga elevacji administratora przez manifest. Operacje systemowe są wykonywane lokalnie przez PowerShell/CIM lub narzędzia Windows.
 
-EDUFIXiarz przygotowuje stację z następującym zestawem:
+EDUFIXiarz nie zapisuje haseł domenowych. Profil JSON przechowuje wyłącznie konfigurację stanowiska i identyfikatory wybranych aplikacji.
+
+Opcja **Wyczyść Microsoft Office / 365** jest domyślnie wyłączona. Po jej użyciu zalecany jest restart przed wdrożeniem właściwego pakietu Office jednostki.
+
+## Standardowy zestaw aplikacji
 
 - Adobe Acrobat Reader (64-bit)
 - Everything
@@ -43,11 +83,10 @@ EDUFIXiarz przygotowuje stację z następującym zestawem:
 - Visual Studio Code
 - VLC
 - Notepad++
+- LibreOffice
+- PuTTY
+- GIMP
 
-### Czyszczenie Office
+## Wersja
 
-Opcja **„Wyczyść Microsoft Office / 365”** jest celowo wyłączona domyślnie. Po zaznaczeniu EDUFIXiarz usuwa wykryty pakiet Microsoft 365 Apps przez WinGet oraz pakiet Microsoft 365 z Microsoft Store/AppX, jeśli jest obecny.
-
-Po operacji należy wykonać restart przed wdrożeniem właściwego pakietu Office zakupionego przez jednostkę.
-
-Docelowo funkcję warto rozszerzyć o Office Deployment Tool (ODT), aby obsłużyć również pełne czyszczenie instalacji Click-to-Run i starszych instalacji MSI.
+Aktualna wersja: **1.1.0**
