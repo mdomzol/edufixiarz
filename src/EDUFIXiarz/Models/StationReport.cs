@@ -10,6 +10,7 @@ public sealed class StationReport
     public DateTime GeneratedAt { get; init; } = DateTime.Now;
     public StationSnapshot? BeforeSnapshot { get; init; }
     public StationPreparation? Preparation { get; init; }
+    public SnapshotComparison? Comparison { get; init; }
     public StationSnapshot? AfterSnapshot { get; init; }
     public StationAudit? Audit { get; init; }
 }
