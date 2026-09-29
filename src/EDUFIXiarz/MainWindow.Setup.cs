@@ -17,27 +17,27 @@ private async void RunButton_Click(object sender, RoutedEventArgs e)
             return;
         }
 
-        RunButton.IsEnabled = false;
+        SetupView.RunButton.IsEnabled = false;
         try
         {
             var options = new SetupOptions
             {
-                ChangeHostname = HostnameCheck.IsChecked == true,
-                Hostname = HostnameBox.Text.Trim(),
+                ChangeHostname = SetupView.HostnameCheck.IsChecked == true,
+                Hostname = SetupView.HostnameBox.Text.Trim(),
                 JoinDomain = _joinDomainRequested,
-                Domain = DomainBox.Text.Trim(),
-                DomainUser = DomainUserBox.Text.Trim(),
-                DomainPassword = DomainPasswordBox.SecurePassword,
-                RemoveBloatware = BloatwareCheck.IsChecked == true,
-                RemoveOffice = OfficeCheck.IsChecked == true,
-                InstallApplications = AppsCheck.IsChecked == true
+                Domain = SetupView.DomainBox.Text.Trim(),
+                DomainUser = SetupView.DomainUserBox.Text.Trim(),
+                DomainPassword = SetupView.DomainPasswordBox.SecurePassword,
+                RemoveBloatware = SetupView.BloatwareCheck.IsChecked == true,
+                RemoveOffice = SetupView.OfficeCheck.IsChecked == true,
+                InstallApplications = SetupView.AppsCheck.IsChecked == true
             };
 
             await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError);
-            DomainPasswordBox.Clear();
+            SetupView.DomainPasswordBox.Clear();
 
             Log("Zakończono wybrane operacje.");
-            ShowPage(LogPage);
+            ShowPage(LogView);
             MessageBox.Show(
                 "Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
                 "EDUFIXiarz",
@@ -47,12 +47,12 @@ private async void RunButton_Click(object sender, RoutedEventArgs e)
         catch (Exception ex)
         {
             Log("BŁĄD: " + ex.Message);
-            ShowPage(LogPage);
+            ShowPage(LogView);
             MessageBox.Show(ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
-            RunButton.IsEnabled = true;
+            SetupView.RunButton.IsEnabled = true;
         }
     }
 
