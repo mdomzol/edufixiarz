@@ -26,6 +26,25 @@ public partial class MainWindow : Window
             DataContext = report;
             HardwareStatusText.Text = $"ODCZYTANO · {DateTime.Now:HH:mm:ss}";
             Log("Raport sprzętowy został odczytany.");
+
+            var readSnapshot = new StationSnapshot
+            {
+                Stage = StationSnapshot.Stages.Read,
+                SessionId = Guid.NewGuid().ToString("N"),
+                StationId = report.StationId,
+                Hardware = report,
+                CapturedAt = DateTime.Now
+            };
+
+            try
+            {
+                var paths = _stationSnapshotStorageService.Save(readSnapshot, _stationSnapshotExportService);
+                Log($"Zapisano automatyczny snapshot ODCZYT: {paths.CsvPath}");
+            }
+            catch (Exception snapshotEx)
+            {
+                LogException("ZAPISU SNAPSHOTU ODCZYTU", snapshotEx);
+            }
         }
         catch (Exception ex)
         {
@@ -49,12 +68,12 @@ public partial class MainWindow : Window
         ExportSnapshot(_hardwareBeforePreparation, "PRZED-PRZYGOTOWANIEM");
     }
 
-    private StationSnapshot CreateSnapshot(HardwareReport report, string stage) => new()
+    private StationSnapshot CreateSnapshot(HardwareReport report, string stage, string? sessionId = null) => new()
     {
         Stage = stage,
         Hardware = report,
         StationId = report.StationId,
-        SessionId = _sessionId,
+        SessionId = sessionId ?? _sessionId,
         CapturedAt = DateTime.Now
     };
 
