@@ -31,7 +31,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             HardwareStatusText.Text = "NIE UDAŁO SIĘ ODCZYTAĆ RAPORTU";
-            Log("BŁĄD RAPORTU SPRZĘTOWEGO: " + ex.Message);
+            LogException("RAPORTU SPRZĘTOWEGO", ex);
         }
         finally
         {
@@ -82,7 +82,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Log("BŁĄD EKSPORTU RAPORTU: " + ex.Message);
+            LogException("EKSPORTU RAPORTU", ex);
             MessageBox.Show("Nie udało się zapisać raportu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
