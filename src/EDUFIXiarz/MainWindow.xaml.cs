@@ -1,10 +1,7 @@
 using System.Security.Principal;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using EDUFIXiarz.Helpers;
-using EDUFIXiarz.Models;
 using EDUFIXiarz.Services;
 
 namespace EDUFIXiarz;
