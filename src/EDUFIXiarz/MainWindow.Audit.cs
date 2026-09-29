@@ -93,8 +93,6 @@ public partial class MainWindow : Window
             MessageBox.Show("Nie udało się zapisać protokołu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-}
-
 
     private void CompareAuditButton_Click(object sender, RoutedEventArgs e)
     {
@@ -115,3 +113,4 @@ public partial class MainWindow : Window
         MessageBox.Show(message, "EDUFIXiarz — porównanie audytów", MessageBoxButton.OK, MessageBoxImage.Information);
         Log($"Porównano audyty: poprawa={comparison.ImprovedCount}, pogorszenie={comparison.WorsenedCount}, bez zmian={comparison.UnchangedCount}.");
     }
+}
