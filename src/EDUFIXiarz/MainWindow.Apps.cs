@@ -24,17 +24,17 @@ private List<AppDefinition> GetSelectedApps()
 
 private CheckBox? GetAppCheckBox(string alias) => alias switch
     {
-        "Adobe" => AdobeReaderCheck,
-        "Everything" => EverythingCheck,
-        "Chrome" => ChromeCheck,
-        "Firefox" => FirefoxCheck,
-        "7zip" => SevenZipCheck,
-        "VSCode" => VscodeCheck,
-        "VLC" => VlcCheck,
-        "Notepad++" => NotepadPlusPlusCheck,
-        "LibreOffice" => LibreOfficeCheck,
-        "PuTTY" => PuttyCheck,
-        "GIMP" => GimpCheck,
+        "Adobe" => AppsView.AdobeReaderCheck,
+        "Everything" => AppsView.EverythingCheck,
+        "Chrome" => AppsView.ChromeCheck,
+        "Firefox" => AppsView.FirefoxCheck,
+        "7zip" => AppsView.SevenZipCheck,
+        "VSCode" => AppsView.VscodeCheck,
+        "VLC" => AppsView.VlcCheck,
+        "Notepad++" => AppsView.NotepadPlusPlusCheck,
+        "LibreOffice" => AppsView.LibreOfficeCheck,
+        "PuTTY" => AppsView.PuttyCheck,
+        "GIMP" => AppsView.GimpCheck,
         _ => null
     };
 
@@ -42,17 +42,17 @@ private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
     {
         var selected = GetSelectedApps();
 
-        SelectedAppsCountText.Text = selected.Count.ToString();
-        AppsPreviewList.Children.Clear();
+        SetupView.SelectedAppsCountText.Text = selected.Count.ToString();
+        SetupView.AppsPreviewList.Children.Clear();
 
         if (selected.Count == 0)
         {
-            AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
+            SetupView.AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
         }
         else
         {
             var summary = selected.Count == 1 ? "aplikacja wskazana" : "aplikacje wskazane";
-            AppsPreviewSummaryText.Text = $"{selected.Count} {summary} do instalacji.";
+            SetupView.AppsPreviewSummaryText.Text = $"{selected.Count} {summary} do instalacji.";
 
             for (var index = 0; index < selected.Count; index++)
             {
@@ -88,13 +88,13 @@ private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
                 row.Children.Add(number);
                 row.Children.Add(name);
                 item.Child = row;
-                AppsPreviewList.Children.Add(item);
+                SetupView.AppsPreviewList.Children.Add(item);
             }
         }
 
-        var isVisible = AppsPreviewPanel.Visibility == Visibility.Visible;
-        AppsPreviewPanel.Visibility = isVisible ? Visibility.Collapsed : Visibility.Visible;
-        PreviewAppsButton.Content = isVisible
+        var isVisible = SetupView.AppsPreviewPanel.Visibility == Visibility.Visible;
+        SetupView.AppsPreviewPanel.Visibility = isVisible ? Visibility.Collapsed : Visibility.Visible;
+        SetupView.PreviewAppsButton.Content = isVisible
             ? "POKAŻ WYBRANE APLIKACJE  ›"
             : "UKRYJ WYBRANE APLIKACJE  ‹";
     }
@@ -110,13 +110,13 @@ private void SetAppSelection(params string[] aliases)
                 checkBox.IsChecked = selected.Contains(alias);
         }
 
-        AppsCheck.IsChecked = aliases.Length > 0;
+        SetupView.AppsCheck.IsChecked = aliases.Length > 0;
         UpdateSelectedAppsCount();
     }
 
 private void UpdateSelectedAppsCount()
     {
-        SelectedAppsCountText.Text = GetSelectedApps().Count.ToString();
+        SetupView.SelectedAppsCountText.Text = GetSelectedApps().Count.ToString();
     }
 
 private void StandardPackageButton_Click(object sender, RoutedEventArgs e)
@@ -152,22 +152,22 @@ private void SelectAllAppsButton_Click(object sender, RoutedEventArgs e)
 private void ClearAllAppsButton_Click(object sender, RoutedEventArgs e)
     {
         SetAppSelection();
-        AppsCheck.IsChecked = false;
+        SetupView.AppsCheck.IsChecked = false;
         Log("Odznaczono wszystkie aplikacje.");
     }
 
 private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
     {
-        HostnameCheck.IsChecked = false;
+        SetupView.HostnameCheck.IsChecked = false;
         _joinDomainRequested = false;
-        DomainCredentialsExpander.IsExpanded = false;
-        DomainCredentialsExpander.Visibility = Visibility.Collapsed;
-        DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
-        DomainCheck.Background = FindResource("InputBrush") as Brush;
-        DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
-        DomainPasswordBox.Clear();
-        BloatwareCheck.IsChecked = false;
-        OfficeCheck.IsChecked = false;
+        SetupView.DomainCredentialsExpander.IsExpanded = false;
+        SetupView.DomainCredentialsExpander.Visibility = Visibility.Collapsed;
+        SetupView.DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
+        SetupView.DomainCheck.Background = FindResource("InputBrush") as Brush;
+        SetupView.DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
+        SetupView.DomainPasswordBox.Clear();
+        SetupView.BloatwareCheck.IsChecked = false;
+        SetupView.OfficeCheck.IsChecked = false;
         ClearAllAppsButton_Click(sender, e);
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
