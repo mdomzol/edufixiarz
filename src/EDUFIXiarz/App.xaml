@@ -81,6 +81,13 @@
             <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border x:Name="CheckMarkBox" Width="19" Height="19" CornerRadius="5" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Background="{StaticResource InputBrush}" VerticalAlignment="Center"><Path x:Name="CheckMark" Data="M4,10 L8,14 L16,5" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Visibility="Collapsed"/></Border><ContentPresenter Grid.Column="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" ContentSource="Content"/></Grid><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="CheckMarkBox" Property="BorderBrush" Value="{StaticResource AccentBrush}"/></Trigger><Trigger Property="IsKeyboardFocusWithin" Value="True"><Setter TargetName="CheckMarkBox" Property="BorderBrush" Value="{StaticResource AccentBrush}"/><Setter TargetName="CheckMarkBox" Property="Background" Value="#241A14"/></Trigger><Trigger Property="IsChecked" Value="True"><Setter TargetName="CheckMarkBox" Property="Background" Value="{StaticResource AccentBrush}"/><Setter TargetName="CheckMarkBox" Property="BorderBrush" Value="{StaticResource AccentBrush}"/><Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="CheckMarkBox" Property="Opacity" Value="0.45"/><Setter Property="Cursor" Value="Arrow"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
         </Style>
 
+        <Style x:Key="AppSelectionCheckBoxStyle" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
         <Style TargetType="ListBoxItem"><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0"/><Setter Property="Background" Value="Transparent"/></Style>
         <Style TargetType="DataGridColumnHeader"><Setter Property="Background" Value="{StaticResource PanelAltBrush}"/><Setter Property="Foreground" Value="{StaticResource MutedBrush}"/><Setter Property="FontSize" Value="10"/><Setter Property="FontWeight" Value="Bold"/><Setter Property="Padding" Value="12,10"/><Setter Property="BorderThickness" Value="0,0,0,1"/><Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/></Style>
         <Style TargetType="DataGridRow"><Setter Property="MinHeight" Value="42"/></Style>
