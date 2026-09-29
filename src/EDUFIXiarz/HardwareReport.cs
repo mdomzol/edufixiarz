@@ -22,6 +22,7 @@ public sealed class HardwareReport
     public string Ram { get; set; } = "—";
     public int RamSlots { get; set; }
     public int RamUsedSlots { get; set; }
+    public int RamFreeSlots => Math.Max(0, RamSlots - RamUsedSlots);
     public string Motherboard { get; set; } = "—";
     public string Bios { get; set; } = "—";
     public string Tpm { get; set; } = "—";
