@@ -179,6 +179,8 @@ public partial class MainWindow : Window
             SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
             SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
             SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+            SetupView.DomainCheck.Background = FindResource(_joinDomainRequested ? "PanelAltBrush" : "InputBrush") as Brush;
+            SetupView.DomainCheck.BorderBrush = FindResource(_joinDomainRequested ? "AccentBrush" : "BorderBrush") as Brush;
             SetupView.DomainBox.Text = profile.Domain;
             SetupView.DomainUserBox.Text = profile.DomainUser;
             SetupView.DomainPasswordBox.Clear();
