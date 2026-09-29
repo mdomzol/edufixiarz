@@ -36,13 +36,46 @@
     <Border Grid.Column="3" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="6,0,0,0"><StackPanel><TextBlock Text="SPRAWDZONO" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="AuditTimeText" Text="—" FontSize="15" FontWeight="SemiBold" Margin="0,7,0,0"/></StackPanel></Border>
    </Grid>
    <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
-    <DataGrid x:Name="AuditGrid" x:FieldModifier="public" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="None" Background="Transparent" Foreground="{StaticResource TextBrush}" BorderThickness="0" RowBackground="{StaticResource PanelBrush}" AlternatingRowBackground="{StaticResource PanelAltBrush}">
+    <DataGrid x:Name="AuditGrid" x:FieldModifier="public"
+              AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+              GridLinesVisibility="None" Background="Transparent"
+              Foreground="{StaticResource TextBrush}" BorderThickness="0"
+              RowBackground="{StaticResource PanelBrush}" AlternatingRowBackground="{StaticResource PanelAltBrush}"
+              RowHeight="46" ColumnHeaderHeight="34"
+              VerticalContentAlignment="Center" HorizontalGridLinesBrush="Transparent" VerticalGridLinesBrush="Transparent">
+     
+     <DataGrid.Resources>
+      <Style x:Key="AuditDetailsCellStyle" TargetType="TextBlock">
+       <Setter Property="VerticalAlignment" Value="Center"/>
+       <Setter Property="TextWrapping" Value="Wrap"/>
+       <Setter Property="Margin" Value="0,2"/>
+      </Style>
+      <Style TargetType="DataGridColumnHeader">
+       <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
+       <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+       <Setter Property="FontSize" Value="9"/>
+       <Setter Property="FontWeight" Value="Bold"/>
+       <Setter Property="Padding" Value="12,0"/>
+       <Setter Property="VerticalContentAlignment" Value="Center"/>
+       <Setter Property="HorizontalContentAlignment" Value="Left"/>
+       <Setter Property="BorderThickness" Value="0,0,0,1"/>
+       <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+      </Style>
+      <Style TargetType="DataGridCell">
+       <Setter Property="Padding" Value="12,0"/>
+       <Setter Property="VerticalContentAlignment" Value="Center"/>
+       <Setter Property="HorizontalContentAlignment" Value="Left"/>
+       <Setter Property="BorderThickness" Value="0"/>
+       <Setter Property="Background" Value="Transparent"/>
+       <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+      </Style>
+     </DataGrid.Resources>
      <DataGrid.Columns>
-      <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="230"/>
-      <DataGridTemplateColumn Header="STATUS" Width="110">
+      <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="240"/>
+      <DataGridTemplateColumn Header="STATUS" Width="120">
        <DataGridTemplateColumn.CellTemplate>
         <DataTemplate>
-         <Border CornerRadius="5" Padding="8,3" HorizontalAlignment="Left">
+         <Border CornerRadius="6" Padding="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="58">
           <Border.Style>
            <Style TargetType="Border">
             <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
@@ -53,7 +86,7 @@
             </Style.Triggers>
            </Style>
           </Border.Style>
-          <TextBlock Text="{Binding Status}" FontWeight="Bold" FontSize="11">
+          <TextBlock Text="{Binding Status}" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">
            <TextBlock.Style>
             <Style TargetType="TextBlock">
              <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
@@ -69,7 +102,7 @@
         </DataTemplate>
        </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
-      <DataGridTextColumn Header="SZCZEGÓŁY" Binding="{Binding Details}" Width="*"/>
+      <DataGridTextColumn Header="SZCZEGÓŁY" Binding="{Binding Details}" Width="*" ElementStyle="{StaticResource AuditDetailsCellStyle}"/>
      </DataGrid.Columns>
     </DataGrid>
    </Border>
