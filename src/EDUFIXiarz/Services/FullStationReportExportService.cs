@@ -44,7 +44,7 @@ public sealed class FullStationReportExportService
 
     private static void AddSnapshot(Action<string,string,string,string,string> add,string prefix,StationSnapshot? snapshot)
     {
-        void AddRow(string section, string field, string value) => AddRow(section, field, value, "", "");
+        void AddRow(string section, string field, string value) => add(section, field, value, "", "");
         if(snapshot is null){ AddRow(prefix,"Stan","BRAK"); return; }
         var h=snapshot.Hardware;
         AddRow(prefix,"StationId",h.StationId); AddRow(prefix,"UUID urządzenia",h.DeviceUuid); AddRow(prefix,"Hostname",h.Hostname);
