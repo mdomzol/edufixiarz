@@ -1,4 +1,6 @@
+using System.IO;
 using System.Windows;
+using Microsoft.Win32;
 using System.Windows.Media;
 using EDUFIXiarz.Models;
 
@@ -114,6 +116,89 @@ public partial class MainWindow : Window
     {
         ApplyProfile(true, true, AppSelectionAliases.Keys.ToArray());
         Log("Zastosowano profil: Pełne przygotowanie.");
+    }
+
+    private void SaveProfileButton_Click(object sender, RoutedEventArgs e)
+    {
+        var profile = new SetupProfile
+        {
+            ChangeHostname = SetupView.HostnameCheck.IsChecked == true,
+            Hostname = SetupView.HostnameBox.Text.Trim(),
+            JoinDomain = _joinDomainRequested,
+            Domain = SetupView.DomainBox.Text.Trim(),
+            DomainUser = SetupView.DomainUserBox.Text.Trim(),
+            RemoveBloatware = SetupView.BloatwareCheck.IsChecked == true,
+            RemoveOffice = SetupView.OfficeCheck.IsChecked == true,
+            InstallApplications = SetupView.AppsCheck.IsChecked == true,
+            ApplicationIds = GetSelectedApps().Select(app => app.Id).ToList()
+        };
+
+        var dialog = new SaveFileDialog
+        {
+            FileName = "EDUFIXiarz-profil.json",
+            Filter = "Profil EDUFIXiarz (*.json)|*.json",
+            AddExtension = true,
+            DefaultExt = "json",
+            OverwritePrompt = true
+        };
+
+        if (dialog.ShowDialog() != true) return;
+
+        try
+        {
+            File.WriteAllText(dialog.FileName, _profileService.Serialize(profile));
+            Log($"Zapisano profil: {dialog.FileName}");
+        }
+        catch (Exception ex)
+        {
+            Log("BŁĄD ZAPISU PROFILU: " + ex.Message);
+            MessageBox.Show("Nie udało się zapisać profilu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void LoadProfileButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Filter = "Profil EDUFIXiarz (*.json)|*.json",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog() != true) return;
+
+        try
+        {
+            var profile = _profileService.Deserialize(File.ReadAllText(dialog.FileName));
+            SetupView.HostnameCheck.IsChecked = profile.ChangeHostname;
+            SetupView.HostnameBox.Text = string.IsNullOrWhiteSpace(profile.Hostname) ? Environment.MachineName : profile.Hostname;
+            SetupView.BloatwareCheck.IsChecked = profile.RemoveBloatware;
+            SetupView.OfficeCheck.IsChecked = profile.RemoveOffice;
+
+            _joinDomainRequested = profile.JoinDomain;
+            SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+            SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
+            SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+            SetupView.DomainBox.Text = profile.Domain;
+            SetupView.DomainUserBox.Text = profile.DomainUser;
+            SetupView.DomainPasswordBox.Clear();
+
+            var aliases = AppSelectionAliases
+                .Where(pair => profile.ApplicationIds.Contains(pair.Value, StringComparer.OrdinalIgnoreCase))
+                .Select(pair => pair.Key)
+                .ToArray();
+
+            SetAppSelection(aliases);
+            SetupView.AppsCheck.IsChecked = profile.InstallApplications && aliases.Length > 0;
+            SetupView.AppsPreviewPanel.Visibility = Visibility.Collapsed;
+            SetupView.PreviewAppsButton.Content = "POKAŻ WYBRANE APLIKACJE  ›";
+            Log($"Wczytano profil: {dialog.FileName}. Dane uwierzytelniające nie są przechowywane w profilu.");
+        }
+        catch (Exception ex)
+        {
+            Log("BŁĄD ODCZYTU PROFILU: " + ex.Message);
+            MessageBox.Show("Nie udało się wczytać profilu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
