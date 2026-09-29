@@ -21,6 +21,9 @@ public partial class MainWindow : Window
         }
 
         SetSetupOperationState(true);
+        _sessionId = Guid.NewGuid().ToString("N");
+        _currentPreparation = null;
+        _currentAudit = null;
 
         try
         {
@@ -48,6 +51,17 @@ public partial class MainWindow : Window
                 _hardwareBeforePreparation = _currentReport;
             }
 
+            var beforeSnapshot = new StationSnapshot
+            {
+                Stage = StationSnapshot.Stages.BeforePreparation,
+                SessionId = _sessionId,
+                StationId = _hardwareBeforePreparation.StationId,
+                Hardware = _hardwareBeforePreparation,
+                CapturedAt = DateTime.Now
+            };
+            var beforePaths = _stationSnapshotStorageService.Save(beforeSnapshot, _stationSnapshotExportService);
+            Log($"Zapisano automatyczny snapshot bazowy: {beforePaths.CsvPath}");
+
             OperationProgressBar.Value = 0;
             OperationProgressText.Text = "PRZYGOTOWANIE W TOKU…";
             _currentPreparation = await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError, UpdateOperationProgress);
@@ -55,6 +69,16 @@ public partial class MainWindow : Window
             var afterPreparation = await _hardwareService.GetReportAsync(LogError);
             _currentReport = afterPreparation;
             DataContext = afterPreparation;
+            var afterSnapshot = new StationSnapshot
+            {
+                Stage = StationSnapshot.Stages.AfterPreparation,
+                SessionId = _sessionId,
+                StationId = afterPreparation.StationId,
+                Hardware = afterPreparation,
+                CapturedAt = DateTime.Now
+            };
+            var afterPaths = _stationSnapshotStorageService.Save(afterSnapshot, _stationSnapshotExportService);
+            Log($"Zapisano automatyczny snapshot końcowy: {afterPaths.CsvPath}");
             ExportBeforeSnapshotButton.IsEnabled = _hardwareBeforePreparation is not null;
             Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
