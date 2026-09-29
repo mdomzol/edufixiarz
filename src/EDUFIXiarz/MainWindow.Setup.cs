@@ -55,6 +55,7 @@ public partial class MainWindow : Window
             var afterPreparation = await _hardwareService.GetReportAsync(LogError);
             _currentReport = afterPreparation;
             DataContext = afterPreparation;
+            ExportBeforeSnapshotButton.IsEnabled = _hardwareBeforePreparation is not null;
             Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
             MessageBox.Show(
