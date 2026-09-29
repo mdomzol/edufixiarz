@@ -88,6 +88,26 @@ public partial class MainWindow : Window
             {
                 var afterPaths = _stationSnapshotStorageService.Save(afterSnapshot, _stationSnapshotExportService);
                 Log($"Zapisano automatyczny snapshot końcowy: {afterPaths.CsvPath}");
+            Log("Uruchamiam audyt końcowy po przygotowaniu stacji.");
+            try
+            {
+                var previousAudit = _auditHistoryService.Load();
+                var audit = await _auditService.RunAsync(LogOutput);
+                _previousAudit = previousAudit;
+                _currentAudit = audit;
+                _auditHistoryService.Save(audit);
+                AuditView.AuditGrid.ItemsSource = audit.Items;
+                AuditView.OkCountText.Text = audit.OkCount.ToString();
+                AuditView.WarningCountText.Text = audit.WarningCount.ToString();
+                AuditView.ErrorCountText.Text = audit.ErrorCount.ToString();
+                AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
+                AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
+                Log($"Audyt końcowy zakończony: OK={audit.OkCount}, WARN={audit.WarningCount}, ERROR={audit.ErrorCount}.");
+            }
+            catch (Exception auditEx)
+            {
+                LogException("AUDYTU KOŃCOWEGO", auditEx);
+            }
             }
             catch (Exception snapshotEx)
             {
