@@ -104,11 +104,11 @@
                             </Grid.ColumnDefinitions>
                             <ContentPresenter VerticalAlignment="Center" ContentSource="Content"/>
                             <Border Grid.Column="1" Width="38" Height="22" CornerRadius="11"
-                                    Background="{StaticResource PanelAltBrush}"
+                                    Background="{StaticResource TextBrush}"
                                     BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
                                 <Grid>
                                     <Ellipse x:Name="ToggleThumb" Width="14" Height="14"
-                                             Fill="{StaticResource MutedBrush}" HorizontalAlignment="Left" Margin="3,0"/>
+                                             Fill="{StaticResource PanelBrush}" HorizontalAlignment="Left" Margin="3,0"/>
                                 </Grid>
                             </Border>
                         </Grid>
