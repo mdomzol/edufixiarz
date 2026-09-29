@@ -41,7 +41,7 @@
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
                     </Button>
                     <Button x:Name="AuditMenuButton" Style="{StaticResource NavButton}" Click="AuditMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="AUDYT"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="AUDYT"/></StackPanel>
                     </Button>
                     <Button x:Name="SetupMenuButton" Style="{StaticResource NavButton}" Click="SetupMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="PRZYGOTOWANIE"/></StackPanel>
