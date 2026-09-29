@@ -67,10 +67,12 @@ public partial class MainWindow : Window
         OperationProgressBar.Value = isRunning ? 0 : OperationProgressBar.Value;
         OperationProgressText.Text = isRunning ? "PRZYGOTOWANIE W TOKU…" : "GOTOWY";
         AppsView.IsEnabled = !isRunning;
+        AuditView.IsEnabled = !isRunning;
 
         ReportMenuButton.IsEnabled = !isRunning;
         SetupMenuButton.IsEnabled = !isRunning;
         AppsMenuButton.IsEnabled = !isRunning;
+        AuditMenuButton.IsEnabled = !isRunning;
         LogMenuButton.IsEnabled = !isRunning;
     }
 
