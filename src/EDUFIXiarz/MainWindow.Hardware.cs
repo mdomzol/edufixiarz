@@ -99,6 +99,7 @@ public partial class MainWindow : Window
         ApplicationVersion = "1.3.0",
         GeneratedAt = DateTime.Now,
         Hardware = _currentReport!,
+        HardwareBeforePreparation = _hardwareBeforePreparation,
         Preparation = _currentPreparation,
         Audit = _currentAudit
     };
