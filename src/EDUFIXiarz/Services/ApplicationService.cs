@@ -45,7 +45,7 @@ public sealed class ApplicationService
         {
             output?.Invoke($"Sprawdzanie: {app.Name}…");
 
-            var installed = await IsInstalledAsync(app.Id, output, error);
+            var installed = await IsInstalledAsync(app.Id, error);
             if (installed)
             {
                 output?.Invoke($"{app.Name} — już zainstalowany, pomijam.");
@@ -75,7 +75,6 @@ public sealed class ApplicationService
 
     private async Task<bool> IsInstalledAsync(
         string packageId,
-        Action<string>? output,
         Action<string>? error)
     {
         var result = await _process.RunAllowingExitCodesAsync(
