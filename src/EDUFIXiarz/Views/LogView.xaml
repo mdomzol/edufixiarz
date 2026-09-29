@@ -14,8 +14,8 @@
                 Background="{StaticResource PanelBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
-                CornerRadius="8"
-                Padding="18"
+                CornerRadius="10"
+                Padding="20"
                 Margin="0,0,0,14">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel>
+                <StackPanel Margin="0,0,0,4">
                     <TextBlock Text="DZIENNIK OPERACJI"
                                FontSize="11"
                                FontWeight="Bold"
@@ -56,7 +56,7 @@
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
-                Padding="14">
+                Padding="18">
             <TextBox x:Name="LogBox"
                      x:FieldModifier="public"
                      IsReadOnly="True"
