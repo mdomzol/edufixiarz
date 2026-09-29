@@ -8,6 +8,7 @@ public sealed class AuditHistoryService
 {
     private readonly string _filePath;
     private readonly string _previousFilePath;
+    private readonly string _historyFilePath;
 
     public AuditHistoryService()
     {
@@ -17,9 +18,10 @@ public sealed class AuditHistoryService
         Directory.CreateDirectory(directory);
         _filePath = Path.Combine(directory, "last-audit.json");
         _previousFilePath = Path.Combine(directory, "previous-audit.json");
+        _historyFilePath = Path.Combine(directory, "audit-history.json");
     }
 
-    public StationAudit? LoadPrevious()
+    public IReadOnlyList<StationAudit> LoadHistory()\n    {\n        return LoadHistoryInternal();\n    }\n\n    private List<StationAudit> LoadHistoryInternal()\n    {\n        try\n        {\n            if (!File.Exists(_historyFilePath)) return [];\n            return JsonSerializer.Deserialize<List<StationAudit>>(File.ReadAllText(_historyFilePath)) ?? [];\n        }\n        catch\n        {\n            return [];\n        }\n    }\n\n    public StationAudit? LoadPrevious()
     {
         try
         {
@@ -39,7 +41,15 @@ public sealed class AuditHistoryService
             if (File.Exists(_filePath))
                 File.Copy(_filePath, _previousFilePath, overwrite: true);
 
-            var json = JsonSerializer.Serialize(audit, new JsonSerializerOptions { WriteIndented = true });
+            var history = LoadHistoryInternal();
+            history.Insert(0, audit);
+            if (history.Count > 10)
+                history = history.Take(10).ToList();
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            File.WriteAllText(_historyFilePath, JsonSerializer.Serialize(history, options));
+
+            var json = JsonSerializer.Serialize(audit, options);
             File.WriteAllText(_filePath, json);
         }
         catch
