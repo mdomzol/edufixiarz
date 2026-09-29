@@ -17,6 +17,11 @@ public sealed class AuditHistoryService
         _filePath = Path.Combine(directory, "last-audit.json");
     }
 
+    public StationAudit? LoadPrevious()
+    {
+        return Load();
+    }
+
     public void Save(StationAudit audit)
     {
         try
