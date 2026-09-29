@@ -39,10 +39,6 @@ public sealed class SetupService
 
         if (options.ChangeHostname)
         {
-            if (!HostnameValidator.IsValid(options.Hostname))
-                throw new InvalidOperationException(
-                    "Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
-
             output?.Invoke("Zmiana hostname…");
             await _powerShell.RunAsync(
                 $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
@@ -83,6 +79,10 @@ public sealed class SetupService
 
     private static void ValidateOptions(SetupOptions options, IReadOnlyCollection<AppDefinition> applications)
     {
+        if (options.ChangeHostname && !HostnameValidator.IsValid(options.Hostname))
+            throw new InvalidOperationException(
+                "Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
+
         if (options.JoinDomain)
         {
             if (string.IsNullOrWhiteSpace(options.Domain))
