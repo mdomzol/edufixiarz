@@ -1,92 +1,53 @@
-using System.Diagnostics;
-using System.Security;
 using System.Security.Principal;
 using System.Text;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using EDUFIXiarz.Helpers;
+using EDUFIXiarz.Models;
+using EDUFIXiarz.Services;
 
 namespace EDUFIXiarz;
 
 public partial class MainWindow : Window
 {
     private readonly StringBuilder _log = new();
+    private readonly ProcessService _processService;
+    private readonly PowerShellService _powerShellService;
+    private readonly HardwareService _hardwareService;
+    private readonly DomainService _domainService;
+    private readonly BloatwareService _bloatwareService;
+    private readonly OfficeService _officeService;
+    private readonly ApplicationService _applicationService;
     private bool _joinDomainRequested;
-    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-    private const string HardwareScript = @"
-$os = Get-CimInstance Win32_OperatingSystem
-$cs = Get-CimInstance Win32_ComputerSystem
-$cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
-$board = Get-CimInstance Win32_BaseBoard | Select-Object -First 1
-$bios = Get-CimInstance Win32_BIOS | Select-Object -First 1
-$ramModules = @(Get-CimInstance Win32_PhysicalMemory)
-$ramArray = Get-CimInstance Win32_PhysicalMemoryArray | Select-Object -First 1
-$gpus = @(Get-CimInstance Win32_VideoController)
-$disks = @(Get-CimInstance Win32_DiskDrive)
-$nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true -and $_.NetEnabled -eq $true })
-$av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
-
-function Safe($value) {
-    if ($null -eq $value -or [string]::IsNullOrWhiteSpace([string]$value)) { return '—' }
-    return [string]$value
-}
-function SizeGB($bytes) {
-    if ($null -eq $bytes) { return '—' }
-    return ('{0:N1} GB' -f ([double]$bytes / 1GB))
-}
-
-[pscustomobject]@{
-    Hostname = Safe $env:COMPUTERNAME
-    SerialNumber = Safe $bios.SerialNumber
-    Manufacturer = Safe $cs.Manufacturer
-    Model = Safe $cs.Model
-    Architecture = Safe $os.OSArchitecture
-    OperatingSystem = Safe $os.Caption
-    OsVersion = Safe ($os.Version + ' · build ' + $os.BuildNumber)
-    Uptime = ((Get-Date) - $os.LastBootUpTime).ToString('dd\d\ hh\h\ mm\m')
-    Cpu = Safe $cpu.Name
-    CpuCores = [int]$cpu.NumberOfCores
-    CpuThreads = [int]$cpu.NumberOfLogicalProcessors
-    Ram = SizeGB $cs.TotalPhysicalMemory
-    RamSlots = if ($ramArray.MemoryDevices) { [int]$ramArray.MemoryDevices } else { [int]$ramModules.Count }
-    RamUsedSlots = [int]$ramModules.Count
-    Motherboard = Safe (($board.Manufacturer + ' ' + $board.Product).Trim())
-    Bios = Safe (($bios.Manufacturer + ' ' + $bios.SMBIOSBIOSVersion).Trim())
-    Gpus = @($gpus | ForEach-Object { Safe $_.Name } | Where-Object { $_ -ne '—' })
-    PhysicalDisks = @($disks | ForEach-Object {
-        $size = SizeGB $_.Size
-        if ($_.Model) { (Safe $_.Model) + ' · ' + $size } else { $size }
-    })
-    NetworkAdapters = @($nics | ForEach-Object {
-        if ($_.Name) {
-            $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }
-            (Safe $_.Name) + $mac
-        }
-    })
-    Antivirus = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique)
-} | ConvertTo-Json -Depth 4 -Compress
-";
-
-    private static readonly (string Id, string Name, Func<MainWindow, bool> Selected)[] Apps =
-    [
-        ("Adobe.Acrobat.Reader.64-bit", "Adobe Acrobat Reader", w => w.AdobeReaderCheck.IsChecked == true),
-        ("voidtools.Everything", "Everything", w => w.EverythingCheck.IsChecked == true),
-        ("Google.Chrome", "Google Chrome", w => w.ChromeCheck.IsChecked == true),
-        ("Mozilla.Firefox", "Mozilla Firefox", w => w.FirefoxCheck.IsChecked == true),
-        ("7zip.7zip", "7-Zip", w => w.SevenZipCheck.IsChecked == true),
-        ("Microsoft.VisualStudioCode", "Visual Studio Code", w => w.VscodeCheck.IsChecked == true),
-        ("VideoLAN.VLC", "VLC", w => w.VlcCheck.IsChecked == true),
-        ("Notepad++.Notepad++", "Notepad++", w => w.NotepadPlusPlusCheck.IsChecked == true),
-        ("TheDocumentFoundation.LibreOffice", "LibreOffice", w => w.LibreOfficeCheck.IsChecked == true),
-        ("PuTTY.PuTTY", "PuTTY", w => w.PuttyCheck.IsChecked == true),
-        ("GIMP.GIMP", "GIMP", w => w.GimpCheck.IsChecked == true)
-    ];
+    private static readonly Dictionary<string, string> AppSelectionAliases = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Adobe"] = "Adobe.Acrobat.Reader.64-bit",
+        ["Everything"] = "voidtools.Everything",
+        ["Chrome"] = "Google.Chrome",
+        ["Firefox"] = "Mozilla.Firefox",
+        ["7zip"] = "7zip.7zip",
+        ["VSCode"] = "Microsoft.VisualStudioCode",
+        ["VLC"] = "VideoLAN.VLC",
+        ["Notepad++"] = "Notepad++.Notepad++",
+        ["LibreOffice"] = "TheDocumentFoundation.LibreOffice",
+        ["PuTTY"] = "PuTTY.PuTTY",
+        ["GIMP"] = "GIMP.GIMP"
+    };
 
     public MainWindow()
     {
         InitializeComponent();
+
+        _processService = new ProcessService();
+        _powerShellService = new PowerShellService(_processService);
+        _hardwareService = new HardwareService(_powerShellService);
+        _domainService = new DomainService(_powerShellService);
+        _bloatwareService = new BloatwareService(_powerShellService);
+        _officeService = new OfficeService(_powerShellService);
+        _applicationService = new ApplicationService(_processService);
+
         HostnameBox.Text = Environment.MachineName;
         PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
         PrivilegeText.Foreground = IsAdministrator() ? Brushes.LightGreen : Brushes.Orange;
@@ -114,69 +75,22 @@ function SizeGB($bytes) {
         LogBox.ScrollToEnd();
     }
 
+    private void LogOutput(string output)
+    {
+        if (!string.IsNullOrWhiteSpace(output))
+            Log(output);
+    }
+
+    private void LogError(string error)
+    {
+        if (!string.IsNullOrWhiteSpace(error))
+            Log(error);
+    }
+
     private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportPage);
     private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupPage);
-
-    private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
-    {
-        var selected = Apps.Where(a => a.Selected(this)).Select(a => a.Name).ToArray();
-
-        SelectedAppsCountText.Text = selected.Length.ToString();
-        AppsPreviewList.Children.Clear();
-
-        if (selected.Length == 0)
-        {
-            AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
-        }
-        else
-        {
-            var summary = selected.Length == 1 ? "aplikacja wskazana" : "aplikacje wskazane";
-            AppsPreviewSummaryText.Text = $"{selected.Length} {summary} do instalacji.";
-
-            for (var index = 0; index < selected.Length; index++)
-            {
-                var item = new Border
-                {
-                    BorderBrush = FindResource("BorderBrush") as Brush,
-                    BorderThickness = new Thickness(0, index == 0 ? 0 : 1, 0, 0),
-                    Padding = new Thickness(0, index == 0 ? 0 : 8, 0, 8)
-                };
-
-                var row = new Grid();
-                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(24) });
-                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-                var number = new TextBlock
-                {
-                    Text = $"{index + 1:00}",
-                    FontSize = 10,
-                    FontWeight = FontWeights.Bold,
-                    Foreground = FindResource("AccentBrush") as Brush,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-
-                var name = new TextBlock
-                {
-                    Text = selected[index],
-                    FontSize = 12,
-                    Foreground = FindResource("TextBrush") as Brush,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-
-                Grid.SetColumn(name, 1);
-                row.Children.Add(number);
-                row.Children.Add(name);
-                item.Child = row;
-                AppsPreviewList.Children.Add(item);
-            }
-        }
-
-        var isVisible = AppsPreviewPanel.Visibility == Visibility.Visible;
-        AppsPreviewPanel.Visibility = isVisible ? Visibility.Collapsed : Visibility.Visible;
-        PreviewAppsButton.Content = isVisible
-            ? "POKAŻ WYBRANE APLIKACJE  ›"
-            : "UKRYJ WYBRANE APLIKACJE  ‹";
-    }
+    private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
+    private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
 
     private void DomainCheck_Click(object sender, RoutedEventArgs e)
     {
@@ -184,8 +98,12 @@ function SizeGB($bytes) {
         DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
         DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
         DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
-        DomainCheck.Background = _joinDomainRequested ? FindResource("PanelAltBrush") as Brush : FindResource("InputBrush") as Brush;
-        DomainCheck.BorderBrush = _joinDomainRequested ? FindResource("AccentBrush") as Brush : FindResource("BorderBrush") as Brush;
+        DomainCheck.Background = _joinDomainRequested
+            ? FindResource("PanelAltBrush") as Brush
+            : FindResource("InputBrush") as Brush;
+        DomainCheck.BorderBrush = _joinDomainRequested
+            ? FindResource("AccentBrush") as Brush
+            : FindResource("BorderBrush") as Brush;
 
         if (!_joinDomainRequested)
             DomainPasswordBox.Clear();
@@ -194,8 +112,6 @@ function SizeGB($bytes) {
             ? "Włączono konfigurację dołączenia stacji do domeny AD."
             : "Wyłączono konfigurację dołączenia stacji do domeny AD.");
     }
-    private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsPage);
-    private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogPage);
 
     private void ShowPage(UIElement page)
     {
@@ -229,27 +145,7 @@ function SizeGB($bytes) {
         try
         {
             Log("Uruchamiam PowerShell/CIM do odczytu sprzętu…");
-            var json = await RunProcessForOutput("powershell.exe",
-                ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", HardwareScript]);
-            if (string.IsNullOrWhiteSpace(json))
-                throw new InvalidOperationException("PowerShell nie zwrócił żadnych danych.");
-
-            json = SanitizeJson(json);
-            Log($"Odebrano raport sprzętowy ({json.Length} znaków).");
-            HardwareReport? report;
-            try
-            {
-                report = JsonSerializer.Deserialize<HardwareReport>(json, JsonOptions);
-            }
-            catch (JsonException ex)
-            {
-                Log("Nieprawidłowy JSON raportu: " + ex.Message);
-                Log("Początek odpowiedzi PowerShell: " + json[..Math.Min(json.Length, 500)]);
-                throw new InvalidOperationException("PowerShell zwrócił dane, których aplikacja nie potrafi odczytać. Szczegóły znajdują się w DZIENNIKU.", ex);
-            }
-            if (report is null)
-                throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
-
+            var report = await _hardwareService.GetReportAsync(LogError);
             DataContext = report;
             HardwareStatusText.Text = $"ODCZYTANO · {DateTime.Now:HH:mm:ss}";
             Log("Raport sprzętowy został odczytany.");
@@ -261,70 +157,83 @@ function SizeGB($bytes) {
         }
     }
 
-    private static string SanitizeJson(string json)
-    {
-        var builder = new StringBuilder(json.Length);
-        foreach (var character in json)
-        {
-            if (character == '\t' || character == '\r' || character == '\n' || character >= ' ')
-                builder.Append(character);
-            else
-                builder.Append(' ');
-        }
-
-        return builder.ToString().Trim();
-    }
-
-    private async Task<string> RunProcessForOutput(string fileName, IEnumerable<string> args)
-    {
-        var psi = new ProcessStartInfo
-        {
-            FileName = fileName,
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            CreateNoWindow = true
-        };
-        foreach (var arg in args) psi.ArgumentList.Add(arg);
-        using var process = Process.Start(psi) ?? throw new InvalidOperationException($"Nie można uruchomić {fileName}.");
-        var outputTask = process.StandardOutput.ReadToEndAsync();
-        var errorTask = process.StandardError.ReadToEndAsync();
-        await process.WaitForExitAsync();
-        var output = await outputTask;
-        var error = await errorTask;
-        if (!string.IsNullOrWhiteSpace(error)) Log("PowerShell STDERR: " + error.Trim());
-        if (process.ExitCode != 0)
-            throw new InvalidOperationException(string.IsNullOrWhiteSpace(error)
-                ? $"PowerShell zakończył działanie kodem {process.ExitCode}."
-                : error.Trim());
-        return output.Trim();
-    }
-
     private async void RunButton_Click(object sender, RoutedEventArgs e)
     {
         if (!IsAdministrator())
         {
-            MessageBox.Show("EDUFIXiarz musi być uruchomiony jako administrator.", "Wymagane uprawnienia", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(
+                "EDUFIXiarz musi być uruchomiony jako administrator.",
+                "Wymagane uprawnienia",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
             return;
         }
 
         RunButton.IsEnabled = false;
+
         try
         {
             if (HostnameCheck.IsChecked == true)
             {
                 var hostname = HostnameBox.Text.Trim();
-                if (!IsValidHostname(hostname))
-                    throw new InvalidOperationException("Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
-                await RunPowerShell($"Rename-Computer -NewName '{Escape(hostname)}' -Force", "Zmiana hostname");
+                if (!HostnameValidator.IsValid(hostname))
+                    throw new InvalidOperationException(
+                        "Hostname może zawierać maksymalnie 15 znaków i tylko litery, cyfry oraz myślnik.");
+
+                Log("Zmiana hostname…");
+                await _powerShellService.RunAsync(
+                    $"Rename-Computer -NewName '{Escape(hostname)}' -Force",
+                    LogOutput,
+                    LogError);
+                Log("Zmiana hostname — OK.");
             }
-            if (_joinDomainRequested) await JoinDomainAsync();
-            if (BloatwareCheck.IsChecked == true) await RemoveBloatwareAsync();
-            if (OfficeCheck.IsChecked == true) await RemoveOfficeAsync();
-            if (AppsCheck.IsChecked == true) await InstallSelectedAppsAsync();
+
+            if (_joinDomainRequested)
+            {
+                var domain = DomainBox.Text.Trim();
+                var user = DomainUserBox.Text.Trim();
+
+                Log($"Dołączanie do domeny {domain}…");
+                await _domainService.JoinAsync(
+                    domain,
+                    user,
+                    DomainPasswordBox.SecurePassword,
+                    LogOutput,
+                    LogError);
+                DomainPasswordBox.Clear();
+                Log("Dołączenie do domeny — OK.");
+            }
+
+            if (BloatwareCheck.IsChecked == true)
+            {
+                Log("Usuwanie wybranych pakietów OEM…");
+                await _bloatwareService.RemoveAsync(LogOutput, LogError);
+                Log("Bloatware — etap AppX zakończony.");
+                Log("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
+            }
+
+            if (OfficeCheck.IsChecked == true)
+            {
+                Log("Czyszczenie Microsoft Office / Microsoft 365…");
+                await _officeService.RemoveAsync(LogOutput, LogError);
+                Log("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
+                Log("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
+            }
+
+            if (AppsCheck.IsChecked == true)
+            {
+                var selectedApps = GetSelectedApps();
+                Log($"Instalacja wybranych aplikacji ({selectedApps.Count})…");
+                await _applicationService.InstallAsync(selectedApps, LogOutput, LogError);
+            }
+
             Log("Zakończono wybrane operacje.");
             ShowPage(LogPage);
-            MessageBox.Show("Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                "Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
+                "EDUFIXiarz",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
@@ -332,93 +241,122 @@ function SizeGB($bytes) {
             ShowPage(LogPage);
             MessageBox.Show(ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        finally { RunButton.IsEnabled = true; }
+        finally
+        {
+            RunButton.IsEnabled = true;
+        }
     }
 
-    private async Task JoinDomainAsync()
+    private List<AppDefinition> GetSelectedApps()
     {
-        var domain = DomainBox.Text.Trim();
-        var user = DomainUserBox.Text.Trim();
-        if (string.IsNullOrWhiteSpace(domain)) throw new InvalidOperationException("Podaj nazwę domeny AD.");
-        if (string.IsNullOrWhiteSpace(user)) throw new InvalidOperationException("Podaj konto używane do dołączenia stacji do domeny AD.");
-        if (DomainPasswordBox.SecurePassword.Length == 0) throw new InvalidOperationException("Podaj hasło do konta domenowego.");
-        Log($"Dołączanie do domeny {domain}…");
-        var command = "$secure = ConvertTo-SecureString ([Console]::In.ReadLine()) -AsPlainText -Force; " +
-                      $"$cred = New-Object System.Management.Automation.PSCredential('{Escape(user)}',$secure); " +
-                      $"Add-Computer -DomainName '{Escape(domain)}' -Credential $cred -Force -ErrorAction Stop";
-        await RunPowerShellWithInput(command, SecurePasswordToPlainText(DomainPasswordBox.SecurePassword));
-        DomainPasswordBox.Clear();
-        Log("Dołączenie do domeny — OK.");
+        var selectedIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var alias in AppSelectionAliases)
+        {
+            if (GetAppCheckBox(alias.Key)?.IsChecked == true)
+                selectedIds.Add(alias.Value);
+        }
+
+        return ApplicationService.Applications
+            .Where(app => selectedIds.Contains(app.Id))
+            .ToList();
     }
 
-    private async Task RemoveBloatwareAsync()
+    private CheckBox? GetAppCheckBox(string alias) => alias switch
     {
-        Log("Usuwanie wybranych pakietów OEM…");
-        const string script = @"
-$patterns = 'McAfee','WildTangent','Booking','Spotify','Clipchamp'
-Get-AppxPackage -AllUsers | Where-Object { $name = $_.Name; $patterns | Where-Object { $name -like ('*' + $_ + '*') } } |
-    ForEach-Object {
-        Write-Output ('Usuwanie AppX: ' + $_.Name)
-        Remove-AppxPackage -Package $_.PackageFullName -AllUsers -ErrorAction SilentlyContinue
-    }
-";
-        await RunPowerShell(script, "Usuwanie pakietów AppX");
-        Log("Bloatware — etap AppX zakończony.");
-        Log("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
+        "Adobe" => AdobeReaderCheck,
+        "Everything" => EverythingCheck,
+        "Chrome" => ChromeCheck,
+        "Firefox" => FirefoxCheck,
+        "7zip" => SevenZipCheck,
+        "VSCode" => VscodeCheck,
+        "VLC" => VlcCheck,
+        "Notepad++" => NotepadPlusPlusCheck,
+        "LibreOffice" => LibreOfficeCheck,
+        "PuTTY" => PuttyCheck,
+        "GIMP" => GimpCheck,
+        _ => null
+    };
+
+    private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var selected = GetSelectedApps();
+
+        SelectedAppsCountText.Text = selected.Count.ToString();
+        AppsPreviewList.Children.Clear();
+
+        if (selected.Count == 0)
+        {
+            AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
+        }
+        else
+        {
+            var summary = selected.Count == 1 ? "aplikacja wskazana" : "aplikacje wskazane";
+            AppsPreviewSummaryText.Text = $"{selected.Count} {summary} do instalacji.";
+
+            for (var index = 0; index < selected.Count; index++)
+            {
+                var item = new Border
+                {
+                    BorderBrush = FindResource("BorderBrush") as Brush,
+                    BorderThickness = new Thickness(0, index == 0 ? 0 : 1, 0, 0),
+                    Padding = new Thickness(0, index == 0 ? 0 : 8, 0, 8)
+                };
+
+                var row = new Grid();
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(24) });
+                row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                var number = new TextBlock
+                {
+                    Text = $"{index + 1:00}",
+                    FontSize = 10,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = FindResource("AccentBrush") as Brush,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var name = new TextBlock
+                {
+                    Text = selected[index].Name,
+                    FontSize = 12,
+                    Foreground = FindResource("TextBrush") as Brush,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                Grid.SetColumn(name, 1);
+                row.Children.Add(number);
+                row.Children.Add(name);
+                item.Child = row;
+                AppsPreviewList.Children.Add(item);
+            }
+        }
+
+        var isVisible = AppsPreviewPanel.Visibility == Visibility.Visible;
+        AppsPreviewPanel.Visibility = isVisible ? Visibility.Collapsed : Visibility.Visible;
+        PreviewAppsButton.Content = isVisible
+            ? "POKAŻ WYBRANE APLIKACJE  ›"
+            : "UKRYJ WYBRANE APLIKACJE  ‹";
     }
 
-    private async Task RemoveOfficeAsync()
+    private void SetAppSelection(params string[] aliases)
     {
-        Log("Czyszczenie Microsoft Office / Microsoft 365…");
-        const string script = @"
-$officeAppx = Get-AppxPackage -AllUsers -Name 'Microsoft.Office.Desktop' -ErrorAction SilentlyContinue
-foreach ($package in $officeAppx) {
-    Write-Output ('Usuwanie Office AppX: ' + $package.Name)
-    Remove-AppxPackage -Package $package.PackageFullName -AllUsers -ErrorAction Stop
-}
-$officeIds = @('Microsoft.Office','Microsoft.Office2016','Microsoft.Office2019','Microsoft.Office2021','Microsoft.Office2024')
-foreach ($id in $officeIds) {
-    $installed = winget list --id $id --exact --accept-source-agreements 2>$null | Out-String
-    if ($installed -match [regex]::Escape($id)) {
-        Write-Output ('Usuwanie pakietu winget: ' + $id)
-        winget uninstall --id $id --exact --silent --accept-source-agreements
-    }
-}
-";
-        await RunPowerShell(script, "Czyszczenie Microsoft Office / Microsoft 365");
-        Log("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
-        Log("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
-    }
+        var selected = aliases.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-    private async Task InstallSelectedAppsAsync()
-    {
-        var selectedApps = Apps.Where(a => a.Selected(this)).ToArray();
-        Log($"Instalacja wybranych aplikacji ({selectedApps.Length})…");
-        foreach (var (id, name, _) in selectedApps)
-            await RunProcess("winget.exe", ["install","--id",id,"--exact","--silent","--accept-package-agreements","--accept-source-agreements"], $"Instalacja {name}");
-    }
+        foreach (var alias in AppSelectionAliases.Keys)
+        {
+            var checkBox = GetAppCheckBox(alias);
+            if (checkBox is not null)
+                checkBox.IsChecked = selected.Contains(alias);
+        }
 
-    private void SetAppSelection(params string[] ids)
-    {
-        var selected = ids.ToHashSet(StringComparer.OrdinalIgnoreCase);
-        AdobeReaderCheck.IsChecked = selected.Contains("Adobe");
-        EverythingCheck.IsChecked = selected.Contains("Everything");
-        ChromeCheck.IsChecked = selected.Contains("Chrome");
-        FirefoxCheck.IsChecked = selected.Contains("Firefox");
-        SevenZipCheck.IsChecked = selected.Contains("7zip");
-        VscodeCheck.IsChecked = selected.Contains("VSCode");
-        VlcCheck.IsChecked = selected.Contains("VLC");
-        NotepadPlusPlusCheck.IsChecked = selected.Contains("Notepad++");
-        LibreOfficeCheck.IsChecked = selected.Contains("LibreOffice");
-        PuttyCheck.IsChecked = selected.Contains("PuTTY");
-        GimpCheck.IsChecked = selected.Contains("GIMP");
-        AppsCheck.IsChecked = selected.Count > 0;
+        AppsCheck.IsChecked = aliases.Length > 0;
         UpdateSelectedAppsCount();
     }
 
     private void UpdateSelectedAppsCount()
     {
-        SelectedAppsCountText.Text = Apps.Count(a => a.Selected(this)).ToString();
+        SelectedAppsCountText.Text = GetSelectedApps().Count.ToString();
     }
 
     private void StandardPackageButton_Click(object sender, RoutedEventArgs e)
@@ -447,19 +385,14 @@ foreach ($id in $officeIds) {
 
     private void SelectAllAppsButton_Click(object sender, RoutedEventArgs e)
     {
-        AdobeReaderCheck.IsChecked = true; EverythingCheck.IsChecked = true; ChromeCheck.IsChecked = true;
-        FirefoxCheck.IsChecked = true; SevenZipCheck.IsChecked = true; VscodeCheck.IsChecked = true;
-        VlcCheck.IsChecked = true; NotepadPlusPlusCheck.IsChecked = true; LibreOfficeCheck.IsChecked = true;
-        PuttyCheck.IsChecked = true; GimpCheck.IsChecked = true; AppsCheck.IsChecked = true;
+        SetAppSelection(AppSelectionAliases.Keys.ToArray());
         Log("Zaznaczono wszystkie aplikacje.");
     }
 
     private void ClearAllAppsButton_Click(object sender, RoutedEventArgs e)
     {
-        AdobeReaderCheck.IsChecked = false; EverythingCheck.IsChecked = false; ChromeCheck.IsChecked = false;
-        FirefoxCheck.IsChecked = false; SevenZipCheck.IsChecked = false; VscodeCheck.IsChecked = false;
-        VlcCheck.IsChecked = false; NotepadPlusPlusCheck.IsChecked = false; LibreOfficeCheck.IsChecked = false;
-        PuttyCheck.IsChecked = false; GimpCheck.IsChecked = false;
+        SetAppSelection();
+        AppsCheck.IsChecked = false;
         Log("Odznaczono wszystkie aplikacje.");
     }
 
@@ -474,49 +407,10 @@ foreach ($id in $officeIds) {
         DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
         DomainPasswordBox.Clear();
         BloatwareCheck.IsChecked = false;
-        AppsCheck.IsChecked = false; OfficeCheck.IsChecked = false; ClearAllAppsButton_Click(sender, e);
+        OfficeCheck.IsChecked = false;
+        ClearAllAppsButton_Click(sender, e);
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
 
-    private async Task RunPowerShell(string command, string label) =>
-        await RunProcess("powershell.exe", ["-NoProfile","-NonInteractive","-ExecutionPolicy","Bypass","-Command",command], label);
-
-    private async Task RunPowerShellWithInput(string command, string secret)
-    {
-        Log("Przekazywanie poświadczeń…");
-        var psi = new ProcessStartInfo { FileName="powershell.exe", UseShellExecute=false, RedirectStandardOutput=true, RedirectStandardError=true, RedirectStandardInput=true, CreateNoWindow=true };
-        foreach (var arg in new[] {"-NoProfile","-NonInteractive","-ExecutionPolicy","Bypass","-Command",command}) psi.ArgumentList.Add(arg);
-        using var process = Process.Start(psi) ?? throw new InvalidOperationException("Nie można uruchomić PowerShell.");
-        await process.StandardInput.WriteLineAsync(secret); process.StandardInput.Close();
-        var output = await process.StandardOutput.ReadToEndAsync(); var error = await process.StandardError.ReadToEndAsync(); await process.WaitForExitAsync();
-        if (!string.IsNullOrWhiteSpace(output)) Log(output.Trim());
-        if (!string.IsNullOrWhiteSpace(error)) Log(error.Trim());
-        if (process.ExitCode != 0) throw new InvalidOperationException($"Dołączenie do domeny zakończone kodem {process.ExitCode}.");
-    }
-
-    private async Task RunProcess(string fileName, IEnumerable<string> args, string label)
-    {
-        Log(label + "…");
-        var psi = new ProcessStartInfo { FileName=fileName, UseShellExecute=false, RedirectStandardOutput=true, RedirectStandardError=true, CreateNoWindow=true };
-        foreach (var arg in args) psi.ArgumentList.Add(arg);
-        using var process = Process.Start(psi) ?? throw new InvalidOperationException($"Nie można uruchomić {fileName}.");
-        var output = await process.StandardOutput.ReadToEndAsync(); var error = await process.StandardError.ReadToEndAsync(); await process.WaitForExitAsync();
-        if (!string.IsNullOrWhiteSpace(output)) Log(output.Trim());
-        if (!string.IsNullOrWhiteSpace(error)) Log(error.Trim());
-        if (process.ExitCode != 0) throw new InvalidOperationException($"{label} zakończone kodem {process.ExitCode}.");
-        Log(label + " — OK.");
-    }
-
-    private static bool IsValidHostname(string value) =>
-        !string.IsNullOrWhiteSpace(value) && value.Length <= 15 &&
-        value.All(c => char.IsLetterOrDigit(c) || c == '-') && !value.StartsWith('-') && !value.EndsWith('-');
-
     private static string Escape(string value) => value.Replace("'", "''");
-
-    private static string SecurePasswordToPlainText(SecureString secure)
-    {
-        var ptr = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(secure);
-        try { return System.Runtime.InteropServices.Marshal.PtrToStringBSTR(ptr) ?? string.Empty; }
-        finally { System.Runtime.InteropServices.Marshal.ZeroFreeBSTR(ptr); }
-    }
 }
