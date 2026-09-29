@@ -22,6 +22,8 @@ $nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapt
 $av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
 function Safe($value) { if ($null -eq $value -or [string]::IsNullOrWhiteSpace([string]$value)) { return '—' }; return [string]$value }
 function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1} GB' -f ([double]$bytes / 1GB)) }
+$uptimeSpan = (Get-Date) - $os.LastBootUpTime
+$uptime = '{0} d · {1} h · {2} min' -f [int]$uptimeSpan.TotalDays, $uptimeSpan.Hours, $uptimeSpan.Minutes
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
     SerialNumber = Safe $bios.SerialNumber
