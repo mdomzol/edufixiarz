@@ -20,6 +20,9 @@ public partial class MainWindow : Window
     private readonly SetupService _setupService;
     private readonly ReportExportService _reportExportService;
     private readonly ProfileService _profileService;
+    private readonly StationAuditService _auditService;
+    private readonly ProtocolExportService _protocolExportService;
+    private StationAudit? _currentAudit;
     private HardwareReport? _currentReport;
     private bool _joinDomainRequested;
 
@@ -42,6 +45,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        AuditView.RunAuditButton.Click += RunAuditButton_Click;
+        AuditView.ExportProtocolButton.Click += ExportProtocolButton_Click;
         SetupView.DomainCheck.Click += DomainCheck_Click;
         SetupView.PreviewAppsButton.Click += PreviewAppsButton_Click;
         SetupView.ResetSelectionButton.Click += ResetSelectionButton_Click;
@@ -70,6 +75,8 @@ public partial class MainWindow : Window
         _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
         _reportExportService = new ReportExportService();
         _profileService = new ProfileService();
+        _auditService = new StationAuditService(_powerShellService);
+        _protocolExportService = new ProtocolExportService();
 
         SetupView.HostnameBox.Text = Environment.MachineName;
         UpdateSelectedAppsCount();
