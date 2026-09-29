@@ -50,7 +50,7 @@ public partial class MainWindow : Window
         _applicationService = new ApplicationService(_processService);
         _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
 
-        HostnameBox.Text = Environment.MachineName;
+        SetupView.HostnameBox.Text = Environment.MachineName;
         PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
         PrivilegeText.Foreground = IsAdministrator() ? Brushes.LightGreen : Brushes.Orange;
 
@@ -60,7 +60,7 @@ public partial class MainWindow : Window
             ? "Sesja posiada uprawnienia administratora."
             : "Uruchom aplikację jako administrator, aby wykonywać zmiany systemowe.");
 
-        ShowPage(ReportPage);
+        ShowPage(ReportView);
         Loaded += async (_, _) => await LoadHardwareReportAsync();
     }
 
@@ -73,8 +73,8 @@ public partial class MainWindow : Window
     private void Log(string message)
     {
         _log.AppendLine($"[{DateTime.Now:HH:mm:ss}] {message}");
-        LogBox.Text = _log.ToString();
-        LogBox.ScrollToEnd();
+        LogView.LogBox.Text = _log.ToString();
+        LogView.LogBox.ScrollToEnd();
     }
 
     private void LogOutput(string output)
