@@ -74,8 +74,7 @@ function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1
     {
         var builder = new StringBuilder(json.Length);
         foreach (var character in json)
-            builder.Append(character == '	' || character == '' || character == '
-' || character >= ' ' ? character : ' ');
+            builder.Append(character == '\t' || character == '\r' || character == '\n' || character >= ' ' ? character : ' ');
         return builder.ToString().Trim();
     }
 }
