@@ -3,9 +3,9 @@
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
  <Grid>
   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-  <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18" Margin="0,0,0,14">
+  <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,0,18">
    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-    <StackPanel><TextBlock Text="AUDYT STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+    <StackPanel Margin="0,0,0,4"><TextBlock Text="AUDYT STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
      <TextBlock Text="Kontrola gotowości, bezpieczeństwa i podstawowych usług Windows." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/></StackPanel>
     <StackPanel Grid.Column="1" Orientation="Horizontal">
      <Button x:Name="RunAuditButton" x:FieldModifier="public" Content="↻  URUCHOM AUDYT" Padding="12,7" Margin="0,0,8,0"/>
@@ -25,7 +25,7 @@
     <Border Grid.Column="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="6,0"><StackPanel><TextBlock Text="BŁĘDY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="ErrorCountText" Text="—" FontSize="25" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
     <Border Grid.Column="3" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="6,0,0,0"><StackPanel><TextBlock Text="SPRAWDZONO" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="AuditTimeText" Text="—" FontSize="15" FontWeight="SemiBold" Margin="0,7,0,0"/></StackPanel></Border>
    </Grid>
-   <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14">
+   <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
     <DataGrid x:Name="AuditGrid" x:FieldModifier="public" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="None" Background="Transparent" Foreground="{StaticResource TextBrush}" BorderThickness="0" RowBackground="{StaticResource PanelBrush}" AlternatingRowBackground="{StaticResource PanelAltBrush}">
      <DataGrid.Columns>
       <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="230"/>
