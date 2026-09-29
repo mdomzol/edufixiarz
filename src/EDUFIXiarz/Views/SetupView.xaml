@@ -14,10 +14,10 @@
                             <TextBlock Text="PROFILE STARTOWE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                             <TextBlock Text="Szybko ustaw typ stanowiska. Profil można później ręcznie zmienić." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,10"/>
                             <WrapPanel>
-                                <Button x:Name="SchoolProfileButton" x:FieldModifier="public" Content="SZKOŁA" Padding="12,7" Margin="0,0,6,0" FontSize="10" Click="SchoolProfileButton_Click" ToolTip="Hostname + AppX + standardowe aplikacje"/>
-                                <Button x:Name="OfficeProfileButton" x:FieldModifier="public" Content="BIURO" Padding="12,7" Margin="0,0,6,0" FontSize="10" Click="OfficeProfileButton_Click" ToolTip="Hostname + AppX + pakiet biurowy"/>
-                                <Button x:Name="DeveloperProfileButton" x:FieldModifier="public" Content="DEVELOPER" Padding="12,7" Margin="0,0,6,0" FontSize="10" Click="DeveloperProfileButton_Click" ToolTip="Hostname + AppX + narzędzia developerskie"/>
-                                <Button x:Name="FullProfileButton" x:FieldModifier="public" Content="PEŁNE PRZYGOTOWANIE" Padding="12,7" Margin="0,0,0,0" FontSize="10" Click="FullProfileButton_Click" ToolTip="Wszystkie bezpieczne etapy i pełny zestaw aplikacji"/>
+                                <Button x:Name="SchoolProfileButton" x:FieldModifier="public" Content="SZKOŁA" Padding="12,7" Margin="0,0,6,0" FontSize="10" ToolTip="Hostname + AppX + standardowe aplikacje"/>
+                                <Button x:Name="OfficeProfileButton" x:FieldModifier="public" Content="BIURO" Padding="12,7" Margin="0,0,6,0" FontSize="10" ToolTip="Hostname + AppX + pakiet biurowy"/>
+                                <Button x:Name="DeveloperProfileButton" x:FieldModifier="public" Content="DEVELOPER" Padding="12,7" Margin="0,0,6,0" FontSize="10" ToolTip="Hostname + AppX + narzędzia developerskie"/>
+                                <Button x:Name="FullProfileButton" x:FieldModifier="public" Content="PEŁNE PRZYGOTOWANIE" Padding="12,7" Margin="0,0,0,0" FontSize="10" ToolTip="Wszystkie bezpieczne etapy i pełny zestaw aplikacji"/>
                             </WrapPanel>
                         </StackPanel>
                     </Border>
