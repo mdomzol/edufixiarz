@@ -67,20 +67,29 @@ if ($antivirusNames.Count -eq 0) {
 
     public async Task<HardwareReport> GetReportAsync(Action<string>? error = null)
     {
-        var json = await RunAsync(error);
-        if (string.IsNullOrWhiteSpace(json))
-            throw new InvalidOperationException("PowerShell nie zwrócił żadnych danych.");
-
-        json = SanitizeJson(json);
         try
         {
+            var json = await RunAsync(error);
+            if (string.IsNullOrWhiteSpace(json))
+                throw new InvalidOperationException("PowerShell nie zwrócił żadnych danych.");
+
+            json = SanitizeJson(json);
             return JsonSerializer.Deserialize<HardwareReport>(json, JsonOptions)
                 ?? throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
+        }
+        catch (InvalidOperationException)
+        {
+            throw;
         }
         catch (JsonException ex)
         {
             throw new InvalidOperationException(
                 "PowerShell zwrócił dane, których aplikacja nie potrafi odczytać.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                "Nie udało się odczytać informacji o sprzęcie.", ex);
         }
     }
 
