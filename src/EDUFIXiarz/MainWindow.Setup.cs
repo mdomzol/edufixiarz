@@ -18,7 +18,8 @@ public partial class MainWindow : Window
             return;
         }
 
-        SetupView.RunButton.IsEnabled = false;
+        SetSetupOperationState(true);
+
         try
         {
             var options = new SetupOptions
@@ -52,8 +53,19 @@ public partial class MainWindow : Window
         finally
         {
             SetupView.DomainPasswordBox.Clear();
-            SetupView.RunButton.IsEnabled = true;
+            SetSetupOperationState(false);
         }
+    }
+
+    private void SetSetupOperationState(bool isRunning)
+    {
+        SetupView.IsEnabled = !isRunning;
+        AppsView.IsEnabled = !isRunning;
+
+        ReportMenuButton.IsEnabled = !isRunning;
+        SetupMenuButton.IsEnabled = !isRunning;
+        AppsMenuButton.IsEnabled = !isRunning;
+        LogMenuButton.IsEnabled = !isRunning;
     }
 
     private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
