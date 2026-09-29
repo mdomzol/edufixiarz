@@ -47,13 +47,6 @@ public sealed class SetupService
             output?.Invoke("Zmiana hostname — OK.");
         }
 
-        if (options.JoinDomain)
-        {
-            output?.Invoke($"Dołączanie do domeny {options.Domain}…");
-            await _domain.JoinAsync(options.Domain, options.DomainUser, options.DomainPassword!, output, error);
-            output?.Invoke("Dołączenie do domeny — OK.");
-        }
-
         if (options.RemoveBloatware)
         {
             output?.Invoke("Usuwanie wybranych pakietów OEM…");
@@ -74,6 +67,14 @@ public sealed class SetupService
         {
             output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
             await _applications.InstallAsync(selectedApplications, output, error);
+        }
+
+        if (options.JoinDomain)
+        {
+            output?.Invoke($"Dołączanie do domeny {options.Domain}…");
+            await _domain.JoinAsync(options.Domain, options.DomainUser, options.DomainPassword!, output, error);
+            output?.Invoke("Dołączenie do domeny — OK.");
+            output?.Invoke("Dołączenie do domeny może wymagać ponownego uruchomienia stacji.");
         }
 
         output?.Invoke("Wszystkie zaplanowane operacje zostały wykonane.");
