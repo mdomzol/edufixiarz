@@ -105,7 +105,7 @@
                                     <ColumnDefinition Width="112"/>
                                     <ColumnDefinition Width="230"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="RESETUJ" Height="40" Padding="0" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,8,0"/>
+                                <Button Grid.Column="0" x:Name="ResetSelectionButton" x:FieldModifier="public" Content="RESETUJ" Height="40" Padding="0" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,8,0"/>
                                 <Button Grid.Column="1" x:Name="RunButton" x:FieldModifier="public" Content="▶  URUCHOM PRZYGOTOWANIE" Height="40" Padding="0" Background="{StaticResource AccentBrush}" Foreground="White" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1" FontSize="12" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                             </Grid>
                         </Grid>
