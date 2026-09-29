@@ -64,16 +64,14 @@
                                     <TextBlock Grid.Column="1" Text="OPCJONALNE" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
                                 </Grid>
                                 <Button x:Name="DomainCheck" x:FieldModifier="public" Content="DOŁĄCZ DO DOMENY AD" HorizontalContentAlignment="Left" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" FontSize="11" FontWeight="SemiBold" Padding="12,10" Margin="0,9,0,0"/>
-                                <Expander x:Name="DomainCredentialsExpander" x:FieldModifier="public" Margin="0,10,0,0" IsExpanded="False" Visibility="Collapsed">
-                                    <StackPanel>
+                                <StackPanel x:Name="DomainCredentialsPanel" x:FieldModifier="public" Margin="0,10,0,0" Visibility="Collapsed">
                                         <TextBlock Text="NAZWA DOMENY AD" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <TextBox x:Name="DomainBox" x:FieldModifier="public" Margin="0,5,0,11" ToolTip="np. firma.local"/>
                                         <TextBlock Text="UŻYTKOWNIK DOMENOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <TextBox x:Name="DomainUserBox" x:FieldModifier="public" Margin="0,5,0,11" ToolTip="np. administrator lub domena\\administrator"/>
                                         <TextBlock Text="HASŁO" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <PasswordBox x:Name="DomainPasswordBox" x:FieldModifier="public" Margin="0,5,0,0" ToolTip="Hasło nie jest zapisywane w profilu"/>
-                                    </StackPanel>
-                                </Expander>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </StackPanel>
