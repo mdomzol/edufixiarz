@@ -23,17 +23,21 @@ $logicalDisks = @(Get-CimInstance Win32_LogicalDisk -Filter ""DriveType = 3"")
 $nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true -and $_.NetEnabled -eq $true })
 $netConfigs = @(Get-CimInstance Win32_NetworkAdapterConfiguration -ErrorAction SilentlyContinue | Where-Object { $_.IPEnabled -eq $true })
 $av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
-$uninstallRoots = @("HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*", "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*")
-$installedApps = @($uninstallRoots | ForEach-Object { Get-ItemProperty $_ -ErrorAction SilentlyContinue } | Where-Object { $_.DisplayName } | ForEach-Object { if ($_.DisplayVersion) { $_.DisplayName + " · " + $_.DisplayVersion } else { $_.DisplayName } } | Sort-Object -Unique | Select-Object -First 250)
+$uninstallRoots = @(""HKLM:SoftwareMicrosoftWindowsCurrentVersionUninstall*"", ""HKLM:SoftwareWOW6432NodeMicrosoftWindowsCurrentVersionUninstall*"")
+$installedApps = @($uninstallRoots | ForEach-Object { Get-ItemProperty $_ -ErrorAction SilentlyContinue } | Where-Object { $_.DisplayName } | ForEach-Object { if ($_.DisplayVersion) { $_.DisplayName + "" · "" + $_.DisplayVersion } else { $_.DisplayName } } | Sort-Object -Unique | Select-Object -First 250)
+
 function Safe($value) { if ($null -eq $value -or [string]::IsNullOrWhiteSpace([string]$value)) { return '—' }; return [string]$value }
 function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1} GB' -f ([double]$bytes / 1GB)) }
+
 $uptimeSpan = (Get-Date) - $os.LastBootUpTime
 $uptime = '{0} d · {1} h · {2} min' -f [int]$uptimeSpan.TotalDays, $uptimeSpan.Hours, $uptimeSpan.Minutes
+
 $gpuNames = @($gpus | ForEach-Object { Safe $_.Name } | Where-Object { $_ -ne '—' })
 $physicalDisks = @($disks | ForEach-Object {
     $size = SizeGB $_.Size
     if ($_.Model) { (Safe $_.Model) + ' · ' + $size } else { $size }
 })
+
 $networkAdapters = @($netConfigs | ForEach-Object {
     $name = if ($_.Description) { Safe $_.Description } else { Safe $_.Caption }
     $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }
@@ -49,38 +53,40 @@ if ($networkAdapters.Count -eq 0) {
         }
     })
 }
+
 $antivirusNames = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique)
-if ($antivirusNames.Count -eq 0) {
-    $antivirusNames = @('—')
-}
+if ($antivirusNames.Count -eq 0) { $antivirusNames = @('—') }
+
 $logicalDiskInfo = @($logicalDisks | ForEach-Object {
     $size = SizeGB $_.Size
     $free = SizeGB $_.FreeSpace
     (Safe $_.DeviceID) + ' · ' + $free + ' wolne / ' + $size
 })
+
 $tpm = '—'
 try {
     $tpmInfo = Get-Tpm -ErrorAction Stop
-    if ($tpmInfo.TpmPresent) {
-        $tpm = if ($tpmInfo.TpmReady) { 'Obecny · gotowy' } else { 'Obecny · wymaga uwagi' }
-    } else {
-        $tpm = 'Brak'
-    }
+    if ($tpmInfo.TpmPresent) { $tpm = if ($tpmInfo.TpmReady) { 'Obecny · gotowy' } else { 'Obecny · wymaga uwagi' } }
+    else { $tpm = 'Brak' }
 } catch { $tpm = 'Niedostępne' }
+
 $secureBoot = 'Niedostępne'
+try { $secureBoot = if (Confirm-SecureBootUEFI -ErrorAction Stop) { 'Włączony' } else { 'Wyłączony' } }
+catch { $secureBoot = 'Niedostępne' }
+
+$activation = 'Niedostępne'
 try {
-    $secureBoot = if (Confirm-SecureBootUEFI -ErrorAction Stop) { 'Włączony' } else { 'Wyłączony' }
-} catch { $secureBoot = 'Niedostępne' }
-$activation = "Niedostępne"
-try {
-    $license = Get-CimInstance SoftwareLicensingProduct -Filter "ApplicationID = '{55c92734-d682-4d71-983e-d6ec3f16059f}' AND PartialProductKey IS NOT NULL" -ErrorAction Stop | Where-Object { $_.LicenseStatus -eq 1 } | Select-Object -First 1
-    $activation = if ($license) { "Aktywny" } else { "Nieaktywowany" }
-} catch { $activation = "Niedostępne" }
-$windowsUpdate = "Niedostępne"
+    $license = Get-CimInstance SoftwareLicensingProduct -Filter ""ApplicationID = '{55c92734-d682-4d71-983e-d6ec3f16059f}' AND PartialProductKey IS NOT NULL"" -ErrorAction Stop |
+        Where-Object { $_.LicenseStatus -eq 1 } | Select-Object -First 1
+    $activation = if ($license) { 'Aktywny' } else { 'Nieaktywowany' }
+} catch { $activation = 'Niedostępne' }
+
+$windowsUpdate = 'Niedostępne'
 try {
     $wu = Get-Service -Name wuauserv -ErrorAction Stop
-    $windowsUpdate = if ($wu.Status -eq "Running") { "Usługa uruchomiona" } else { "Usługa: " + $wu.Status }
-} catch { $windowsUpdate = "Niedostępne" }
+    $windowsUpdate = if ($wu.Status -eq 'Running') { 'Usługa uruchomiona' } else { 'Usługa: ' + $wu.Status }
+} catch { $windowsUpdate = 'Niedostępne' }
+
 $bitLocker = @()
 try {
     $bitLocker = @(Get-BitLockerVolume -ErrorAction Stop | ForEach-Object {
@@ -90,9 +96,10 @@ try {
         $mount + ' · ' + $status + ' · ochrona: ' + $protection
     })
 } catch { $bitLocker = @('Niedostępne') }
+
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
-    StationId = if ($bios.SerialNumber -and $bios.SerialNumber -ne "—") { Safe $bios.SerialNumber } elseif ($computerProduct.UUID) { Safe $computerProduct.UUID } else { Safe $env:COMPUTERNAME }
+    StationId = if ($bios.SerialNumber -and $bios.SerialNumber -ne '—') { Safe $bios.SerialNumber } elseif ($computerProduct.UUID) { Safe $computerProduct.UUID } else { Safe $env:COMPUTERNAME }
     DeviceUuid = Safe $computerProduct.UUID
     UserName = Safe ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)
     Domain = Safe $cs.Domain
@@ -102,9 +109,9 @@ try {
     Architecture = Safe $os.OSArchitecture
     OperatingSystem = Safe $os.Caption
     OsVersion = Safe ($os.Version + ' · build ' + $os.BuildNumber)
+    Uptime = $uptime
     Activation = $activation
     WindowsUpdate = $windowsUpdate
-    Uptime = $uptime
     Cpu = Safe $cpu.Name
     CpuCores = [int]$cpu.NumberOfCores
     CpuThreads = [int]$cpu.NumberOfLogicalProcessors
@@ -139,24 +146,12 @@ try {
             return JsonSerializer.Deserialize<HardwareReport>(json, JsonOptions)
                 ?? throw new InvalidOperationException("PowerShell nie zwrócił poprawnego raportu.");
         }
-        catch (InvalidOperationException)
-        {
-            throw;
-        }
-        catch (JsonException ex)
-        {
-            throw new InvalidOperationException(
-                "PowerShell zwrócił dane, których aplikacja nie potrafi odczytać.", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException(
-                "Nie udało się odczytać informacji o sprzęcie.", ex);
-        }
+        catch (InvalidOperationException) { throw; }
+        catch (JsonException ex) { throw new InvalidOperationException("PowerShell zwrócił dane, których aplikacja nie potrafi odczytać.", ex); }
+        catch (Exception ex) { throw new InvalidOperationException("Nie udało się odczytać informacji o sprzęcie.", ex); }
     }
 
-    private Task<string> RunAsync(Action<string>? error)
-        => _powerShell.RunAsync(Script, error: error);
+    private Task<string> RunAsync(Action<string>? error) => _powerShell.RunAsync(Script, error: error);
 
     private static string SanitizeJson(string json)
     {
