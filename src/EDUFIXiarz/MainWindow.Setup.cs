@@ -56,4 +56,20 @@ private async void RunButton_Click(object sender, RoutedEventArgs e)
         }
     }
 
+    private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
+    {
+        SetupView.HostnameCheck.IsChecked = false;
+        _joinDomainRequested = false;
+        SetupView.DomainCredentialsExpander.IsExpanded = false;
+        SetupView.DomainCredentialsExpander.Visibility = Visibility.Collapsed;
+        SetupView.DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
+        SetupView.DomainCheck.Background = FindResource("InputBrush") as Brush;
+        SetupView.DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
+        SetupView.DomainPasswordBox.Clear();
+        SetupView.BloatwareCheck.IsChecked = false;
+        SetupView.OfficeCheck.IsChecked = false;
+        ClearAllAppsButton_Click(sender, e);
+        Log("Wybór zadań i aplikacji został wyzerowany.");
+    }
+
 }
