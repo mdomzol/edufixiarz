@@ -52,12 +52,20 @@ public sealed class SetupService
 
         if (options.ChangeHostname)
         {
-            output?.Invoke("Zmiana hostname…");
-            await _powerShell.RunAsync(
-                $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
-                output,
-                error);
-            output?.Invoke("Zmiana hostname — OK.");
+            if (string.Equals(Environment.MachineName, options.Hostname, StringComparison.OrdinalIgnoreCase))
+            {
+                output?.Invoke($"Hostname jest już ustawiony jako {options.Hostname} — pomijam.");
+            }
+            else
+            {
+                output?.Invoke("Zmiana hostname…");
+                await _powerShell.RunAsync(
+                    $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
+                    output,
+                    error);
+                output?.Invoke("Zmiana hostname — OK.");
+            }
+
             ReportProgress("Zmiana nazwy stacji");
         }
 
