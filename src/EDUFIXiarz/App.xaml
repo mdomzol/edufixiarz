@@ -69,6 +69,8 @@
         <Geometry x:Key="SetupIconGeometry">M12,3 L20,7 L20,13 L18,17 L15,20 L12,22 L9,20 L6,17 L4,13 L4,7 Z</Geometry>
         <Geometry x:Key="AuditIconGeometry">M4,4 L20,4 L20,20 L4,20 Z</Geometry>
         <Geometry x:Key="LogIconGeometry">M5 3H19V21H5ZM8 7H16M8 11H16M8 15H13</Geometry>
+        <Geometry x:Key="AppsIconGeometry">M4,4 H10 V10 H4 Z M14,4 H20 V10 H14 Z M4,14 H10 V20 H4 Z M14,14 H20 V20 H14 Z</Geometry>
+
         <Style x:Key="AppSelectionCheckBoxStyle" TargetType="CheckBox">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
             <Setter Property="Cursor" Value="Hand"/>
