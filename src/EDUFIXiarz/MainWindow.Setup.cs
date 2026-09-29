@@ -173,8 +173,8 @@ public partial class MainWindow : Window
     private void ToggleDomainSetup_Click(object sender, RoutedEventArgs e)
     {
         _joinDomainRequested = !_joinDomainRequested;
-        SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
-        SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
+        SetupView.DomainCredentialsPanel.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+        SetupView.DomainCredentialsPanel.IsExpanded = _joinDomainRequested;
         SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
         SetupView.DomainCheck.Background = FindResource(_joinDomainRequested ? "PanelAltBrush" : "InputBrush") as Brush;
         SetupView.DomainCheck.BorderBrush = FindResource(_joinDomainRequested ? "AccentBrush" : "BorderBrush") as Brush;
@@ -263,8 +263,8 @@ public partial class MainWindow : Window
             SetupView.OfficeCheck.IsChecked = profile.RemoveOffice;
 
             _joinDomainRequested = profile.JoinDomain;
-            SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
-            SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
+            SetupView.DomainCredentialsPanel.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+            SetupView.DomainCredentialsPanel.IsExpanded = _joinDomainRequested;
             SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
             SetupView.DomainCheck.Background = FindResource(_joinDomainRequested ? "PanelAltBrush" : "InputBrush") as Brush;
             SetupView.DomainCheck.BorderBrush = FindResource(_joinDomainRequested ? "AccentBrush" : "BorderBrush") as Brush;
@@ -300,8 +300,8 @@ public partial class MainWindow : Window
         SetupView.HostnameBox.Text = Environment.MachineName;
 
         _joinDomainRequested = false;
-        SetupView.DomainCredentialsExpander.IsExpanded = false;
-        SetupView.DomainCredentialsExpander.Visibility = Visibility.Collapsed;
+        SetupView.DomainCredentialsPanel.IsExpanded = false;
+        SetupView.DomainCredentialsPanel.Visibility = Visibility.Collapsed;
         SetupView.DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
         SetupView.DomainCheck.Background = FindResource("InputBrush") as Brush;
         SetupView.DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
