@@ -161,10 +161,13 @@
                                 <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportExportIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="RAPORT PEŁNY"/></StackPanel>
                             </Button>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-                            <TextBlock Text="STATUS" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,0,7,0"/>
-                            <TextBlock x:Name="HardwareStatusText" Text="URUCHAMIANIE…" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                        </StackPanel>
+                        <Border HorizontalAlignment="Right" Margin="0,8,0,0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="9,5">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="6" Height="6" Fill="{StaticResource AccentBrush}" Margin="0,0,7,0"/>
+                                <TextBlock Text="OSTATNI RAPORT" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,0,7,0"/>
+                                <TextBlock x:Name="HardwareStatusText" Text="URUCHAMIANIE…" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Grid>
 
