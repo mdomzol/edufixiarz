@@ -24,6 +24,7 @@ public sealed class StationAuditService
             Item("Miejsce na dysku systemowym", data.SystemDrive, data.SystemDriveDetails),
             Item("Administratorzy lokalni", data.LocalAdmins, data.LocalAdminsDetails),
             Item("Usługi Windows", data.Services, data.ServicesDetails),
+            Item("Antywirus", data.Antivirus, data.AntivirusDetails),
             Item("WinGet", data.WinGet, data.WinGetDetails),
             Item("Oczekujący restart", data.PendingRestart, data.PendingRestartDetails)
         };
@@ -43,6 +44,7 @@ public sealed class StationAuditService
         public string SystemDrive { get; set; } = "WARN"; public string SystemDriveDetails { get; set; } = "";
         public string LocalAdmins { get; set; } = "WARN"; public string LocalAdminsDetails { get; set; } = "";
         public string Services { get; set; } = "WARN"; public string ServicesDetails { get; set; } = "";
+        public string Antivirus { get; set; } = "WARN"; public string AntivirusDetails { get; set; } = "";
         public string WinGet { get; set; } = "WARN"; public string WinGetDetails { get; set; } = "";
         public string PendingRestart { get; set; } = "WARN"; public string PendingRestartDetails { get; set; } = "";
     }
@@ -74,7 +76,12 @@ $admins=@(Get-LocalGroupMember -Group 'Administrators' -ErrorAction SilentlyCont
 $localAdmins=if($names.Count -gt 0){'OK'}else{'WARN'}; $localAdminsDetails=if($names.Count -gt 0){$names -join ', '}else{'Nie udało się odczytać grupy Administratorzy.'}
 
 $required=@('WinDefend','wuauserv','BITS'); $states=@($required|ForEach-Object{$s=Get-Service $_ -ErrorAction SilentlyContinue;if($s){$_+': '+$s.Status}else{$_+': brak'}})
-$bad=@($required|Where-Object{$s=Get-Service $_ -ErrorAction SilentlyContinue;-not $s -or $s.Status -ne 'Running'}); $services=if($bad.Count -eq 0){'OK'}else{'WARN'}; $servicesDetails=$states -join '; '
+$missing=@($required|Where-Object{-not (Get-Service $_ -ErrorAction SilentlyContinue)}); $services=if($missing.Count -eq 0){'OK'}else{'WARN'}; $servicesDetails=$states -join '; '
+
+$av=@(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue | Where-Object {$_.displayName})
+$avNames=@($av|ForEach-Object{$_.displayName}|Sort-Object -Unique)
+$antivirus=if($avNames.Count -gt 0){'OK'}else{'WARN'}
+$antivirusDetails=if($avNames.Count -gt 0){$avNames -join ', '}else{'Centrum zabezpieczeń nie zgłosiło zainstalowanego produktu antywirusowego.'}
 
 $wg=$null; try{$wg=& winget.exe --version 2>$null}catch{}; $winGet=if($wg){'OK'}else{'WARN'}; $winGetDetails=if($wg){'Wersja: '+($wg|Select-Object -First 1)}else{'WinGet nie jest dostępny.'}
 
@@ -84,6 +91,6 @@ $rename=(Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session 
 $pendingRestart=if($pending.Count -eq 0 -and -not $rename){'OK'}else{'WARN'}
 $pendingRestartDetails=if($pending.Count -eq 0 -and -not $rename){'Nie wykryto oczekującego restartu.'}else{'Windows sygnalizuje oczekujący restart.'}
 
-[pscustomobject]@{WindowsUpdate=$windowsUpdate;WindowsUpdateDetails=$windowsUpdateDetails;Activation=$activation;ActivationDetails=$activationDetails;Tpm=$tpm;TpmDetails=$tpmDetails;SecureBoot=$secureBoot;SecureBootDetails=$secureBootDetails;BitLocker=$bitLocker;BitLockerDetails=$bitLockerDetails;SystemDrive=$systemDrive;SystemDriveDetails=$systemDriveDetails;LocalAdmins=$localAdmins;LocalAdminsDetails=$localAdminsDetails;Services=$services;ServicesDetails=$servicesDetails;WinGet=$winGet;WinGetDetails=$winGetDetails;PendingRestart=$pendingRestart;PendingRestartDetails=$pendingRestartDetails}|ConvertTo-Json -Compress
+[pscustomobject]@{WindowsUpdate=$windowsUpdate;WindowsUpdateDetails=$windowsUpdateDetails;Activation=$activation;ActivationDetails=$activationDetails;Tpm=$tpm;TpmDetails=$tpmDetails;SecureBoot=$secureBoot;SecureBootDetails=$secureBootDetails;BitLocker=$bitLocker;BitLockerDetails=$bitLockerDetails;SystemDrive=$systemDrive;SystemDriveDetails=$systemDriveDetails;LocalAdmins=$localAdmins;LocalAdminsDetails=$localAdminsDetails;Services=$services;ServicesDetails=$servicesDetails;Antivirus=$antivirus;AntivirusDetails=$antivirusDetails;WinGet=$winGet;WinGetDetails=$winGetDetails;PendingRestart=$pendingRestart;PendingRestartDetails=$pendingRestartDetails}|ConvertTo-Json -Compress
 ";
 }
