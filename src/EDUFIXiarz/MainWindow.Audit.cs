@@ -11,9 +11,12 @@ public partial class MainWindow : Window
         AuditView.RunAuditButton.IsEnabled = false;
         AuditView.ExportProtocolButton.IsEnabled = false;
         AuditView.LoadLastAuditButton.IsEnabled = false;
+        AuditView.CompareAuditButton.IsEnabled = false;
         try
         {
+            var previousAudit = _auditHistoryService.Load();
             var audit = await _auditService.RunAsync(LogOutput);
+            _previousAudit = previousAudit;
             _currentAudit = audit;
             _auditHistoryService.Save(audit);
             AuditView.AuditGrid.ItemsSource = audit.Items;
@@ -21,6 +24,7 @@ public partial class MainWindow : Window
             AuditView.WarningCountText.Text = audit.WarningCount.ToString();
             AuditView.ErrorCountText.Text = audit.ErrorCount.ToString();
             AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
+            AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
             Log($"Audyt stacji zakończony: OK={audit.OkCount}, WARN={audit.WarningCount}, ERROR={audit.ErrorCount}.");
         }
         catch (Exception ex)
@@ -32,6 +36,7 @@ public partial class MainWindow : Window
         {
             AuditView.RunAuditButton.IsEnabled = true;
             AuditView.LoadLastAuditButton.IsEnabled = true;
+            AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
             AuditView.ExportProtocolButton.IsEnabled = _currentAudit is not null && _currentReport is not null;
         }
     }
@@ -51,6 +56,8 @@ public partial class MainWindow : Window
         AuditView.WarningCountText.Text = audit.WarningCount.ToString();
         AuditView.ErrorCountText.Text = audit.ErrorCount.ToString();
         AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
+        _previousAudit = _auditHistoryService.LoadPrevious();
+        AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
         AuditView.ExportProtocolButton.IsEnabled = _currentReport is not null;
         Log($"Wczytano ostatni zapisany audyt: {audit.Hostname}, {audit.CheckedAt:yyyy-MM-dd HH:mm:ss}.");
     }
@@ -87,3 +94,24 @@ public partial class MainWindow : Window
         }
     }
 }
+
+
+    private void CompareAuditButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentAudit is null || _previousAudit is null)
+        {
+            MessageBox.Show("Brak poprzedniego audytu do porównania.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        var comparison = _auditComparisonService.Compare(_previousAudit, _currentAudit);
+        var lines = comparison.Changes.Select(x =>
+            $"{x.Direction,-11} {x.Name}: {x.PreviousStatus} → {x.CurrentStatus}");
+
+        var message = $"Poprawa: {comparison.ImprovedCount}    Pogorszenie: {comparison.WorsenedCount}    Bez zmian: {comparison.UnchangedCount}"
+            + Environment.NewLine + Environment.NewLine
+            + string.Join(Environment.NewLine, lines);
+
+        MessageBox.Show(message, "EDUFIXiarz — porównanie audytów", MessageBoxButton.OK, MessageBoxImage.Information);
+        Log($"Porównano audyty: poprawa={comparison.ImprovedCount}, pogorszenie={comparison.WorsenedCount}, bez zmian={comparison.UnchangedCount}.");
+    }
