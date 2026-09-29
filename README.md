@@ -40,6 +40,23 @@ Dostępne są profile:
 
 Profile można również zapisywać i wczytywać jako pliki JSON. Pliki profilu nie zawierają haseł.
 
+### Audyt stacji
+Audyt wykonuje kontrolę gotowości stanowiska i bezpieczeństwa:
+- Windows Update,
+- aktywacja Windows,
+- TPM i Secure Boot,
+- BitLocker dysku systemowego,
+- wolne miejsce na dysku systemowym,
+- członkowie lokalnej grupy administratorów,
+- kluczowe usługi Windows,
+- dostępność WinGet,
+- oczekujący restart systemu.
+
+Wyniki są oznaczane jako **OK**, **WARN** lub **ERROR** i mogą zostać wykorzystane do protokołu odbioru.
+
+### Protokół odbioru stacji
+Po wykonaniu raportu sprzętowego i audytu można wygenerować protokół odbioru w formacie HTML. Dokument zawiera identyfikację stacji, czas kontroli, podsumowanie wyników, szczegóły każdej kontroli oraz pola na podpis osoby wykonującej i przedstawiciela jednostki.
+
 ### Dziennik
 Dziennik operacji jest dostępny w aplikacji i dodatkowo zapisywany lokalnie w:
 
@@ -89,4 +106,4 @@ Opcja **Wyczyść Microsoft Office / 365** jest domyślnie wyłączona. Po jej u
 
 ## Wersja
 
-Aktualna wersja: **1.1.0**
+Aktualna wersja: **1.2.0**
