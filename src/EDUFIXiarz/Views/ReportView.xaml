@@ -35,7 +35,11 @@
                     <StackPanel>
                         <TextBlock Text="PAMIĘĆ RAM" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                         <TextBlock Text="{Binding Ram}" FontSize="20" FontWeight="SemiBold" Margin="0,5,0,0"/>
-                        <TextBlock Text="{Binding RamUsedSlots, StringFormat=Obsadzone: {0}}" FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="{Binding RamUsedSlots, StringFormat=Zajęte: {0}}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBlock Text=" · " FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBlock Text="{Binding RamFreeSlots, StringFormat=Wolne: {0}}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>
