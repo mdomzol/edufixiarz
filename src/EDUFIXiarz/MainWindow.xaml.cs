@@ -24,7 +24,9 @@ public partial class MainWindow : Window
     private readonly StationAuditService _auditService;
     private readonly ProtocolExportService _protocolExportService;
     private readonly AuditHistoryService _auditHistoryService;
+    private readonly AuditComparisonService _auditComparisonService;
     private StationAudit? _currentAudit;
+    private StationAudit? _previousAudit;
     private HardwareReport? _currentReport;
     private bool _joinDomainRequested;
 
@@ -81,6 +83,7 @@ public partial class MainWindow : Window
         _auditService = new StationAuditService(_powerShellService);
         _protocolExportService = new ProtocolExportService();
         _auditHistoryService = new AuditHistoryService();
+        _auditComparisonService = new AuditComparisonService();
 
         SetupView.HostnameBox.Text = Environment.MachineName;
         UpdateSelectedAppsCount();
