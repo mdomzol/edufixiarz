@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" BorderThickness="0" Foreground="White" FontSize="10" FontWeight="Bold" Height="38" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,0" Margin="0,0,4,0">
+            <Button Grid.Column="0" Background="{StaticResource AccentBrush}" BorderThickness="0" Foreground="White" FontSize="10" FontWeight="Bold" Height="38" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,0" Margin="0,0,4,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border Background="White" CornerRadius="3" Width="20" Height="20" Margin="0,0,8,0">
                         <TextBlock Text="✓" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -28,7 +28,7 @@
                     <TextBlock Text="ZAZNACZ WSZYSTKIE" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="1" Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Height="38" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,0" Margin="4,0,0,0">
+            <Button Grid.Column="1" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Height="38" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="12,0" Margin="4,0,0,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="3" Width="20" Height="20" Margin="0,0,8,0">
                         <TextBlock Text="❌" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Padding="0" Margin="0"/>
@@ -190,10 +190,10 @@
                             <TextBlock Text="SELEKCJA PAKIETÓW" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                             <TextBlock Text="Skorzystaj z gotowego zestawu albo wyczyść wybór i skonfiguruj własny pakiet." FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,14"/>
                             <UniformGrid Columns="4">
-                                <Button Content="STANDARDOWE&#10;STANOWISKO BIUROWE" Click="StandardPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="0,0,6,0"/>
-                                <Button Content="PODSTAWOWY&#10;KOMPUTER" Click="BasicPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="2,0,4,0"/>
-                                <Button Content="PROGRAMISTA&#10;IT / DEV" Click="DeveloperPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="4,0,2,0"/>
-                                <Button Content="MULTIMEDIA&#10;I GRAFIKA" Click="GraphicsPackageButton_Click" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="6,0,0,0"/>
+                                <Button Content="STANDARDOWE&#10;STANOWISKO BIUROWE" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="0,0,6,0"/>
+                                <Button Content="PODSTAWOWY&#10;KOMPUTER" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="2,0,4,0"/>
+                                <Button Content="PROGRAMISTA&#10;IT / DEV" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="4,0,2,0"/>
+                                <Button Content="MULTIMEDIA&#10;I GRAFIKA" Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" Foreground="{StaticResource TextBrush}" FontSize="10" FontWeight="Bold" Padding="10,11" Margin="6,0,0,0"/>
                             </UniformGrid>
                             <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,12,0,0">
                                 <Grid>
@@ -207,7 +207,7 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Click="SelectAllAppsButton_Click" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Height="38" Padding="10,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,4,0">
+                                        <Button Grid.Column="0" Background="{StaticResource AccentBrush}" Foreground="White" BorderThickness="0" FontSize="10" FontWeight="Bold" Height="38" Padding="10,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,4,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <Border Background="White" CornerRadius="3" Width="20" Height="20" Margin="0,0,8,0">
                                                     <TextBlock Text="✓" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -215,7 +215,7 @@
                                                 <TextBlock Text="ZAZNACZ WSZYSTKIE" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
-                                        <Button Grid.Column="1" Click="ClearAllAppsButton_Click" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Height="38" Padding="10,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="4,0,0,0">
+                                        <Button Grid.Column="1" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" Height="38" Padding="10,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="4,0,0,0">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="3" Width="20" Height="20" Margin="0,0,8,0">
                                                     <TextBlock Text="❌" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Padding="0" Margin="0"/>
