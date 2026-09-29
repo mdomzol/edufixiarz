@@ -29,10 +29,13 @@ public sealed class ProcessService
             error?.Invoke(stderr.Trim());
 
         if (process.ExitCode != 0)
+        {
+            var detail = string.IsNullOrWhiteSpace(stderr) ? stdout.Trim() : stderr.Trim();
             throw new InvalidOperationException(
-                string.IsNullOrWhiteSpace(stderr)
+                string.IsNullOrWhiteSpace(detail)
                     ? $"{fileName} zakończył działanie kodem {process.ExitCode}."
-                    : stderr.Trim());
+                    : $"{fileName}: {detail}");
+        }
 
         return stdout.Trim();
     }
