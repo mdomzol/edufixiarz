@@ -25,5 +25,8 @@
                     </Border>
                 </Grid>
             </Grid>
-            
+            <TextBlock Grid.Row="2" Text="EDUFIXiarz · przygotowanie stanowisk Windows · EDU-FIX IT" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,16,0,0"/>
+        </Grid>
+    </Grid>
+</Window>
 </UserControl>
