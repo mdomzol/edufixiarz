@@ -28,6 +28,19 @@ public sealed class FullStationReportExportService
         }
 
         var h = report.Hardware;
+        if (report.HardwareBeforePreparation is not null)
+        {
+            var before = report.HardwareBeforePreparation;
+            Add("PRZED_PRZYGOTOWANIEM", "Hostname", before.Hostname);
+            Add("PRZED_PRZYGOTOWANIEM", "System operacyjny", before.OperatingSystem);
+            Add("PRZED_PRZYGOTOWANIEM", "Wersja", before.OsVersion);
+            Add("PRZED_PRZYGOTOWANIEM", "CPU", before.Cpu);
+            Add("PRZED_PRZYGOTOWANIEM", "RAM", before.Ram);
+            Add("PRZED_PRZYGOTOWANIEM", "TPM", before.Tpm);
+            Add("PRZED_PRZYGOTOWANIEM", "Secure Boot", before.SecureBoot);
+            Add("PRZED_PRZYGOTOWANIEM", "BitLocker", before.BitLocker);
+        }
+
         Add("META", "Producent", h.Manufacturer);
         Add("META", "Model", h.Model);
         Add("META", "Numer seryjny", h.SerialNumber);
@@ -157,6 +170,8 @@ th{{background:#f7f7f7}}.grid{{display:grid;grid-template-columns:1fr 1fr;gap:12
 <div class=""card""><div class=""label"">Model</div><div class=""value"">{E(h.Model)}</div></div>
 </div>
 
+{HardwareBeforeHtml(report.HardwareBeforePreparation)}
+
 <h2>System</h2>
 <table><tr><th>Parametr</th><th>Wartość</th></tr>
 <tr><td>System operacyjny</td><td>{E(h.OperatingSystem)}</td></tr>
@@ -199,6 +214,24 @@ th{{background:#f7f7f7}}.grid{{display:grid;grid-template-columns:1fr 1fr;gap:12
 
 <footer>EDUFIXiarz · EDU-FIX IT · identyfikator raportu: {E(report.ReportId)}</footer>
 </main></body></html>";
+    }
+
+    private static string HardwareBeforeHtml(HardwareReport? before)
+    {
+        if (before is null)
+            return "";
+
+        return $@"<h2>Stan przed przygotowaniem</h2>
+<table><tr><th>Parametr</th><th>Wartość</th></tr>
+<tr><td>Hostname</td><td>{E(before.Hostname)}</td></tr>
+<tr><td>System operacyjny</td><td>{E(before.OperatingSystem)}</td></tr>
+<tr><td>Wersja</td><td>{E(before.OsVersion)}</td></tr>
+<tr><td>Procesor</td><td>{E(before.Cpu)}</td></tr>
+<tr><td>Pamięć RAM</td><td>{E(before.Ram)}</td></tr>
+<tr><td>TPM</td><td>{E(before.Tpm)}</td></tr>
+<tr><td>Secure Boot</td><td>{E(before.SecureBoot)}</td></tr>
+<tr><td>BitLocker</td><td>{E(before.BitLocker)}</td></tr>
+</table>";
     }
 
     private static string PreparationHtml(StationPreparation? preparation)
