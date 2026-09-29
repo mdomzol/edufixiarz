@@ -48,9 +48,9 @@ public sealed class StationAuditService
     }
 
     private const string Script = @"
-$wu = Get-Service wuauserv -ErrorAction SilentlyContinue
-$windowsUpdate = if ($wu -and $wu.Status -eq 'Running') { 'OK' } else { 'WARN' }
-$windowsUpdateDetails = if ($wu) { 'Usługa Windows Update: ' + $wu.Status } else { 'Nie znaleziono usługi Windows Update.' }
+$wu = Get-CimInstance Win32_Service -Filter "Name='wuauserv'" -ErrorAction SilentlyContinue
+$windowsUpdate = if ($wu -and $wu.StartMode -ne 'Disabled') { 'OK' } else { 'WARN' }
+$windowsUpdateDetails = if ($wu) { 'Stan: ' + $wu.State + '; tryb uruchamiania: ' + $wu.StartMode } else { 'Nie znaleziono usługi Windows Update.' }
 
 $license = Get-CimInstance SoftwareLicensingProduct -Filter ""ApplicationID='55c92734-d682-4d71-983e-d6ec3f16059f' AND PartialProductKey IS NOT NULL"" -ErrorAction SilentlyContinue | Select-Object -First 1
 $activation = if ($license -and $license.LicenseStatus -eq 1) { 'OK' } else { 'WARN' }
@@ -78,8 +78,11 @@ $bad=@($required|Where-Object{$s=Get-Service $_ -ErrorAction SilentlyContinue;-n
 
 $wg=$null; try{$wg=& winget.exe --version 2>$null}catch{}; $winGet=if($wg){'OK'}else{'WARN'}; $winGetDetails=if($wg){'Wersja: '+($wg|Select-Object -First 1)}else{'WinGet nie jest dostępny.'}
 
-$paths=@('HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending','HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired'); $pending=@($paths|Where-Object{Test-Path $_})
-$pendingRestart=if($pending.Count -eq 0){'OK'}else{'WARN'}; $pendingRestartDetails=if($pending.Count -eq 0){'Nie wykryto oczekującego restartu.'}else{'Windows sygnalizuje oczekujący restart.'}
+$paths=@('HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending','HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')
+$pending=@($paths|Where-Object{Test-Path $_})
+$rename=(Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager' -Name PendingFileRenameOperations -ErrorAction SilentlyContinue).PendingFileRenameOperations
+$pendingRestart=if($pending.Count -eq 0 -and -not $rename){'OK'}else{'WARN'}
+$pendingRestartDetails=if($pending.Count -eq 0 -and -not $rename){'Nie wykryto oczekującego restartu.'}else{'Windows sygnalizuje oczekujący restart.'}
 
 [pscustomobject]@{WindowsUpdate=$windowsUpdate;WindowsUpdateDetails=$windowsUpdateDetails;Activation=$activation;ActivationDetails=$activationDetails;Tpm=$tpm;TpmDetails=$tpmDetails;SecureBoot=$secureBoot;SecureBootDetails=$secureBootDetails;BitLocker=$bitLocker;BitLockerDetails=$bitLockerDetails;SystemDrive=$systemDrive;SystemDriveDetails=$systemDriveDetails;LocalAdmins=$localAdmins;LocalAdminsDetails=$localAdminsDetails;Services=$services;ServicesDetails=$servicesDetails;WinGet=$winGet;WinGetDetails=$winGetDetails;PendingRestart=$pendingRestart;PendingRestartDetails=$pendingRestartDetails}|ConvertTo-Json -Compress
 ";
