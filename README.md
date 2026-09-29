@@ -48,7 +48,8 @@ Audyt wykonuje kontrolę gotowości stanowiska i bezpieczeństwa:
 - BitLocker dysku systemowego,
 - wolne miejsce na dysku systemowym,
 - członkowie lokalnej grupy administratorów,
-- kluczowe usługi Windows,
+- obecność kluczowych usług Windows,
+- wykrycie zarejestrowanego produktu antywirusowego,
 - dostępność WinGet,
 - oczekujący restart systemu.
 
@@ -106,4 +107,4 @@ Opcja **Wyczyść Microsoft Office / 365** jest domyślnie wyłączona. Po jej u
 
 ## Wersja
 
-Aktualna wersja: **1.2.0**
+Aktualna wersja: **1.2.1**
