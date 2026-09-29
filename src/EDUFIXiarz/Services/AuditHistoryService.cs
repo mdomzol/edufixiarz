@@ -21,7 +21,25 @@ public sealed class AuditHistoryService
         _historyFilePath = Path.Combine(directory, "audit-history.json");
     }
 
-    public IReadOnlyList<StationAudit> LoadHistory()\n    {\n        return LoadHistoryInternal();\n    }\n\n    private List<StationAudit> LoadHistoryInternal()\n    {\n        try\n        {\n            if (!File.Exists(_historyFilePath)) return [];\n            return JsonSerializer.Deserialize<List<StationAudit>>(File.ReadAllText(_historyFilePath)) ?? [];\n        }\n        catch\n        {\n            return [];\n        }\n    }\n\n    public StationAudit? LoadPrevious()
+    public IReadOnlyList<StationAudit> LoadHistory()
+    {
+        return LoadHistoryInternal();
+    }
+
+    private List<StationAudit> LoadHistoryInternal()
+    {
+        try
+        {
+            if (!File.Exists(_historyFilePath)) return [];
+            return JsonSerializer.Deserialize<List<StationAudit>>(File.ReadAllText(_historyFilePath)) ?? [];
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
+    public StationAudit? LoadPrevious()
     {
         try
         {
