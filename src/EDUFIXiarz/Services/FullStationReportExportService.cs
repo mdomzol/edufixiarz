@@ -83,6 +83,6 @@ public sealed class FullStationReportExportService
         if(p is null) return "<p>Przygotowanie nie zostało wykonane.</p>";
         return $"<p><strong>{E(p.Completed?"ZAKOŃCZONE":"NIEZAKOŃCZONE")}</strong> · restart: {E(p.RestartRecommended?"ZALECANY":"NIE")}</p><table><tr><th>Etap</th><th>Status</th><th>Szczegóły</th></tr>{string.Join("",p.Steps.Select(x=>$"<tr><td>{E(x.Name)}</td><td>{E(x.Status)}</td><td>{E(x.Details)}</td></tr>"))}</table>";
     }
-    private static string Csv(string value) => """ + (value ?? string.Empty).Replace(""", """") + "";
+    private static string Csv(string value) => ((char)34) + (value ?? string.Empty).Replace(((char)34).ToString(), new string((char)34, 2)) + ((char)34);
     private static string E(string value)=>WebUtility.HtmlEncode(value??string.Empty);
 }
