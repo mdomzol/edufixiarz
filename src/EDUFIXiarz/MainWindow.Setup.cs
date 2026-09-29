@@ -309,7 +309,6 @@ public partial class MainWindow : Window
         SetAppSelection();
         SetupView.AppsPreviewPanel.Visibility = Visibility.Collapsed;
         SetupView.PreviewAppsButton.Content = "POKAŻ WYBRANE APLIKACJE  ›";
-        SetupView.AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
 
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
