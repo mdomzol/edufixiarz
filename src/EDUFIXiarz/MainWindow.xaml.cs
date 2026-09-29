@@ -63,6 +63,8 @@ public partial class MainWindow : Window
         _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
 
         SetupView.HostnameBox.Text = Environment.MachineName;
+        UpdateSelectedAppsCount();
+
         PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
         PrivilegeText.Foreground = IsAdministrator() ? Brushes.LightGreen : Brushes.Orange;
 
@@ -98,7 +100,6 @@ public partial class MainWindow : Window
     private void LogError(string error)
     {
         if (!string.IsNullOrWhiteSpace(error))
-            Log(error);
+            Log("BŁĄD PROCESU: " + error);
     }
-
 }
