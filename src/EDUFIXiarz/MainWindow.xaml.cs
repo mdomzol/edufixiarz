@@ -112,6 +112,31 @@ public partial class MainWindow : Window
         Loaded += async (_, _) => await LoadHardwareReportAsync();
     }
 
+    private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2)
+        {
+            ToggleWindowState();
+            return;
+        }
+
+        if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            DragMove();
+    }
+
+    private void MinimizeWindowButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+
+    private void MaximizeWindowButton_Click(object sender, RoutedEventArgs e) => ToggleWindowState();
+
+    private void CloseWindowButton_Click(object sender, RoutedEventArgs e) => Close();
+
+    private void ToggleWindowState()
+    {
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+    }
+
     private static bool IsAdministrator()
     {
         using var identity = WindowsIdentity.GetCurrent();
