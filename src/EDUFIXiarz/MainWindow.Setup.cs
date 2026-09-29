@@ -170,6 +170,17 @@ public partial class MainWindow : Window
         SetupView.PreviewAppsButton.Content = "POKAŻ WYBRANE APLIKACJE  ›";
     }
 
+    private void DomainCheck_Click(object sender, RoutedEventArgs e)
+    {
+        _joinDomainRequested = !_joinDomainRequested;
+        SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+        SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
+        SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+        SetupView.DomainCheck.Background = FindResource(_joinDomainRequested ? "PanelAltBrush" : "InputBrush") as Brush;
+        SetupView.DomainCheck.BorderBrush = FindResource(_joinDomainRequested ? "AccentBrush" : "BorderBrush") as Brush;
+        Log(_joinDomainRequested ? "Włączono konfigurację dołączenia do domeny AD." : "Wyłączono konfigurację dołączenia do domeny AD.");
+    }
+
     private void SchoolProfileButton_Click(object sender, RoutedEventArgs e)
     {
         ApplyProfile(true, false, "Adobe", "Everything", "Chrome", "7zip", "VLC", "LibreOffice", "Notepad++");
