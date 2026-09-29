@@ -9,6 +9,7 @@ public sealed class StationReport
     public string ApplicationVersion { get; init; } = "1.3.0";
     public DateTime GeneratedAt { get; init; } = DateTime.Now;
     public HardwareReport Hardware { get; init; } = new();
+    public HardwareReport? HardwareBeforePreparation { get; init; }
     public StationPreparation? Preparation { get; init; }
     public StationAudit? Audit { get; init; }
 }
