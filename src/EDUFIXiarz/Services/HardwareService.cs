@@ -42,7 +42,7 @@ function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1
     Gpus = @($gpus | ForEach-Object { Safe $_.Name } | Where-Object { $_ -ne '—' })
     PhysicalDisks = @($disks | ForEach-Object { $size = SizeGB $_.Size; if ($_.Model) { (Safe $_.Model) + ' · ' + $size } else { $size } })
     NetworkAdapters = @($nics | ForEach-Object { if ($_.Name) { $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }; (Safe $_.Name) + $mac } })
-    Antivirus = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique)
+    Antivirus = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique); if (-not $av) { @('—') }
 } | ConvertTo-Json -Depth 4 -Compress
 ";
 
