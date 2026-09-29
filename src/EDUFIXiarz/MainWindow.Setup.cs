@@ -170,7 +170,7 @@ public partial class MainWindow : Window
         SetupView.PreviewAppsButton.Content = "POKAŻ WYBRANE APLIKACJE  ›";
     }
 
-    private void DomainCheck_Click(object sender, RoutedEventArgs e)
+    private void ToggleDomainSetup_Click(object sender, RoutedEventArgs e)
     {
         _joinDomainRequested = !_joinDomainRequested;
         SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
