@@ -79,12 +79,15 @@
                 </StackPanel>
 
                 <Button Grid.Column="1" Content="—" FontSize="15" Padding="0" Margin="0"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowControlButton}" Click="MinimizeWindowButton_Click"
                         ToolTip="Minimalizuj"/>
                 <Button Grid.Column="2" Content="□" FontSize="13" Padding="0" Margin="0"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowControlButton}" Click="MaximizeWindowButton_Click"
                         ToolTip="Maksymalizuj"/>
                 <Button Grid.Column="3" Content="×" FontSize="18" Padding="0" Margin="0"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowCloseButton}" Click="CloseWindowButton_Click"
                         ToolTip="Zamknij"/>
             </Grid>
