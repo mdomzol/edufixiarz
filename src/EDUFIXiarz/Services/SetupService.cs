@@ -25,7 +25,7 @@ public sealed class SetupService
         _applications = applications;
     }
 
-    public async Task RunAsync(
+    public async Task<StationPreparation> RunAsync(
         SetupOptions options,
         IEnumerable<AppDefinition> applications,
         Action<string>? output = null,
@@ -38,72 +38,144 @@ public sealed class SetupService
         var selectedApplications = applications.ToList();
         ValidateOptions(options, selectedApplications);
 
-        var totalStages = (options.ChangeHostname ? 1 : 0)
-            + (options.RemoveBloatware ? 1 : 0)
-            + (options.RemoveOffice ? 1 : 0)
-            + (options.InstallApplications && selectedApplications.Count > 0 ? 1 : 0)
-            + (options.JoinDomain ? 1 : 0);
+        var startedAt = DateTime.Now;
+        var steps = new List<PreparationStep>();
+        var requestedOperations = new List<string>();
+
+        if (options.ChangeHostname) requestedOperations.Add("Zmiana nazwy stacji");
+        if (options.RemoveBloatware) requestedOperations.Add("Czyszczenie pakietów AppX");
+        if (options.RemoveOffice) requestedOperations.Add("Czyszczenie Office / Microsoft 365");
+        if (options.InstallApplications && selectedApplications.Count > 0)
+            requestedOperations.Add("Instalacja aplikacji");
+        if (options.JoinDomain) requestedOperations.Add("Dołączenie do domeny AD");
+
+        var restartRecommended = options.ChangeHostname || options.RemoveOffice || options.JoinDomain;
+        var totalStages = requestedOperations.Count;
         var completedStages = 0;
+
         void ReportProgress(string label)
         {
             completedStages++;
             progress?.Invoke(completedStages, totalStages, label);
         }
 
+        async Task RunStepAsync(string name, Func<Task> action, string successDetails)
+        {
+            try
+            {
+                await action();
+                steps.Add(new PreparationStep
+                {
+                    Name = name,
+                    Status = "OK",
+                    Details = successDetails,
+                    CompletedAt = DateTime.Now
+                });
+                ReportProgress(name);
+            }
+            catch (Exception ex)
+            {
+                steps.Add(new PreparationStep
+                {
+                    Name = name,
+                    Status = "ERROR",
+                    Details = ex.Message,
+                    CompletedAt = DateTime.Now
+                });
+                throw;
+            }
+        }
+
         if (options.ChangeHostname)
         {
-            if (string.Equals(Environment.MachineName, options.Hostname, StringComparison.OrdinalIgnoreCase))
-            {
-                output?.Invoke($"Hostname jest już ustawiony jako {options.Hostname} — pomijam.");
-            }
-            else
-            {
-                output?.Invoke("Zmiana hostname…");
-                await _powerShell.RunAsync(
-                    $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
-                    output,
-                    error);
-                output?.Invoke("Zmiana hostname — OK.");
-            }
+            await RunStepAsync(
+                "Zmiana nazwy stacji",
+                async () =>
+                {
+                    if (string.Equals(Environment.MachineName, options.Hostname, StringComparison.OrdinalIgnoreCase))
+                    {
+                        output?.Invoke($"Hostname jest już ustawiony jako {options.Hostname} — pomijam.");
+                        return;
+                    }
 
-            ReportProgress("Zmiana nazwy stacji");
+                    output?.Invoke("Zmiana hostname…");
+                    await _powerShell.RunAsync(
+                        $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
+                        output,
+                        error);
+                    output?.Invoke("Zmiana hostname — OK.");
+                },
+                $"Docelowa nazwa: {options.Hostname}");
         }
 
         if (options.RemoveBloatware)
         {
-            output?.Invoke("Usuwanie wybranych pakietów OEM…");
-            await _bloatware.RemoveAsync(output, error);
-            output?.Invoke("Bloatware — etap AppX zakończony.");
-            output?.Invoke("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
-            ReportProgress("Czyszczenie pakietów AppX");
+            await RunStepAsync(
+                "Czyszczenie pakietów AppX",
+                async () =>
+                {
+                    output?.Invoke("Usuwanie wybranych pakietów OEM…");
+                    await _bloatware.RemoveAsync(output, error);
+                    output?.Invoke("Bloatware — etap AppX zakończony.");
+                    output?.Invoke("Win32/OEM będzie obsługiwane przez profil pakietów w kolejnej iteracji.");
+                },
+                "Usuwanie wybranych pakietów AppX zakończone.");
         }
 
         if (options.RemoveOffice)
         {
-            output?.Invoke("Czyszczenie Microsoft Office / Microsoft 365…");
-            await _office.RemoveAsync(output, error);
-            output?.Invoke("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
-            output?.Invoke("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
-            ReportProgress("Czyszczenie Office / Microsoft 365");
+            await RunStepAsync(
+                "Czyszczenie Office / Microsoft 365",
+                async () =>
+                {
+                    output?.Invoke("Czyszczenie Microsoft Office / Microsoft 365…");
+                    await _office.RemoveAsync(output, error);
+                    output?.Invoke("Office / Microsoft 365 — etap automatycznego czyszczenia zakończony.");
+                    output?.Invoke("Po usunięciu zalecany jest restart przed instalacją licencjonowanego pakietu Office jednostki.");
+                },
+                "Automatyczne czyszczenie Office / Microsoft 365 zakończone.");
         }
 
         if (options.InstallApplications && selectedApplications.Count > 0)
         {
-            output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
-            await _applications.InstallAsync(selectedApplications, output, error);
-            ReportProgress($"Instalacja aplikacji ({selectedApplications.Count})");
+            await RunStepAsync(
+                $"Instalacja aplikacji ({selectedApplications.Count})",
+                async () =>
+                {
+                    output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
+                    await _applications.InstallAsync(selectedApplications, output, error);
+                },
+                $"Wybrano {selectedApplications.Count} aplikacji.");
         }
 
         if (options.JoinDomain)
         {
-            output?.Invoke($"Dołączanie do domeny {options.Domain}…");
-            await _domain.JoinAsync(options.Domain, options.DomainUser, options.DomainPassword!, output, error);
-            output?.Invoke("Dołączenie do domeny — OK.");
-            output?.Invoke("Dołączenie do domeny może wymagać ponownego uruchomienia stacji.");
-            ReportProgress("Dołączenie do domeny AD");
+            await RunStepAsync(
+                "Dołączenie do domeny AD",
+                async () =>
+                {
+                    output?.Invoke($"Dołączanie do domeny {options.Domain}…");
+                    await _domain.JoinAsync(options.Domain, options.DomainUser, options.DomainPassword!, output, error);
+                    output?.Invoke("Dołączenie do domeny — OK.");
+                    output?.Invoke("Dołączenie do domeny może wymagać ponownego uruchomienia stacji.");
+                },
+                $"Domena docelowa: {options.Domain}");
         }
 
         output?.Invoke("Wszystkie zaplanowane etapy zostały wykonane. Sprawdź dziennik pod kątem ostrzeżeń.");
+
+        return new StationPreparation
+        {
+            StartedAt = startedAt,
+            FinishedAt = DateTime.Now,
+            Completed = true,
+            RestartRecommended = restartRecommended,
+            TargetHostname = options.ChangeHostname ? options.Hostname : "",
+            Domain = options.JoinDomain ? options.Domain : "",
+            RequestedOperations = requestedOperations,
+            SelectedApplications = selectedApplications.Select(x => x.Id).ToList(),
+            Steps = steps
+        };
     }
 
     private static void ValidateOptions(SetupOptions options, IReadOnlyCollection<AppDefinition> applications)
@@ -136,7 +208,6 @@ public sealed class SetupService
         if (options.InstallApplications && applications.Count == 0)
             throw new InvalidOperationException("Włączono instalację aplikacji, ale nie wybrano żadnego programu.");
     }
-
 
     private static string Escape(string value) => value.Replace("'", "''");
 }
