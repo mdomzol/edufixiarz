@@ -122,6 +122,6 @@ th{{background:#f7f7f7}}.grid{{display:grid;grid-template-columns:1fr 1fr;gap:12
 </main></body></html>";
     }
 
-    private static string Csv(string value) => """ + (value ?? string.Empty).Replace(""", """") + """;
+    private static string Csv(string value) => "\"" + (value ?? string.Empty).Replace("\"", "\"\"") + "\"";
     private static string E(string value) => WebUtility.HtmlEncode(value ?? string.Empty);
 }
