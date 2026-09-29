@@ -20,6 +20,7 @@ public partial class MainWindow : Window
     private readonly ApplicationService _applicationService;
     private readonly SetupService _setupService;
     private readonly FullStationReportExportService _fullStationReportExportService;
+    private readonly StationSnapshotExportService _stationSnapshotExportService;
     private readonly ProfileService _profileService;
     private readonly StationAuditService _auditService;
     private readonly ProtocolExportService _protocolExportService;
@@ -83,6 +84,7 @@ public partial class MainWindow : Window
         _applicationService = new ApplicationService(_processService);
         _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
         _fullStationReportExportService = new FullStationReportExportService();
+        _stationSnapshotExportService = new StationSnapshotExportService();
         _profileService = new ProfileService();
         _auditService = new StationAuditService(_powerShellService);
         _protocolExportService = new ProtocolExportService();
