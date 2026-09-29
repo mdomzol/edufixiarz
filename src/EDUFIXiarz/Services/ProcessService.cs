@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 
 namespace EDUFIXiarz.Services;
 
@@ -105,7 +106,9 @@ public sealed class ProcessService
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
-            CreateNoWindow = true
+            CreateNoWindow = true,
+            StandardOutputEncoding = Encoding.UTF8,
+            StandardErrorEncoding = Encoding.UTF8
         };
 
         foreach (var argument in arguments)
