@@ -24,6 +24,21 @@ function Safe($value) { if ($null -eq $value -or [string]::IsNullOrWhiteSpace([s
 function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1} GB' -f ([double]$bytes / 1GB)) }
 $uptimeSpan = (Get-Date) - $os.LastBootUpTime
 $uptime = '{0} d · {1} h · {2} min' -f [int]$uptimeSpan.TotalDays, $uptimeSpan.Hours, $uptimeSpan.Minutes
+$gpuNames = @($gpus | ForEach-Object { Safe $_.Name } | Where-Object { $_ -ne '—' })
+$physicalDisks = @($disks | ForEach-Object {
+    $size = SizeGB $_.Size
+    if ($_.Model) { (Safe $_.Model) + ' · ' + $size } else { $size }
+})
+$networkAdapters = @($nics | ForEach-Object {
+    if ($_.Name) {
+        $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }
+        (Safe $_.Name) + $mac
+    }
+})
+$antivirusNames = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique)
+if ($antivirusNames.Count -eq 0) {
+    $antivirusNames = @('—')
+}
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
     SerialNumber = Safe $bios.SerialNumber
@@ -41,10 +56,10 @@ $uptime = '{0} d · {1} h · {2} min' -f [int]$uptimeSpan.TotalDays, $uptimeSpan
     RamUsedSlots = [int]$ramModules.Count
     Motherboard = Safe (($board.Manufacturer + ' ' + $board.Product).Trim())
     Bios = Safe (($bios.Manufacturer + ' ' + $bios.SMBIOSBIOSVersion).Trim())
-    Gpus = @($gpus | ForEach-Object { Safe $_.Name } | Where-Object { $_ -ne '—' })
-    PhysicalDisks = @($disks | ForEach-Object { $size = SizeGB $_.Size; if ($_.Model) { (Safe $_.Model) + ' · ' + $size } else { $size } })
-    NetworkAdapters = @($nics | ForEach-Object { if ($_.Name) { $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }; (Safe $_.Name) + $mac } })
-    Antivirus = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique); if (-not $av) { @('—') }
+    Gpus = $gpuNames
+    PhysicalDisks = $physicalDisks
+    NetworkAdapters = $networkAdapters
+    Antivirus = $antivirusNames
 } | ConvertTo-Json -Depth 4 -Compress
 ";
 
