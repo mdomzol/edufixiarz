@@ -15,7 +15,7 @@
   </Border>
   <Grid Grid.Row="1">
    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
-   <Grid ColumnSpacing="0" Margin="0,0,0,14">
+   <Grid Margin="0,0,0,14">
     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
     <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,6,0"><StackPanel><TextBlock Text="OK" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="OkCountText" Text="—" FontSize="25" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
     <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="6,0"><StackPanel><TextBlock Text="OSTRZEŻENIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="WarningCountText" Text="—" FontSize="25" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel></Border>
