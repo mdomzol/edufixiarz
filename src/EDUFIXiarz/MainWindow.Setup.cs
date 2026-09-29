@@ -50,7 +50,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Log("BŁĄD: " + ex.Message);
+            LogException("PRZYGOTOWANIA", ex);
             ShowPage(LogView);
             MessageBox.Show(ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -151,7 +151,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Log("BŁĄD ZAPISU PROFILU: " + ex.Message);
+            LogException("ZAPISU PROFILU", ex);
             MessageBox.Show("Nie udało się zapisać profilu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
@@ -198,7 +198,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Log("BŁĄD ODCZYTU PROFILU: " + ex.Message);
+            LogException("ODCZYTU PROFILU", ex);
             MessageBox.Show("Nie udało się wczytać profilu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
