@@ -192,6 +192,9 @@
         <Geometry x:Key="ReportIconGeometry">M6,3 H15 L20,8 V21 H6 Z M14,3 V9 H20 M9,13 H17 M9,17 H17</Geometry>
         <Geometry x:Key="RefreshIconGeometry">M20,11 A8,8 0 1 0 18,16 M20,11 V5 M20,11 H14</Geometry>
         <Geometry x:Key="DownloadIconGeometry">M12,4 V15 M7,11 L12,16 L17,11 M5,20 H19</Geometry>
+        <Geometry x:Key="SnapshotIconGeometry">M4,5 H20 V19 H4 Z M7,8 H17 M7,12 H17 M7,16 H13</Geometry>
+        <Geometry x:Key="BaseIconGeometry">M4,7 L12,4 L20,7 L12,10 Z M4,7 V17 L12,20 L20,17 V7 M12,10 V20</Geometry>
+        <Geometry x:Key="ReportExportIconGeometry">M6,3 H15 L20,8 V21 H6 Z M15,3 V9 H20 M9,13 H13 M9,17 H16</Geometry>
         <Geometry x:Key="SetupIconGeometry">M12,3 L20,7 L20,13 L18,17 L15,20 L12,22 L9,20 L6,17 L4,13 L4,7 Z</Geometry>
         <Geometry x:Key="AuditIconGeometry">M4,4 L20,4 L20,20 L4,20 Z</Geometry>
         <Geometry x:Key="LogIconGeometry">M5 3H19V21H5ZM8 7H16M8 11H16M8 15H13</Geometry>
