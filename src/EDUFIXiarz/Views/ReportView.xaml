@@ -28,7 +28,7 @@
                     <StackPanel>
                         <TextBlock Text="PROCESOR" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                         <TextBlock Text="{Binding Cpu}" FontSize="15" FontWeight="SemiBold" Margin="0,7,0,0" TextWrapping="Wrap" MaxHeight="42"/>
-                        <TextBlock Text="{Binding CpuCores, StringFormat={}{0} rdzeni · {1} wątków}" FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0"><TextBlock Text="{Binding CpuCores, StringFormat={}{0} rdzeni}" FontSize="10" Foreground="{StaticResource MutedBrush}"/><TextBlock Text=" · " FontSize="10" Foreground="{StaticResource MutedBrush}"/><TextBlock Text="{Binding CpuThreads, StringFormat={}{0} wątków}" FontSize="10" Foreground="{StaticResource MutedBrush}"/></StackPanel>
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="3" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18" Margin="6,0,0,0">
