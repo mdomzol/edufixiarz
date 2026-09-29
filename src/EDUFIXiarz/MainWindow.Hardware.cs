@@ -38,6 +38,54 @@ public partial class MainWindow : Window
         }
     }
 
+    private void ExportStationSnapshotButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentReport is null)
+        {
+            MessageBox.Show("Najpierw odczytaj raport stacji.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        var stage = _hardwareBeforePreparation is not null && ReferenceEquals(_currentReport, _hardwareBeforePreparation)
+            ? "PRZED-PRZYGOTOWANIEM"
+            : _currentPreparation is not null
+                ? "PO-PRZYGOTOWANIU"
+                : "ODCZYT";
+
+        var snapshot = new StationSnapshot
+        {
+            Stage = stage,
+            Hardware = _currentReport,
+            CapturedAt = DateTime.Now
+        };
+
+        var dialog = new SaveFileDialog
+        {
+            FileName = $"EDUFIXiarz-Odczyt-{_currentReport.Hostname}-{stage}-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+            Filter = "Odczyt stacji — CSV + HTML (*.csv)|*.csv",
+            DefaultExt = "csv",
+            AddExtension = true,
+            OverwritePrompt = true
+        };
+
+        if (dialog.ShowDialog() != true) return;
+
+        try
+        {
+            var csvPath = dialog.FileName;
+            var htmlPath = Path.ChangeExtension(csvPath, ".html");
+            File.WriteAllText(csvPath, _stationSnapshotExportService.ToCsv(snapshot), new UTF8Encoding(true));
+            File.WriteAllText(htmlPath, _stationSnapshotExportService.ToHtml(snapshot), new UTF8Encoding(false));
+            Log($"Wyeksportowano niezależny odczyt stacji: {csvPath} + {htmlPath}");
+            MessageBox.Show("Zapisano niezależny odczyt stacji jako CSV + HTML.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            LogException("EKSPORTU ODCZYTU STACJI", ex);
+            MessageBox.Show("Nie udało się zapisać odczytu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
     private void ExportFullReportHtmlButton_Click(object sender, RoutedEventArgs e)
     {
         ExportFullStationReport("html");
