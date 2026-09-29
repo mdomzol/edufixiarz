@@ -298,8 +298,7 @@ public partial class MainWindow : Window
         SetupView.HostnameBox.Text = Environment.MachineName;
 
         _joinDomainRequested = false;
-        SetupView.DomainCredentialsPanel.IsExpanded = false;
-        SetupView.DomainCredentialsPanel.Visibility = Visibility.Collapsed;
+                SetupView.DomainCredentialsPanel.Visibility = Visibility.Collapsed;
         SetupView.DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
         SetupView.DomainCheck.Background = FindResource("InputBrush") as Brush;
         SetupView.DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
