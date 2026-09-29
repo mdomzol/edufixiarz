@@ -45,6 +45,12 @@
               VerticalContentAlignment="Center" HorizontalGridLinesBrush="Transparent" VerticalGridLinesBrush="Transparent">
      
      <DataGrid.Resources>
+      <Style x:Key="AuditControlCellStyle" TargetType="TextBlock">
+       <Setter Property="VerticalAlignment" Value="Center"/>
+       <Setter Property="HorizontalAlignment" Value="Left"/>
+       <Setter Property="TextWrapping" Value="Wrap"/>
+       <Setter Property="Margin" Value="0,2"/>
+      </Style>
       <Style x:Key="AuditDetailsCellStyle" TargetType="TextBlock">
        <Setter Property="VerticalAlignment" Value="Center"/>
        <Setter Property="TextWrapping" Value="Wrap"/>
@@ -71,7 +77,7 @@
       </Style>
      </DataGrid.Resources>
      <DataGrid.Columns>
-      <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="240"/>
+      <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="240" ElementStyle="{StaticResource AuditControlCellStyle}"/>
       <DataGridTemplateColumn Header="STATUS" Width="120">
        <DataGridTemplateColumn.CellTemplate>
         <DataTemplate>
