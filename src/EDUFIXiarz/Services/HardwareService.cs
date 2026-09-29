@@ -11,6 +11,7 @@ public sealed class HardwareService
     private const string Script = @"
 $os = Get-CimInstance Win32_OperatingSystem
 $cs = Get-CimInstance Win32_ComputerSystem
+$computerProduct = Get-CimInstance Win32_ComputerSystemProduct | Select-Object -First 1
 $cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
 $board = Get-CimInstance Win32_BaseBoard | Select-Object -First 1
 $bios = Get-CimInstance Win32_BIOS | Select-Object -First 1
@@ -22,6 +23,8 @@ $logicalDisks = @(Get-CimInstance Win32_LogicalDisk -Filter ""DriveType = 3"")
 $nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true -and $_.NetEnabled -eq $true })
 $netConfigs = @(Get-CimInstance Win32_NetworkAdapterConfiguration -ErrorAction SilentlyContinue | Where-Object { $_.IPEnabled -eq $true })
 $av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
+$uninstallRoots = @("HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*", "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*")
+$installedApps = @($uninstallRoots | ForEach-Object { Get-ItemProperty $_ -ErrorAction SilentlyContinue } | Where-Object { $_.DisplayName } | ForEach-Object { if ($_.DisplayVersion) { $_.DisplayName + " · " + $_.DisplayVersion } else { $_.DisplayName } } | Sort-Object -Unique | Select-Object -First 250)
 function Safe($value) { if ($null -eq $value -or [string]::IsNullOrWhiteSpace([string]$value)) { return '—' }; return [string]$value }
 function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1} GB' -f ([double]$bytes / 1GB)) }
 $uptimeSpan = (Get-Date) - $os.LastBootUpTime
@@ -68,6 +71,16 @@ $secureBoot = 'Niedostępne'
 try {
     $secureBoot = if (Confirm-SecureBootUEFI -ErrorAction Stop) { 'Włączony' } else { 'Wyłączony' }
 } catch { $secureBoot = 'Niedostępne' }
+$activation = "Niedostępne"
+try {
+    $license = Get-CimInstance SoftwareLicensingProduct -Filter "ApplicationID = '{55c92734-d682-4d71-983e-d6ec3f16059f}' AND PartialProductKey IS NOT NULL" -ErrorAction Stop | Where-Object { $_.LicenseStatus -eq 1 } | Select-Object -First 1
+    $activation = if ($license) { "Aktywny" } else { "Nieaktywowany" }
+} catch { $activation = "Niedostępne" }
+$windowsUpdate = "Niedostępne"
+try {
+    $wu = Get-Service -Name wuauserv -ErrorAction Stop
+    $windowsUpdate = if ($wu.Status -eq "Running") { "Usługa uruchomiona" } else { "Usługa: " + $wu.Status }
+} catch { $windowsUpdate = "Niedostępne" }
 $bitLocker = @()
 try {
     $bitLocker = @(Get-BitLockerVolume -ErrorAction Stop | ForEach-Object {
@@ -79,12 +92,18 @@ try {
 } catch { $bitLocker = @('Niedostępne') }
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
+    StationId = if ($bios.SerialNumber -and $bios.SerialNumber -ne "—") { Safe $bios.SerialNumber } elseif ($computerProduct.UUID) { Safe $computerProduct.UUID } else { Safe $env:COMPUTERNAME }
+    DeviceUuid = Safe $computerProduct.UUID
+    UserName = Safe ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)
+    Domain = Safe $cs.Domain
     SerialNumber = Safe $bios.SerialNumber
     Manufacturer = Safe $cs.Manufacturer
     Model = Safe $cs.Model
     Architecture = Safe $os.OSArchitecture
     OperatingSystem = Safe $os.Caption
     OsVersion = Safe ($os.Version + ' · build ' + $os.BuildNumber)
+    Activation = $activation
+    WindowsUpdate = $windowsUpdate
     Uptime = $uptime
     Cpu = Safe $cpu.Name
     CpuCores = [int]$cpu.NumberOfCores
@@ -102,6 +121,7 @@ try {
     LogicalDisks = $logicalDiskInfo
     NetworkAdapters = $networkAdapters
     Antivirus = $antivirusNames
+    InstalledApplications = $installedApps
 } | ConvertTo-Json -Depth 4 -Compress
 ";
 
