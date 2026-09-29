@@ -57,6 +57,29 @@ public sealed class FullStationReportExportService
         foreach (var value in h.Antivirus)
             Add("BEZPIECZEŃSTWO", "Antywirus", value);
 
+        if (report.Preparation is null)
+        {
+            Add("PRZYGOTOWANIE", "Stan", "NIE WYKONANO");
+        }
+        else
+        {
+            Add("PRZYGOTOWANIE", "Status", report.Preparation.Completed ? "ZAKOŃCZONE" : "NIEZAKOŃCZONE");
+            Add("PRZYGOTOWANIE", "Rozpoczęto", report.Preparation.StartedAt.ToString("O", CultureInfo.InvariantCulture));
+            Add("PRZYGOTOWANIE", "Zakończono", report.Preparation.FinishedAt.ToString("O", CultureInfo.InvariantCulture));
+            Add("PRZYGOTOWANIE", "Restart zalecany", report.Preparation.RestartRecommended ? "TAK" : "NIE");
+            Add("PRZYGOTOWANIE", "Docelowy hostname", report.Preparation.TargetHostname);
+            Add("PRZYGOTOWANIE", "Domena", report.Preparation.Domain);
+
+            foreach (var operation in report.Preparation.RequestedOperations)
+                Add("PRZYGOTOWANIE", "Zaplanowana operacja", operation);
+
+            foreach (var application in report.Preparation.SelectedApplications)
+                Add("PRZYGOTOWANIE", "Wybrana aplikacja", application);
+
+            foreach (var step in report.Preparation.Steps)
+                Add("PRZYGOTOWANIE", step.Name, step.Status, step.Status, step.Details);
+        }
+
         if (report.Audit is null)
         {
             Add("AUDYT", "Stan", "NIE WYKONANO");
@@ -167,12 +190,49 @@ th{{background:#f7f7f7}}.grid{{display:grid;grid-template-columns:1fr 1fr;gap:12
 <tr><td>BitLocker</td><td>{E(h.BitLocker)}</td></tr>
 </table>
 
+<h2>Przygotowanie stacji</h2>
+{PreparationHtml(report.Preparation)}
+
 <h2>Audyt</h2>
 <div class=""summary"">{E(auditSummary)}</div>
 <table><tr><th>Kontrola</th><th>Status</th><th>Szczegóły</th></tr>{auditRows}</table>
 
 <footer>EDUFIXiarz · EDU-FIX IT · identyfikator raportu: {E(report.ReportId)}</footer>
 </main></body></html>";
+    }
+
+    private static string PreparationHtml(StationPreparation? preparation)
+    {
+        if (preparation is null)
+            return "<p>Przygotowanie stacji nie zostało wykonane.</p>";
+
+        var rows = new StringBuilder();
+        foreach (var step in preparation.Steps)
+        {
+            var css = step.Status == "OK" ? "ok" : step.Status == "ERROR" ? "error" : "warn";
+            rows.Append("<tr><td>")
+                .Append(E(step.Name))
+                .Append("</td><td><span class=\"status ")
+                .Append(css)
+                .Append("\">")
+                .Append(E(step.Status))
+                .Append("</span></td><td>")
+                .Append(E(step.Details))
+                .Append("</td></tr>");
+        }
+
+        var apps = preparation.SelectedApplications.Count == 0
+            ? "Brak"
+            : string.Join(" · ", preparation.SelectedApplications.Select(E));
+
+        return $@"<div class=""grid"">
+<div class=""card""><div class=""label"">Status</div><div class=""value"">{E(preparation.Completed ? "ZAKOŃCZONE" : "NIEZAKOŃCZONE")}</div></div>
+<div class=""card""><div class=""label"">Restart</div><div class=""value"">{E(preparation.RestartRecommended ? "ZALECANY" : "NIE WYMAGANY")}</div></div>
+<div class=""card""><div class=""label"">Docelowy hostname</div><div class=""value"">{E(preparation.TargetHostname)}</div></div>
+<div class=""card""><div class=""label"">Domena</div><div class=""value"">{E(preparation.Domain)}</div></div>
+</div>
+<table><tr><th>Etap</th><th>Status</th><th>Szczegóły</th></tr>{rows}</table>
+<p><strong>Wybrane aplikacje:</strong> {apps}</p>";
     }
 
     private static string Csv(string value) => "\"" + (value ?? string.Empty).Replace("\"", "\"\"") + "\"";
