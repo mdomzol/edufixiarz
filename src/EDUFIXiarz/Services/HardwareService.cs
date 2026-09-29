@@ -18,7 +18,7 @@ $ramModules = @(Get-CimInstance Win32_PhysicalMemory)
 $ramArray = Get-CimInstance Win32_PhysicalMemoryArray | Select-Object -First 1
 $gpus = @(Get-CimInstance Win32_VideoController)
 $disks = @(Get-CimInstance Win32_DiskDrive)
-$logicalDisks = @(Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3")
+$logicalDisks = @(Get-CimInstance Win32_LogicalDisk -Filter ""DriveType = 3"")
 $nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true -and $_.NetEnabled -eq $true })
 $netConfigs = @(Get-CimInstance Win32_NetworkAdapterConfiguration -ErrorAction SilentlyContinue | Where-Object { $_.IPEnabled -eq $true })
 $av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
