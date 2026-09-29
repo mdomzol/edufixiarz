@@ -39,8 +39,8 @@ public partial class MainWindow : Window
 
             OperationProgressBar.Value = 0;
             OperationProgressText.Text = "PRZYGOTOWANIE W TOKU…";
-            await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError, UpdateOperationProgress);
-            Log("Zakończono wybrane operacje.");
+            _currentPreparation = await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError, UpdateOperationProgress);
+            Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
             MessageBox.Show(
                 "Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
