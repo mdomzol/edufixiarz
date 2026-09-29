@@ -1,24 +1,32 @@
 using System.Windows;
 using System.Windows.Media;
+
 namespace EDUFIXiarz;
 
 public partial class MainWindow : Window
 {
+    private void ReportMenuButton_Click(object sender, RoutedEventArgs e) =>
+        ShowPage(ReportView);
 
-private void ReportMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(ReportView);
+    private void SetupMenuButton_Click(object sender, RoutedEventArgs e) =>
+        ShowPage(SetupView);
 
-private void SetupMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(SetupView);
+    private void AppsMenuButton_Click(object sender, RoutedEventArgs e) =>
+        ShowPage(AppsView);
 
-private void AppsMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(AppsView);
+    private void LogMenuButton_Click(object sender, RoutedEventArgs e) =>
+        ShowPage(LogView);
 
-private void LogMenuButton_Click(object sender, RoutedEventArgs e) => ShowPage(LogView);
-
-private void DomainCheck_Click(object sender, RoutedEventArgs e)
+    private void DomainCheck_Click(object sender, RoutedEventArgs e)
     {
         _joinDomainRequested = !_joinDomainRequested;
-        SetupView.DomainCredentialsExpander.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
+
+        SetupView.DomainCredentialsExpander.Visibility =
+            _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
         SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
-        SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+        SetupView.DomainCheck.Content =
+            _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
+
         SetupView.DomainCheck.Background = _joinDomainRequested
             ? FindResource("PanelAltBrush") as Brush
             : FindResource("InputBrush") as Brush;
@@ -34,7 +42,7 @@ private void DomainCheck_Click(object sender, RoutedEventArgs e)
             : "Wyłączono konfigurację dołączenia stacji do domeny AD.");
     }
 
-private void ShowPage(UIElement page)
+    private void ShowPage(UIElement page)
     {
         ReportView.Visibility = Visibility.Collapsed;
         SetupView.Visibility = Visibility.Collapsed;
@@ -57,7 +65,7 @@ private void ShowPage(UIElement page)
             : page == SetupView ? SetupMenuButton
             : page == AppsView ? AppsMenuButton
             : LogMenuButton;
+
         active.Tag = "Active";
     }
-
 }
