@@ -82,15 +82,15 @@ public sealed class FullStationReportExportService
 
         if (report.Audit is null)
         {
-            auditRows.Append("<tr><td colspan="3">Audyt nie został jeszcze wykonany.</td></tr>");
+            auditRows.Append("<tr><td colspan=\"3\">Audyt nie został jeszcze wykonany.</td></tr>");
         }
         else
         {
             foreach (var item in report.Audit.Items)
             {
                 var css = item.Status switch { "OK" => "ok", "ERROR" => "error", _ => "warn" };
-                auditRows.Append("<tr><td>").Append(E(item.Name)).Append("</td><td><span class="status ")
-                    .Append(css).Append("">").Append(E(item.Status)).Append("</span></td><td>")
+                auditRows.Append("<tr><td>").Append(E(item.Name)).Append("</td><td><span class=\"status ");
+                    .Append(css).Append("\">").Append(E(item.Status)).Append("</span></td><td>")
                     .Append(E(item.Details)).Append("</td></tr>");
             }
         }
