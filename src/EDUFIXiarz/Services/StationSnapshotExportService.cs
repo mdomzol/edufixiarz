@@ -65,6 +65,6 @@ footer{{margin-top:35px;color:#777;font-size:12px}}@media(max-width:700px){{body
 <h2>Oprogramowanie</h2><table><tr><th>Aplikacje</th></tr>{string.Join("",h.InstalledApplications.Select(x=>$"<tr><td>{E(x)}</td></tr>"))}</table>
 <footer>EDUFIXiarz · EDU-FIX IT · snapshot: {E(snapshot.SnapshotId)} · stacja: {E(snapshot.StationId)}</footer></main></body></html>";
     }
-    private static string Csv(string value) => """ + (value ?? string.Empty).Replace(""", """") + """;
+    private static string Csv(string value) => ((char)34) + (value ?? string.Empty).Replace(((char)34).ToString(), new string((char)34, 2)) + ((char)34);
     private static string E(string value) => WebUtility.HtmlEncode(value ?? string.Empty);
 }
