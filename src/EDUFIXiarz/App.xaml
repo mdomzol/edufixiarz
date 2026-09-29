@@ -195,11 +195,11 @@
         <Geometry x:Key="SnapshotIconGeometry">M4,5 H20 V19 H4 Z M7,8 H17 M7,12 H17 M7,16 H13</Geometry>
         <Geometry x:Key="BaseIconGeometry">M4,7 L12,4 L20,7 L12,10 Z M4,7 V17 L12,20 L20,17 V7 M12,10 V20</Geometry>
         <Geometry x:Key="ReportExportIconGeometry">M6,3 H15 L20,8 V21 H6 Z M15,3 V9 H20 M9,13 H13 M9,17 H16</Geometry>
-        <Geometry x:Key="AuditRunIconGeometry">M12,4 A8,8 0 1 0 20,12 M12,4 V8 M12,4 H16 M12,20 A8,8 0 0 0 20,12</Geometry>
-        <Geometry x:Key="AuditLastIconGeometry">M5,5 H19 V19 H5 Z M8,9 H16 M8,13 H14 M8,16 H12</Geometry>
-        <Geometry x:Key="AuditHistoryIconGeometry">M6,4 H18 V20 H6 Z M9,8 H15 M9,12 H15 M9,16 H13</Geometry>
-        <Geometry x:Key="AuditCompareIconGeometry">M5,8 H19 M15,4 L19,8 L15,12 M19,16 H5 M9,12 L5,16 L9,20</Geometry>
-        <Geometry x:Key="AuditExportIconGeometry">M6,3 H15 L20,8 V21 H6 Z M15,3 V9 H20 M12,12 V18 M9,15 L12,18 L15,15</Geometry>
+        <Geometry x:Key="AuditRunIconGeometry">M12,3 L20,7 V12 C20,17 16,20 12,22 C8,20 4,17 4,12 V7 Z M8,12 L11,15 L16,9</Geometry>
+        <Geometry x:Key="AuditLastIconGeometry">M12,4 A8,8 0 1 0 20,12 A8,8 0 0 0 12,4 M12,8 V12 L15,14</Geometry>
+        <Geometry x:Key="AuditHistoryIconGeometry">M6,5 H18 V19 H6 Z M9,9 H15 M9,13 H15 M9,17 H13 M4,8 V16</Geometry>
+        <Geometry x:Key="AuditCompareIconGeometry">M4,8 H20 M15,4 L20,8 L15,12 M20,16 H4 M9,12 L4,16 L9,20</Geometry>
+        <Geometry x:Key="AuditExportIconGeometry">M6,4 H15 L19,8 V20 H6 Z M15,4 V9 H19 M12,12 V17 M9,15 L12,18 L15,15</Geometry>
         <Geometry x:Key="SetupIconGeometry">M12,3 L20,7 L20,13 L18,17 L15,20 L12,22 L9,20 L6,17 L4,13 L4,7 Z</Geometry>
         <Geometry x:Key="AuditIconGeometry">M4,4 L20,4 L20,20 L4,20 Z</Geometry>
         <Geometry x:Key="LogIconGeometry">M5 3H19V21H5ZM8 7H16M8 11H16M8 15H13</Geometry>
