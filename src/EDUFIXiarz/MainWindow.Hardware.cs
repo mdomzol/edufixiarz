@@ -72,17 +72,7 @@ public partial class MainWindow : Window
 
         try
         {
-            var stationReport = new StationReport
-            {
-                ReportId = Guid.NewGuid().ToString("N"),
-                FormatVersion = StationReport.CurrentFormatVersion,
-                ApplicationVersion = "1.3.0",
-                GeneratedAt = DateTime.Now,
-                Hardware = _currentReport,
-                Preparation = _currentPreparation,
-                Audit = _currentAudit
-            };
-
+            var stationReport = CreateStationReport();
             var content = extension == "html"
                 ? _fullStationReportExportService.ToHtml(stationReport)
                 : _fullStationReportExportService.ToCsv(stationReport);
@@ -99,6 +89,60 @@ public partial class MainWindow : Window
         {
             LogException("EKSPORTU PEŁNEGO RAPORTU", ex);
             MessageBox.Show("Nie udało się zapisać raportu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private StationReport CreateStationReport() => new()
+    {
+        ReportId = Guid.NewGuid().ToString("N"),
+        FormatVersion = StationReport.CurrentFormatVersion,
+        ApplicationVersion = "1.3.0",
+        GeneratedAt = DateTime.Now,
+        Hardware = _currentReport!,
+        Preparation = _currentPreparation,
+        Audit = _currentAudit
+    };
+
+    private void ExportStationReportBundleButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_currentReport is null)
+        {
+            MessageBox.Show("Najpierw odczytaj raport stacji.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+
+        var dialog = new SaveFileDialog
+        {
+            FileName = $"EDUFIXiarz-Raport-{_currentReport.Hostname}-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+            Filter = "Komplet raportu — CSV + HTML (*.csv)|*.csv",
+            AddExtension = true,
+            DefaultExt = "csv",
+            OverwritePrompt = true
+        };
+
+        if (dialog.ShowDialog() != true)
+            return;
+
+        try
+        {
+            var stationReport = CreateStationReport();
+            var csvPath = dialog.FileName;
+            var htmlPath = Path.ChangeExtension(csvPath, ".html");
+
+            File.WriteAllText(csvPath, _fullStationReportExportService.ToCsv(stationReport), new UTF8Encoding(true));
+            File.WriteAllText(htmlPath, _fullStationReportExportService.ToHtml(stationReport), new UTF8Encoding(false));
+
+            Log($"Wyeksportowano komplet raportu: {csvPath} + {htmlPath}");
+            MessageBox.Show(
+                "Zapisano komplet raportu:\n\nCSV — dane dla EDUFIX Reader\nHTML — raport dla technika",
+                "EDUFIXiarz",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            LogException("EKSPORTU KOMPLETU RAPORTU", ex);
+            MessageBox.Show("Nie udało się zapisać kompletu raportu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
