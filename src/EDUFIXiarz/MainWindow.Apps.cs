@@ -174,5 +174,3 @@ private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
 
     private static string Escape(string value) => value.Replace("'", "''");
 }
-
-}
