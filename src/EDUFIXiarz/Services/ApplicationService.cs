@@ -78,18 +78,24 @@ public sealed class ApplicationService
         Action<string>? output,
         Action<string>? error)
     {
+        var command =
+            "$result = winget.exe list --id '" + Escape(packageId) +
+            "' --exact --accept-source-agreements --disable-interactivity 2>$null | Out-String; " +
+            "if ($LASTEXITCODE -eq 0) { $result }";
+
         var result = await _process.RunAsync(
-            "winget.exe",
+            "powershell.exe",
             [
-                "list",
-                "--id", packageId,
-                "--exact",
-                "--accept-source-agreements",
-                "--disable-interactivity"
+                "-NoProfile",
+                "-NonInteractive",
+                "-ExecutionPolicy", "Bypass",
+                "-Command", command
             ],
             output: null,
             error: error);
 
         return result.Contains(packageId, StringComparison.OrdinalIgnoreCase);
     }
+
+    private static string Escape(string value) => value.Replace("'", "''");
 }
