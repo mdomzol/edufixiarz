@@ -48,9 +48,9 @@ StationReport nie jest źródłem pojedynczego stanu stacji. Snapshoty pozostaj�
 
 ## Wersjonowanie
 
-SnapshotFormatVersion opisuje kontrakt CSV snapshotu. Zmiana struktury danych wymagająca zmian w Readerze powoduje zwiększenie wersji.
+SnapshotFormatVersion: 2
 
-ReportFormatVersion opisuje kontrakt pełnego raportu procesu.
+ReportFormatVersion: 3
 
 ApplicationVersion opisuje wersję programu, który wygenerował dane. Nie należy używać jej do wyboru parsera.
 
@@ -96,3 +96,18 @@ Reader powinien:
 8. generować zbiorcze podsumowanie.
 
 Reader nie powinien wymagać uruchomionego EDUFIXiarz ani dostępu do jego lokalnego magazynu.
+
+
+## Aktualny przepływ EDUFIXiarz
+
+1. ODCZYT STACJI — odczyt sprzętu i oprogramowania.
+2. Automatyczny snapshot ODCZYT — niezależny CSV + HTML.
+3. PLAN PRZYGOTOWANIA — wybrane operacje i aplikacje.
+4. SNAPSHOT PRZED-PRZYGOTOWANIEM — zapis automatyczny przed zmianami.
+5. WYKONANIE — realizacja przygotowania.
+6. ODCZYT KONTROLNY — ponowny odczyt po zmianach.
+7. SNAPSHOT PO-PRZYGOTOWANIU — zapis automatyczny.
+8. AUDYT KOŃCOWY — automatyczna kontrola po udanym przygotowaniu.
+9. RAPORT — zawiera stan przed, wykonanie, stan po, wykryte zmiany i audyt.
+
+Snapshoty pozostają niezależnymi artefaktami. Reader może analizować pojedynczy odczyt bez uruchamiania procesu przygotowania.
