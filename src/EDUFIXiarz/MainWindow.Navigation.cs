@@ -64,7 +64,6 @@ public partial class MainWindow : Window
         var reportVisible = page == ReportView;
         ReportHeader.Visibility = reportVisible ? Visibility.Visible : Visibility.Collapsed;
         AuditHeader.Visibility = page == AuditView ? Visibility.Visible : Visibility.Collapsed;
-        ReportStatusHeader.Visibility = reportVisible ? Visibility.Visible : Visibility.Collapsed;
         SetupHeader.Visibility = page == SetupView ? Visibility.Visible : Visibility.Collapsed;
 
         var active = page == ReportView ? ReportMenuButton
