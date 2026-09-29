@@ -103,8 +103,8 @@
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <CheckBox x:Name="AppsCheck" x:FieldModifier="public" Content="ZAINSTALUJ WYBRANE APLIKACJE" IsChecked="True" Style="{StaticResource SetupStepCheckBoxStyle}"/>
                                 </Grid>
-                                <Button x:Name="PreviewAppsButton" x:FieldModifier="public" Content="POKAŻ WYBRANE APLIKACJE  ›" HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Foreground="{StaticResource AccentBrush}" FontSize="9" FontWeight="Bold" Padding="0" Margin="24,7,0,0"/>
-                                <Border x:Name="AppsPreviewPanel" x:FieldModifier="public" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="5" Padding="11" Margin="24,9,0,0">
+                                <Button x:Name="PreviewAppsButton" x:FieldModifier="public" Content="POKAŻ WYBRANE APLIKACJE  ›" HorizontalAlignment="Left" Style="{StaticResource SetupPreviewButtonStyle}" Margin="24,7,0,0"/>
+                                <Border x:Name="AppsPreviewPanel" x:FieldModifier="public" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="5" Padding="11" Margin="24,9,0,0" Visibility="Collapsed">
                                     <StackPanel x:Name="AppsPreviewList" x:FieldModifier="public"/>
                                 </Border>
                             </StackPanel>
