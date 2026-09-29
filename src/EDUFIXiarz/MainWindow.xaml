@@ -72,7 +72,8 @@
                 </StackPanel>
                 <StackPanel x:Name="ReportStatusHeader" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="ExportStationReportBundleButton" x:FieldModifier="public" Content="↓  RAPORT CSV + HTML" Padding="10,7" Margin="0,0,6,8" Click="ExportStationReportBundleButton_Click" ToolTip="Zapisz CSV dla EDUFIX Reader oraz HTML dla technika"/>
+                        <Button x:Name="ExportStationSnapshotButton" x:FieldModifier="public" Content="↓  ZAPISZ ODCZYT" Padding="10,7" Margin="0,0,6,8" Click="ExportStationSnapshotButton_Click" ToolTip="Zapisz bieżący odczyt stacji jako osobne pliki CSV i HTML"/>
+                        <Button x:Name="ExportStationReportBundleButton" x:FieldModifier="public" Content="↓  RAPORT PEŁNY" Padding="10,7" Margin="0,0,6,8" Click="ExportStationReportBundleButton_Click" ToolTip="Zapisz raport procesu przygotowania wraz z audytem"/>
                         <Button x:Name="RefreshReportButton" x:FieldModifier="public" Content="↻  ODŚWIEŻ RAPORT" Padding="12,7" HorizontalAlignment="Right" Margin="0,0,0,8" Click="RefreshReportButton_Click"/>
                     </StackPanel>
                     <TextBlock Text="RAPORT SPRZĘTOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right"/>
