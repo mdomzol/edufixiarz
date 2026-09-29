@@ -48,7 +48,7 @@ public sealed class StationAuditService
     }
 
     private const string Script = @"
-$wu = Get-CimInstance Win32_Service -Filter "Name='wuauserv'" -ErrorAction SilentlyContinue
+$wu = Get-CimInstance Win32_Service -Filter ""Name='wuauserv'"" -ErrorAction SilentlyContinue
 $windowsUpdate = if ($wu -and $wu.StartMode -ne 'Disabled') { 'OK' } else { 'WARN' }
 $windowsUpdateDetails = if ($wu) { 'Stan: ' + $wu.State + '; tryb uruchamiania: ' + $wu.StartMode } else { 'Nie znaleziono usługi Windows Update.' }
 
