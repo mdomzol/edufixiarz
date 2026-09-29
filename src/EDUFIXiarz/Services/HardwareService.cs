@@ -20,6 +20,7 @@ $gpus = @(Get-CimInstance Win32_VideoController)
 $disks = @(Get-CimInstance Win32_DiskDrive)
 $logicalDisks = @(Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3")
 $nics = @(Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true -and $_.NetEnabled -eq $true })
+$netConfigs = @(Get-CimInstance Win32_NetworkAdapterConfiguration -ErrorAction SilentlyContinue | Where-Object { $_.IPEnabled -eq $true })
 $av = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue)
 function Safe($value) { if ($null -eq $value -or [string]::IsNullOrWhiteSpace([string]$value)) { return '—' }; return [string]$value }
 function SizeGB($bytes) { if ($null -eq $bytes) { return '—' }; return ('{0:N1} GB' -f ([double]$bytes / 1GB)) }
@@ -30,12 +31,21 @@ $physicalDisks = @($disks | ForEach-Object {
     $size = SizeGB $_.Size
     if ($_.Model) { (Safe $_.Model) + ' · ' + $size } else { $size }
 })
-$networkAdapters = @($nics | ForEach-Object {
-    if ($_.Name) {
-        $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }
-        (Safe $_.Name) + $mac
-    }
+$networkAdapters = @($netConfigs | ForEach-Object {
+    $name = if ($_.Description) { Safe $_.Description } else { Safe $_.Caption }
+    $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }
+    $ips = @($_.IPAddress | Where-Object { $_ -and ($_ -notlike 'fe80::*') })
+    $ipText = if ($ips.Count -gt 0) { ' · IP: ' + ($ips -join ', ') } else { '' }
+    $name + $mac + $ipText
 })
+if ($networkAdapters.Count -eq 0) {
+    $networkAdapters = @($nics | ForEach-Object {
+        if ($_.Name) {
+            $mac = if ($_.MACAddress) { ' · ' + $_.MACAddress } else { '' }
+            (Safe $_.Name) + $mac
+        }
+    })
+}
 $antivirusNames = @($av | ForEach-Object { if ($_.displayName) { $_.displayName } } | Sort-Object -Unique)
 if ($antivirusNames.Count -eq 0) {
     $antivirusNames = @('—')
