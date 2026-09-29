@@ -174,7 +174,6 @@ public partial class MainWindow : Window
     {
         _joinDomainRequested = !_joinDomainRequested;
         SetupView.DomainCredentialsPanel.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
-        SetupView.DomainCredentialsPanel.IsExpanded = _joinDomainRequested;
         SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
         SetupView.DomainCheck.Background = FindResource(_joinDomainRequested ? "PanelAltBrush" : "InputBrush") as Brush;
         SetupView.DomainCheck.BorderBrush = FindResource(_joinDomainRequested ? "AccentBrush" : "BorderBrush") as Brush;
@@ -264,7 +263,6 @@ public partial class MainWindow : Window
 
             _joinDomainRequested = profile.JoinDomain;
             SetupView.DomainCredentialsPanel.Visibility = _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
-            SetupView.DomainCredentialsPanel.IsExpanded = _joinDomainRequested;
             SetupView.DomainCheck.Content = _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
             SetupView.DomainCheck.Background = FindResource(_joinDomainRequested ? "PanelAltBrush" : "InputBrush") as Brush;
             SetupView.DomainCheck.BorderBrush = FindResource(_joinDomainRequested ? "AccentBrush" : "BorderBrush") as Brush;
