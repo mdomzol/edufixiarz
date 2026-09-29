@@ -12,8 +12,8 @@ public sealed class ProtocolExportService
         foreach (var item in audit.Items)
         {
             var css = item.Status switch { "OK" => "ok", "ERROR" => "error", _ => "warn" };
-            rows.Append("<tr><td>").Append(E(item.Name)).Append("</td><td><span class="status ")
-                .Append(css).Append("">").Append(E(item.Status)).Append("</span></td><td>")
+            rows.Append("<tr><td>").Append(E(item.Name)).Append("</td><td><span class=\"status ")
+                .Append(css).Append("\">").Append(E(item.Status)).Append("</span></td><td>")
                 .Append(E(item.Details)).Append("</td></tr>");
         }
 
