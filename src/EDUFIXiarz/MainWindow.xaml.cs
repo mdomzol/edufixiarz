@@ -49,6 +49,7 @@ public partial class MainWindow : Window
 
         AuditView.RunAuditButton.Click += RunAuditButton_Click;
         AuditView.ExportProtocolButton.Click += ExportProtocolButton_Click;
+        AuditView.LoadLastAuditButton.Click += LoadLastAuditButton_Click;
         SetupView.DomainCheck.Click += DomainCheck_Click;
         SetupView.PreviewAppsButton.Click += PreviewAppsButton_Click;
         SetupView.ResetSelectionButton.Click += ResetSelectionButton_Click;
