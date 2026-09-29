@@ -16,7 +16,7 @@ public partial class MainWindow : Window
     private async Task LoadHardwareReportAsync()
     {
         RefreshReportButton.IsEnabled = false;
-        HardwareStatusText.Text = "ODCZYTYWANIE INFORMACJI…";
+        HardwareStatusText.Text = "ODCZYTYWANIE…";
 
         try
         {
@@ -24,7 +24,7 @@ public partial class MainWindow : Window
             var report = await _hardwareService.GetReportAsync(LogError);
             _currentReport = report;
             DataContext = report;
-            HardwareStatusText.Text = $"ODCZYTANO · {DateTime.Now:HH:mm:ss}";
+            HardwareStatusText.Text = $"GOTOWY · {DateTime.Now:HH:mm:ss}";
             Log("Raport sprzętowy został odczytany.");
 
             var readSnapshot = new StationSnapshot
@@ -48,7 +48,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            HardwareStatusText.Text = "NIE UDAŁO SIĘ ODCZYTAĆ RAPORTU";
+            HardwareStatusText.Text = "BŁĄD ODCZYTU";
             LogException("RAPORTU SPRZĘTOWEGO", ex);
         }
         finally
