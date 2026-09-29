@@ -123,4 +123,12 @@ public partial class MainWindow : Window
         if (!string.IsNullOrWhiteSpace(error))
             Log("BŁĄD PROCESU: " + error);
     }
+
+    private void LogException(string context, Exception exception)
+    {
+        Log($"BŁĄD {context}: {exception.Message}");
+
+        for (var inner = exception.InnerException; inner is not null; inner = inner.InnerException)
+            Log($"SZCZEGÓŁ: {inner.Message}");
+    }
 }
