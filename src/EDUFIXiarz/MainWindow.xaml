@@ -152,13 +152,13 @@
                                 <StackPanel Orientation="Horizontal"><Path Data="{StaticResource RefreshIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="ODŚWIEŻ"/></StackPanel>
                             </Button>
                             <Button x:Name="ExportStationSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportStationSnapshotButton_Click" ToolTip="Zapisz bieżący odczyt stacji jako CSV i HTML">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource DownloadIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="ODCZYT"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SnapshotIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="ODCZYT"/></StackPanel>
                             </Button>
                             <Button x:Name="ExportBeforeSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportBeforeSnapshotButton_Click" ToolTip="Zapisz odczyt bazowy sprzed przygotowania">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource DownloadIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="BAZA"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource BaseIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="BAZA"/></StackPanel>
                             </Button>
                             <Button x:Name="ExportStationReportBundleButton" x:FieldModifier="public" Style="{StaticResource PrimaryToolbarButton}" Click="ExportStationReportBundleButton_Click" ToolTip="Eksportuj pełny raport procesu">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource DownloadIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="RAPORT PEŁNY"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportExportIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="RAPORT PEŁNY"/></StackPanel>
                             </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
