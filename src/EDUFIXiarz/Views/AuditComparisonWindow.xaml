@@ -1,0 +1,71 @@
+<Window x:Class="EDUFIXiarz.Views.AuditComparisonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="EDUFIXiarz — Porównanie audytów"
+        Width="920" Height="620"
+        MinWidth="760" MinHeight="480"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource WindowBrush}"
+        Foreground="{StaticResource TextBrush}">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="PORÓWNANIE AUDYTÓW" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+            <TextBlock x:Name="HeaderText" Text="Bieżący audyt względem poprzedniego." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="0,18,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,6,0">
+                <StackPanel><TextBlock Text="POPRAWA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="ImprovedText" Text="0" FontSize="25" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel>
+            </Border>
+            <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="6,0">
+                <StackPanel><TextBlock Text="POGORSZENIE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="WorsenedText" Text="0" FontSize="25" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel>
+            </Border>
+            <Border Grid.Column="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="6,0,0,0">
+                <StackPanel><TextBlock Text="BEZ ZMIAN" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock x:Name="UnchangedText" Text="0" FontSize="25" FontWeight="SemiBold" Margin="0,3,0,0"/></StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+            <DataGrid x:Name="ComparisonGrid" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                      GridLinesVisibility="None" Background="Transparent" Foreground="{StaticResource TextBrush}"
+                      BorderThickness="0" RowBackground="{StaticResource PanelBrush}" AlternatingRowBackground="{StaticResource PanelAltBrush}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="220"/>
+                    <DataGridTemplateColumn Header="ZMIANA" Width="130">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border CornerRadius="5" Padding="8,3" HorizontalAlignment="Left">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Direction}" Value="POPRAWA"><Setter Property="Background" Value="#183A211F"/></DataTrigger>
+                                                <DataTrigger Binding="{Binding Direction}" Value="POGORSZENIE"><Setter Property="Background" Value="#3A1D1D"/></DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Text="{Binding Direction}" FontWeight="Bold" FontSize="11"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="POPRZEDNIO" Binding="{Binding PreviousStatus}" Width="110"/>
+                    <DataGridTextColumn Header="OBECNIE" Binding="{Binding CurrentStatus}" Width="110"/>
+                    <DataGridTextColumn Header="SZCZEGÓŁY" Binding="{Binding CurrentDetails}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Button Grid.Row="3" Content="ZAMKNIJ" HorizontalAlignment="Right" Padding="16,8" Margin="0,14,0,0" IsDefault="True" Click="CloseButton_Click"/>
+    </Grid>
+</Window>
