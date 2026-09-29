@@ -26,7 +26,36 @@
     <DataGrid x:Name="AuditGrid" x:FieldModifier="public" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="None" Background="Transparent" Foreground="{StaticResource TextBrush}" BorderThickness="0" RowBackground="{StaticResource PanelBrush}" AlternatingRowBackground="{StaticResource PanelAltBrush}">
      <DataGrid.Columns>
       <DataGridTextColumn Header="KONTROLA" Binding="{Binding Name}" Width="230"/>
-      <DataGridTextColumn Header="STATUS" Binding="{Binding Status}" Width="100"/>
+      <DataGridTemplateColumn Header="STATUS" Width="110">
+       <DataGridTemplateColumn.CellTemplate>
+        <DataTemplate>
+         <Border CornerRadius="5" Padding="8,3" HorizontalAlignment="Left">
+          <Border.Style>
+           <Style TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
+            <Style.Triggers>
+             <DataTrigger Binding="{Binding Status}" Value="OK"><Setter Property="Background" Value="#183A211F"/></DataTrigger>
+             <DataTrigger Binding="{Binding Status}" Value="WARN"><Setter Property="Background" Value="#3A3018"/></DataTrigger>
+             <DataTrigger Binding="{Binding Status}" Value="ERROR"><Setter Property="Background" Value="#3A1D1D"/></DataTrigger>
+            </Style.Triggers>
+           </Style>
+          </Border.Style>
+          <TextBlock Text="{Binding Status}" FontWeight="Bold" FontSize="11">
+           <TextBlock.Style>
+            <Style TargetType="TextBlock">
+             <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+             <Style.Triggers>
+              <DataTrigger Binding="{Binding Status}" Value="OK"><Setter Property="Foreground" Value="#7DDB91"/></DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="WARN"><Setter Property="Foreground" Value="#F4C86A"/></DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="ERROR"><Setter Property="Foreground" Value="#FF8585"/></DataTrigger>
+             </Style.Triggers>
+            </Style>
+           </TextBlock.Style>
+          </TextBlock>
+         </Border>
+        </DataTemplate>
+       </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
       <DataGridTextColumn Header="SZCZEGÓŁY" Binding="{Binding Details}" Width="*"/>
      </DataGrid.Columns>
     </DataGrid>
