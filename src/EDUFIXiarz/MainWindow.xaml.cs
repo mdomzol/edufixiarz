@@ -97,7 +97,6 @@ public partial class MainWindow : Window
         _auditComparisonService = new AuditComparisonService();
 
         SetupView.HostnameBox.Text = Environment.MachineName;
-        UpdateSelectedAppsCount();
 
         PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
         PrivilegeText.Foreground = IsAdministrator() ? Brushes.LightGreen : Brushes.Orange;
