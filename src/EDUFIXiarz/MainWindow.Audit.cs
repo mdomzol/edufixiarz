@@ -103,14 +103,11 @@ public partial class MainWindow : Window
         }
 
         var comparison = _auditComparisonService.Compare(_previousAudit, _currentAudit);
-        var lines = comparison.Changes.Select(x =>
-            $"{x.Direction,-11} {x.Name}: {x.PreviousStatus} → {x.CurrentStatus}");
-
-        var message = $"Poprawa: {comparison.ImprovedCount}    Pogorszenie: {comparison.WorsenedCount}    Bez zmian: {comparison.UnchangedCount}"
-            + Environment.NewLine + Environment.NewLine
-            + string.Join(Environment.NewLine, lines);
-
-        MessageBox.Show(message, "EDUFIXiarz — porównanie audytów", MessageBoxButton.OK, MessageBoxImage.Information);
+        var window = new Views.AuditComparisonWindow(comparison, _previousAudit, _currentAudit)
+        {
+            Owner = this
+        };
+        window.ShowDialog();
         Log($"Porównano audyty: poprawa={comparison.ImprovedCount}, pogorszenie={comparison.WorsenedCount}, bez zmian={comparison.UnchangedCount}.");
     }
 }
