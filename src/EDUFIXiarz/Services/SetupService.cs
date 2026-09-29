@@ -40,7 +40,7 @@ public sealed class SetupService
         if (options.ChangeHostname)
         {
             output?.Invoke("Zmiana hostname…");
-            await _powerShell.RunAsync(
+            await RunPowerShellAsync(
                 $"Rename-Computer -NewName '{Escape(options.Hostname)}' -Force",
                 output,
                 error);
@@ -77,7 +77,7 @@ public sealed class SetupService
             output?.Invoke("Dołączenie do domeny może wymagać ponownego uruchomienia stacji.");
         }
 
-        output?.Invoke("Wszystkie zaplanowane operacje zostały wykonane.");
+        output?.Invoke("Wszystkie zaplanowane etapy zostały wykonane. Sprawdź dziennik pod kątem ostrzeżeń.");
     }
 
     private static void ValidateOptions(SetupOptions options, IReadOnlyCollection<AppDefinition> applications)
@@ -110,6 +110,14 @@ public sealed class SetupService
         if (options.InstallApplications && applications.Count == 0)
             throw new InvalidOperationException("Włączono instalację aplikacji, ale nie wybrano żadnego programu.");
     }
+
+    private Task<string> RunPowerShellAsync(
+        string command,
+        Action<string>? output,
+        Action<string>? error) =>
+        _powerShell.RunAsync(command, output, error);
+
+    private readonly PowerShellService _domainPowerShell;
 
     private static string Escape(string value) => value.Replace("'", "''");
 }
