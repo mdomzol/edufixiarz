@@ -37,9 +37,24 @@ public partial class MainWindow : Window
                 InstallApplications = SetupView.AppsCheck.IsChecked == true
             };
 
+            if (_currentReport is null)
+            {
+                Log("Brak aktualnego odczytu sprzętu — wykonuję odczyt bazowy przed przygotowaniem.");
+                _hardwareBeforePreparation = await _hardwareService.GetReportAsync(LogError);
+                _currentReport = _hardwareBeforePreparation;
+            }
+            else
+            {
+                _hardwareBeforePreparation = _currentReport;
+            }
+
             OperationProgressBar.Value = 0;
             OperationProgressText.Text = "PRZYGOTOWANIE W TOKU…";
             _currentPreparation = await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError, UpdateOperationProgress);
+            Log("Przygotowanie zakończone — wykonuję odczyt kontrolny stacji.");
+            var afterPreparation = await _hardwareService.GetReportAsync(LogError);
+            _currentReport = afterPreparation;
+            DataContext = afterPreparation;
             Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
             MessageBox.Show(
