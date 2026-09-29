@@ -46,3 +46,4 @@ if ($failed -gt 0) {
     Write-Output 'Czyszczenie AppX zakończono z ostrzeżeniami — pozostałe pakiety zostały przetworzone.'
 }
 ", output, error);
+}
