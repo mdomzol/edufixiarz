@@ -1,12 +1,12 @@
 using System.Windows;
 using System.Windows.Media;
 using EDUFIXiarz.Models;
+
 namespace EDUFIXiarz;
 
 public partial class MainWindow : Window
 {
-
-private async void RunButton_Click(object sender, RoutedEventArgs e)
+    private async void RunButton_Click(object sender, RoutedEventArgs e)
     {
         if (!IsAdministrator())
         {
@@ -35,8 +35,6 @@ private async void RunButton_Click(object sender, RoutedEventArgs e)
             };
 
             await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError);
-            SetupView.DomainPasswordBox.Clear();
-
             Log("Zakończono wybrane operacje.");
             ShowPage(LogView);
             MessageBox.Show(
@@ -53,6 +51,7 @@ private async void RunButton_Click(object sender, RoutedEventArgs e)
         }
         finally
         {
+            SetupView.DomainPasswordBox.Clear();
             SetupView.RunButton.IsEnabled = true;
         }
     }
@@ -60,20 +59,27 @@ private async void RunButton_Click(object sender, RoutedEventArgs e)
     private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
     {
         SetupView.HostnameCheck.IsChecked = false;
+        SetupView.BloatwareCheck.IsChecked = false;
+        SetupView.OfficeCheck.IsChecked = false;
+        SetupView.AppsCheck.IsChecked = false;
+
+        SetupView.HostnameBox.Text = Environment.MachineName;
+
         _joinDomainRequested = false;
         SetupView.DomainCredentialsExpander.IsExpanded = false;
         SetupView.DomainCredentialsExpander.Visibility = Visibility.Collapsed;
         SetupView.DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
         SetupView.DomainCheck.Background = FindResource("InputBrush") as Brush;
         SetupView.DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
+        SetupView.DomainBox.Clear();
+        SetupView.DomainUserBox.Clear();
         SetupView.DomainPasswordBox.Clear();
-        SetupView.BloatwareCheck.IsChecked = false;
-        SetupView.OfficeCheck.IsChecked = false;
-        ClearAllAppsButton_Click(sender, e);
+
+        SetAppSelection();
         SetupView.AppsPreviewPanel.Visibility = Visibility.Collapsed;
         SetupView.PreviewAppsButton.Content = "POKAŻ WYBRANE APLIKACJE  ›";
         SetupView.AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
+
         Log("Wybór zadań i aplikacji został wyzerowany.");
     }
-
 }
