@@ -43,18 +43,14 @@ private void PreviewAppsButton_Click(object sender, RoutedEventArgs e)
     {
         var selected = GetSelectedApps();
 
-        SetupView.SelectedAppsCountText.Text = selected.Count.ToString();
         SetupView.AppsPreviewList.Children.Clear();
 
         if (selected.Count == 0)
         {
-            SetupView.AppsPreviewSummaryText.Text = "Brak aplikacji wskazanych do instalacji.";
+            AddEmptyAppsPreviewMessage();
         }
         else
         {
-            var summary = selected.Count == 1 ? "aplikacja wskazana" : "aplikacje wskazane";
-            SetupView.AppsPreviewSummaryText.Text = $"{selected.Count} {summary} do instalacji.";
-
             for (var index = 0; index < selected.Count; index++)
             {
                 var item = new Border
@@ -117,7 +113,17 @@ private void SetAppSelection(params string[] aliases)
 
 private void UpdateSelectedAppsCount()
     {
-        SetupView.SelectedAppsCountText.Text = GetSelectedApps().Count.ToString();
+    }
+
+    private void AddEmptyAppsPreviewMessage()
+    {
+        SetupView.AppsPreviewList.Children.Add(new TextBlock
+        {
+            Text = "Brak wybranych aplikacji.",
+            FontSize = 11,
+            Foreground = FindResource("MutedBrush") as Brush,
+            Margin = new Thickness(0, 0, 0, 2)
+        });
     }
 
 private void StandardPackageButton_Click(object sender, RoutedEventArgs e)
