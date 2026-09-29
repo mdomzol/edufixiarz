@@ -94,5 +94,4 @@ public sealed class ApplicationService
         return result.Contains(packageId, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static string Escape(string value) => value.Replace("'", "''");
 }
