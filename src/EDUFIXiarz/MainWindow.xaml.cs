@@ -60,7 +60,7 @@ public partial class MainWindow : Window
         AuditView.LoadLastAuditButton.Click += LoadLastAuditButton_Click;
         AuditView.CompareAuditButton.Click += CompareAuditButton_Click;
         AuditView.HistoryButton.Click += HistoryButton_Click;
-        SetupView.DomainCheck.Click += DomainCheck_Click;
+        SetupView.DomainCheck.Click += ToggleDomainSetup_Click;
         SetupView.PreviewAppsButton.Click += PreviewAppsButton_Click;
         SetupView.ResetSelectionButton.Click += ResetSelectionButton_Click;
         SetupView.RunButton.Click += RunButton_Click;
