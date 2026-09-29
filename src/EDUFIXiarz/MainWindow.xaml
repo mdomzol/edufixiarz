@@ -68,7 +68,11 @@
                     <TextBlock Text="Identyfikacja komputera, podzespoły i parametry systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
                 <StackPanel x:Name="ReportStatusHeader" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button x:Name="RefreshReportButton" x:FieldModifier="public" Content="↻  ODŚWIEŻ RAPORT" Padding="12,7" HorizontalAlignment="Right" Margin="0,0,0,8" Click="RefreshReportButton_Click"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="ExportReportJsonButton" x:FieldModifier="public" Content="↓  JSON" Padding="10,7" Margin="0,0,6,8" Click="ExportReportJsonButton_Click" ToolTip="Eksportuj aktualny raport do pliku JSON"/>
+                        <Button x:Name="ExportReportCsvButton" x:FieldModifier="public" Content="↓  CSV" Padding="10,7" Margin="0,0,6,8" Click="ExportReportCsvButton_Click" ToolTip="Eksportuj aktualny raport do pliku CSV"/>
+                        <Button x:Name="RefreshReportButton" x:FieldModifier="public" Content="↻  ODŚWIEŻ RAPORT" Padding="12,7" HorizontalAlignment="Right" Margin="0,0,0,8" Click="RefreshReportButton_Click"/>
+                    </StackPanel>
                     <TextBlock Text="RAPORT SPRZĘTOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right"/>
                     <TextBlock x:Name="HardwareStatusText" Text="URUCHAMIANIE…" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,4,0,0"/>
                 </StackPanel>
