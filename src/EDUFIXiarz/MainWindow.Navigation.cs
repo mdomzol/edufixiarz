@@ -20,31 +20,6 @@ public partial class MainWindow : Window
     private void LogMenuButton_Click(object sender, RoutedEventArgs e) =>
         ShowPage(LogView);
 
-    private void DomainCheck_Click(object sender, RoutedEventArgs e)
-    {
-        _joinDomainRequested = !_joinDomainRequested;
-
-        SetupView.DomainCredentialsExpander.Visibility =
-            _joinDomainRequested ? Visibility.Visible : Visibility.Collapsed;
-        SetupView.DomainCredentialsExpander.IsExpanded = _joinDomainRequested;
-        SetupView.DomainCheck.Content =
-            _joinDomainRequested ? "ANULUJ DOŁĄCZANIE DO DOMENY" : "DOŁĄCZ DO DOMENY AD";
-
-        SetupView.DomainCheck.Background = _joinDomainRequested
-            ? FindResource("PanelAltBrush") as Brush
-            : FindResource("InputBrush") as Brush;
-        SetupView.DomainCheck.BorderBrush = _joinDomainRequested
-            ? FindResource("AccentBrush") as Brush
-            : FindResource("BorderBrush") as Brush;
-
-        if (!_joinDomainRequested)
-            SetupView.DomainPasswordBox.Clear();
-
-        Log(_joinDomainRequested
-            ? "Włączono konfigurację dołączenia stacji do domeny AD."
-            : "Wyłączono konfigurację dołączenia stacji do domeny AD.");
-    }
-
     private void ShowPage(UIElement page)
     {
         ReportView.Visibility = Visibility.Collapsed;
