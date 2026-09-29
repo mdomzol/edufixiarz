@@ -43,15 +43,8 @@ public partial class MainWindow : Window
 
         SetupView.DomainCheck.Click += DomainCheck_Click;
         SetupView.PreviewAppsButton.Click += PreviewAppsButton_Click;
-        SetupView.ResetSelectionButton.Click += ResetSelectionButton_Click;
         SetupView.RunButton.Click += RunButton_Click;
 
-        AppsView.SelectAllAppsButton.Click += SelectAllAppsButton_Click;
-        AppsView.ClearAllAppsButton.Click += ClearAllAppsButton_Click;
-        AppsView.StandardPackageButton.Click += StandardPackageButton_Click;
-        AppsView.BasicPackageButton.Click += BasicPackageButton_Click;
-        AppsView.DeveloperPackageButton.Click += DeveloperPackageButton_Click;
-        AppsView.GraphicsPackageButton.Click += GraphicsPackageButton_Click;
 
         _processService = new ProcessService();
         _powerShellService = new PowerShellService(_processService);
