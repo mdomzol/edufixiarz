@@ -75,6 +75,8 @@ public sealed class SetupService
             output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
             await _applications.InstallAsync(selectedApplications, output, error);
         }
+
+        output?.Invoke("Wszystkie zaplanowane operacje zostały wykonane.");
     }
 
     private static void ValidateOptions(SetupOptions options, IReadOnlyCollection<AppDefinition> applications)
