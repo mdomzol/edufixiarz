@@ -213,6 +213,9 @@ public partial class MainWindow : Window
         GeneratedAt = DateTime.Now,
         BeforeSnapshot = _hardwareBeforePreparation is null ? null : CreateSnapshot(_hardwareBeforePreparation, StationSnapshot.Stages.BeforePreparation),
         Preparation = _currentPreparation,
+        Comparison = _snapshotComparisonService.Compare(
+            _hardwareBeforePreparation is null ? null : CreateSnapshot(_hardwareBeforePreparation, StationSnapshot.Stages.BeforePreparation),
+            _currentReport is null ? null : CreateSnapshot(_currentReport, _currentPreparation is null ? StationSnapshot.Stages.Read : StationSnapshot.Stages.AfterPreparation)),
         AfterSnapshot = _currentReport is null ? null : CreateSnapshot(_currentReport, _currentPreparation is null ? StationSnapshot.Stages.Read : StationSnapshot.Stages.AfterPreparation),
         Audit = _currentAudit
     };
