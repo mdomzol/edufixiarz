@@ -18,8 +18,12 @@ public sealed class HardwareReport
     public int RamUsedSlots { get; set; }
     public string Motherboard { get; set; } = "—";
     public string Bios { get; set; } = "—";
+    public string Tpm { get; set; } = "—";
+    public string SecureBoot { get; set; } = "—";
+    public string BitLocker { get; set; } = "—";
     public List<string> Gpus { get; set; } = [];
     public List<string> PhysicalDisks { get; set; } = [];
+    public List<string> LogicalDisks { get; set; } = [];
     public List<string> NetworkAdapters { get; set; } = [];
     public List<string> Antivirus { get; set; } = [];
 }
