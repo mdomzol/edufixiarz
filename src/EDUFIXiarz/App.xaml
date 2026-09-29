@@ -104,11 +104,11 @@
                             </Grid.ColumnDefinitions>
                             <ContentPresenter VerticalAlignment="Center" ContentSource="Content"/>
                             <Border Grid.Column="1" Width="38" Height="22" CornerRadius="11"
-                                    Background="{StaticResource TextBrush}"
+                                    Background="{StaticResource PanelAltBrush}"
                                     BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
                                 <Grid>
                                     <Ellipse x:Name="ToggleThumb" Width="14" Height="14"
-                                             Fill="{StaticResource PanelBrush}" HorizontalAlignment="Left" Margin="3,0"/>
+                                             Fill="{StaticResource TextBrush}" HorizontalAlignment="Left" Margin="3,0"/>
                                 </Grid>
                             </Border>
                         </Grid>
@@ -121,7 +121,7 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="ToggleThumb" Property="HorizontalAlignment" Value="Right"/>
-                                <Setter TargetName="ToggleThumb" Property="Fill" Value="White"/>
+                                <Setter TargetName="ToggleThumb" Property="Fill" Value="{StaticResource AccentBrush}"/>
                                 <Setter TargetName="ToggleThumb" Property="Margin" Value="0,0,3,0"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
