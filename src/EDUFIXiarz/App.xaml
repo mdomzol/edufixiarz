@@ -38,6 +38,30 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="ToolbarButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="Padding" Value="13,10"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{StaticResource PanelAltBrush}"/><Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/></Trigger>
+                <Trigger Property="IsPressed" Value="True"><Setter Property="Background" Value="{StaticResource AccentBrush}"/></Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PrimaryToolbarButton" TargetType="Button" BasedOn="{StaticResource ToolbarButton}">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{StaticResource AccentHoverBrush}"/><Setter Property="BorderBrush" Value="{StaticResource AccentHoverBrush}"/></Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style TargetType="TextBox">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
             <Setter Property="Background" Value="{StaticResource InputBrush}"/>
@@ -96,7 +120,9 @@
         </Style>
 
         <!-- EDUFIXiarz vector icon set. The same geometries are also represented as SVG files in Assets/Icons. -->
-        <Geometry x:Key="ReportIconGeometry">M12 3V21M5 6H19M5 12H19M5 18H19</Geometry>
+        <Geometry x:Key="ReportIconGeometry">M6,3 H15 L20,8 V21 H6 Z M14,3 V9 H20 M9,13 H17 M9,17 H17</Geometry>
+        <Geometry x:Key="RefreshIconGeometry">M20,11 A8,8 0 1 0 18,16 M20,11 V5 M20,11 H14</Geometry>
+        <Geometry x:Key="DownloadIconGeometry">M12,4 V15 M7,11 L12,16 L17,11 M5,20 H19</Geometry>
         <Geometry x:Key="SetupIconGeometry">M12,3 L20,7 L20,13 L18,17 L15,20 L12,22 L9,20 L6,17 L4,13 L4,7 Z</Geometry>
         <Geometry x:Key="AuditIconGeometry">M4,4 L20,4 L20,20 L4,20 Z</Geometry>
         <Geometry x:Key="LogIconGeometry">M5 3H19V21H5ZM8 7H16M8 11H16M8 15H13</Geometry>
