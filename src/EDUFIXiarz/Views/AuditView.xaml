@@ -61,7 +61,7 @@
        <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
        <Setter Property="FontSize" Value="9"/>
        <Setter Property="FontWeight" Value="Bold"/>
-       <Setter Property="Padding" Value="18,0"/>
+       <Setter Property="Padding" Value="18,8"/>
        <Setter Property="VerticalContentAlignment" Value="Center"/>
        <Setter Property="HorizontalContentAlignment" Value="Left"/>
        <Setter Property="BorderThickness" Value="0,0,0,1"/>
