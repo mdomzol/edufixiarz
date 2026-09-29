@@ -10,6 +10,7 @@
     <StackPanel Grid.Column="1" Orientation="Horizontal">
      <Button x:Name="RunAuditButton" x:FieldModifier="public" Content="↻  URUCHOM AUDYT" Padding="12,7" Margin="0,0,8,0"/>
      <Button x:Name="LoadLastAuditButton" x:FieldModifier="public" Content="↶  OSTATNI AUDYT" Padding="12,7" Margin="0,0,8,0" ToolTip="Wczytaj ostatnio zapisany audyt tej stacji"/>
+     <Button x:Name="HistoryButton" x:FieldModifier="public" Content="☷  HISTORIA" Padding="12,7" Margin="0,0,8,0" ToolTip="Otwórz historię audytów"/>
      <Button x:Name="CompareAuditButton" x:FieldModifier="public" Content="⇄  PORÓWNAJ" Padding="12,7" Margin="0,0,8,0" ToolTip="Porównaj bieżący audyt z poprzednim"/>
      <Button x:Name="ExportProtocolButton" x:FieldModifier="public" Content="↓  PROTOKÓŁ HTML" Padding="12,7" ToolTip="Zapisz protokół odbioru stacji jako HTML"/>
     </StackPanel>
