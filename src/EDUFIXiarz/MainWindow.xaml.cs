@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     private readonly ApplicationService _applicationService;
     private readonly SetupService _setupService;
     private readonly ReportExportService _reportExportService;
+    private readonly ProfileService _profileService;
     private HardwareReport? _currentReport;
     private bool _joinDomainRequested;
 
@@ -49,6 +50,8 @@ public partial class MainWindow : Window
         SetupView.OfficeProfileButton.Click += OfficeProfileButton_Click;
         SetupView.DeveloperProfileButton.Click += DeveloperProfileButton_Click;
         SetupView.FullProfileButton.Click += FullProfileButton_Click;
+        SetupView.SaveProfileButton.Click += SaveProfileButton_Click;
+        SetupView.LoadProfileButton.Click += LoadProfileButton_Click;
 
         AppsView.SelectAllAppsButton.Click += SelectAllAppsButton_Click;
         AppsView.ClearAllAppsButton.Click += ClearAllAppsButton_Click;
@@ -66,6 +69,7 @@ public partial class MainWindow : Window
         _applicationService = new ApplicationService(_processService);
         _setupService = new SetupService(_powerShellService, _domainService, _bloatwareService, _officeService, _applicationService);
         _reportExportService = new ReportExportService();
+        _profileService = new ProfileService();
 
         SetupView.HostnameBox.Text = Environment.MachineName;
         UpdateSelectedAppsCount();
