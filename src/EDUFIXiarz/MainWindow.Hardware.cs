@@ -1,9 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using System.IO;
 using System.Text;
 using System.Windows;
 using Microsoft.Win32;
+using EDUFIXiarz.Models;
 
 namespace EDUFIXiarz;
 
@@ -39,28 +38,30 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ExportReportJsonButton_Click(object sender, RoutedEventArgs e)
+    private void ExportFullReportHtmlButton_Click(object sender, RoutedEventArgs e)
     {
-        ExportReport("json", _reportExportService.ToJson);
+        ExportFullStationReport("html");
     }
 
-    private void ExportReportCsvButton_Click(object sender, RoutedEventArgs e)
+    private void ExportFullReportCsvButton_Click(object sender, RoutedEventArgs e)
     {
-        ExportReport("csv", _reportExportService.ToCsv);
+        ExportFullStationReport("csv");
     }
 
-    private void ExportReport(string extension, Func<HardwareReport, string> formatter)
+    private void ExportFullStationReport(string extension)
     {
         if (_currentReport is null)
         {
-            MessageBox.Show("Najpierw odczytaj raport sprzętowy.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Najpierw odczytaj raport stacji.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
         var dialog = new SaveFileDialog
         {
-            FileName = $"EDUFIXiarz-{_currentReport.Hostname}-{DateTime.Now:yyyyMMdd-HHmmss}.{extension}",
-            Filter = extension == "json" ? "Raport JSON (*.json)|*.json" : "Raport CSV (*.csv)|*.csv",
+            FileName = $"EDUFIXiarz-Raport-{_currentReport.Hostname}-{DateTime.Now:yyyyMMdd-HHmmss}.{extension}",
+            Filter = extension == "html"
+                ? "Raport HTML (*.html)|*.html"
+                : "Raport CSV (*.csv)|*.csv",
             AddExtension = true,
             DefaultExt = extension,
             OverwritePrompt = true
@@ -71,18 +72,31 @@ public partial class MainWindow : Window
 
         try
         {
-            var content = formatter(_currentReport);
-            if (extension == "csv")
-                File.WriteAllText(dialog.FileName, content, new UTF8Encoding(true));
-            else
-                File.WriteAllText(dialog.FileName, content, Encoding.UTF8);
+            var stationReport = new StationReport
+            {
+                ReportId = Guid.NewGuid().ToString("N"),
+                FormatVersion = StationReport.CurrentFormatVersion,
+                ApplicationVersion = "1.3.0",
+                GeneratedAt = DateTime.Now,
+                Hardware = _currentReport,
+                Audit = _currentAudit
+            };
 
-            Log($"Wyeksportowano raport: {dialog.FileName}");
-            MessageBox.Show("Raport został zapisany.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
+            var content = extension == "html"
+                ? _fullStationReportExportService.ToHtml(stationReport)
+                : _fullStationReportExportService.ToCsv(stationReport);
+
+            File.WriteAllText(
+                dialog.FileName,
+                content,
+                extension == "csv" ? new UTF8Encoding(true) : new UTF8Encoding(false));
+
+            Log($"Wyeksportowano pełny raport stacji: {dialog.FileName}");
+            MessageBox.Show("Pełny raport został zapisany.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            LogException("EKSPORTU RAPORTU", ex);
+            LogException("EKSPORTU PEŁNEGO RAPORTU", ex);
             MessageBox.Show("Nie udało się zapisać raportu. " + ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
