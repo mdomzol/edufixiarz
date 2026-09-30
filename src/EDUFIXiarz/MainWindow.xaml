@@ -131,20 +131,20 @@
                 <StackPanel Grid.Row="1" Margin="0,42,0,0">
                     <TextBlock Text="STACJA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="12,0,0,10"/>
                     <Button x:Name="ReportMenuButton" Style="{StaticResource NavButton}" Click="ReportMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/report-gr.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/report-gr.png" Width="20" Height="20" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
                     </Button>
                     <Button x:Name="AuditMenuButton" Style="{StaticResource NavButton}" Click="AuditMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/audit-gr.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="AUDYT"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/audit-gr.png" Width="20" Height="20" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="AUDYT"/></StackPanel>
                     </Button>
                     <Button x:Name="SetupMenuButton" Style="{StaticResource NavButton}" Click="SetupMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="18" Height="18" Margin="0,0,12,0"/><TextBlock Text="PRZYGOTOWANIE"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/start-gr.png" Width="20" Height="20" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="PRZYGOTOWANIE"/></StackPanel>
                     </Button>
                     <TextBlock Text="NARZĘDZIA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="12,30,0,10"/>
                     <Button x:Name="AppsMenuButton" Style="{StaticResource NavButton}" Click="AppsMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/apps-gr.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="APLIKACJE"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/apps-gr.png" Width="20" Height="20" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="APLIKACJE"/></StackPanel>
                     </Button>
                     <Button x:Name="LogMenuButton" Style="{StaticResource NavButton}" Click="LogMenuButton_Click">
-                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/log-gr.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="DZIENNIK"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/log-gr.png" Width="20" Height="20" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="DZIENNIK"/></StackPanel>
                     </Button>
                 </StackPanel>
                 <StackPanel Grid.Row="2">
@@ -163,8 +163,8 @@
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
-                            <Border Width="42" Height="42" Background="{StaticResource AccentBrush}" CornerRadius="10" Margin="0,0,14,0">
-                                <Image Source="/EDUFIXiarz;component/Assets/Icons/report-wh.png" Width="22" Height="22" Stretch="Uniform"/>
+                            <Border Width="48" Height="48" Background="{StaticResource AccentBrush}" CornerRadius="11" Margin="0,0,14,0">
+                                <Image Source="/EDUFIXiarz;component/Assets/Icons/report-wh.png" Width="26" Height="26" Stretch="Uniform"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock Text="RAPORT STACJI" FontSize="30" FontWeight="SemiBold"/>
@@ -199,8 +199,8 @@
 
                 <StackPanel x:Name="AuditHeader" Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <Border Width="42" Height="42" Background="{StaticResource AccentBrush}" CornerRadius="10" Margin="0,0,14,0">
-                            <Image Source="/EDUFIXiarz;component/Assets/Icons/audit-wh.png" Width="22" Height="22" Stretch="Uniform"/>
+                        <Border Width="48" Height="48" Background="{StaticResource AccentBrush}" CornerRadius="11" Margin="0,0,14,0">
+                            <Image Source="/EDUFIXiarz;component/Assets/Icons/audit-wh.png" Width="26" Height="26" Stretch="Uniform"/>
                         </Border>
                         <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="AUDYT STACJI" FontSize="34" FontWeight="SemiBold"/>
@@ -209,7 +209,26 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel x:Name="SetupHeader" Visibility="Collapsed">
-                    <TextBlock Text="PRZYGOTOWANIE STACJI" FontSize="34" FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="48" Height="48" Background="{StaticResource AccentBrush}" CornerRadius="11" Margin="0,0,14,0">
+                            <Image Source="/EDUFIXiarz;component/Assets/Icons/start-wh.png" Width="26" Height="26" Stretch="Uniform"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="PRZYGOTOWANIE STACJI" FontSize="34" FontWeight="SemiBold"/>
+                            <TextBlock Text="Konfiguracja stanowiska, domeny, oprogramowania i czyszczenie systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Width="420" HorizontalAlignment="Right" Margin="0,14,0,0">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="8"/></Grid.RowDefinitions>
+                        <TextBlock x:Name="OperationProgressText" Text="GOTOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right"/>
+                        <ProgressBar x:Name="OperationProgressBar" Grid.Row="1" Minimum="0" Maximum="100" Value="0" Height="6" Margin="0,5,0,0"/>
+                    </Grid>
+                </StackPanel>
+                <!-- OLD_SETUP_HEADER_REMOVED -->
+                <!-- OLD_SETUP_HEADER_REMOVED_END -->
+            </Grid>
+
+            <views:ReportView FontSize="34" FontWeight="SemiBold"/>
                     <TextBlock Text="Konfiguracja stanowiska, domeny, oprogramowania i czyszczenie systemu." FontSize="14" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
                     <Grid Width="420" HorizontalAlignment="Right" Margin="0,14,0,0">
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="8"/></Grid.RowDefinitions>
