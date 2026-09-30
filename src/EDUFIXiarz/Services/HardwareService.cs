@@ -150,6 +150,7 @@ try {
     SecureBoot = $secureBoot
     BitLocker = $bitLocker -join ' | '
     BitLockerVolumes = $bitLockerVolumes
+    BitLockerDataReady = $true
     Gpus = $gpuNames
     PhysicalDisks = $physicalDisks
     LogicalDisks = $logicalDiskInfo
