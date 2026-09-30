@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\Icons\*.jpg" />
+    <Resource Include="Assets\Icons\*.png" />
   </ItemGroup>
 
 </Project>
