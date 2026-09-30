@@ -57,17 +57,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ExportBeforeSnapshotButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (_hardwareBeforePreparation is null)
-        {
-            MessageBox.Show("Brak zapisanego odczytu bazowego. Odczyt bazowy powstaje przy rozpoczęciu przygotowania stacji.", "EDUFIXiarz", MessageBoxButton.OK, MessageBoxImage.Information);
-            return;
-        }
-
-        ExportSnapshot(_hardwareBeforePreparation, "PRZED-PRZYGOTOWANIEM");
-    }
-
     private StationSnapshot CreateSnapshot(HardwareReport report, string stage, string? sessionId = null) => new()
     {
         Stage = stage,
