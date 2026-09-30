@@ -45,7 +45,7 @@
                 <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="9" Margin="0,0,7,0" Padding="20">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <Path Data="{StaticResource ReportIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="17" Height="17" Margin="0,0,9,0"/>
+                            <Image Source="/EDUFIXiarz;component/Assets/Icons/identity-or.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,9,0"/>
                             <TextBlock Text="TOŻSAMOŚĆ STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                         </StackPanel>
                         <TextBlock Text="Nazwa urządzenia i opcjonalne dołączenie do domeny AD." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,0,0,16" TextWrapping="Wrap"/>
@@ -81,7 +81,7 @@
                 <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="9" Margin="7,0,0,0" Padding="20">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <Path Data="{StaticResource SetupIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="17" Height="17" Margin="0,0,9,0"/>
+                            <Image Source="/EDUFIXiarz;component/Assets/Icons/operations-or.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,9,0"/>
                             <TextBlock Text="OPERACJE" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
                         </StackPanel>
                         <TextBlock Text="Wybierz etapy, które EDUFIXiarz wykona automatycznie." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,0,0,14" TextWrapping="Wrap"/>
