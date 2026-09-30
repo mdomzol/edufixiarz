@@ -261,6 +261,6 @@
         <Geometry x:Key="LibreOfficeIconGeometry">M5,3 H15 L19,7 V21 H5 Z M15,3 V8 H19 M8,12 H16 M8,16 H16</Geometry>
         <Geometry x:Key="PuttyIconGeometry">M4,4 H20 V20 H4 Z M8,8 L13,12 L8,16 M14,16 H18</Geometry>
         <Geometry x:Key="GimpIconGeometry">M4,16 C4,9 8,5 13,5 C18,5 21,8 21,13 C21,18 17,21 12,21 C8,21 5,19 4,16 M9,11 A2,2 0 1 0 9,15 A2,2 0 1 0 9,11 M16,11 A2,2 0 1 0 16,15 A2,2 0 1 0 16,11</Geometry>
-        <DrawingImage x:Key="AppIcon"><DrawingImage.Drawing><DrawingGroup><GeometryDrawing Brush="#0B0D0F"><GeometryDrawing.Geometry><RectangleGeometry Rect="0,0,32,32" RadiusX="7" RadiusY="7"/></GeometryDrawing.Geometry></GeometryDrawing><GeometryDrawing Brush="#F36B21"><GeometryDrawing.Geometry><PathGeometry FillRule="EvenOdd" Figures="M6,7 L15,7 L15,10 L10,10 L10,13 L14,13 L14,16 L10,16 L10,25 L6,25 Z M17,7 L26,7 L26,10 L21,10 L21,13 L25,13 L25,16 L21,16 L21,22 L26,22 L26,25 L17,25 Z"/></GeometryDrawing.Geometry></GeometryDrawing><GeometryDrawing Brush="#FFFFFF"><GeometryDrawing.Geometry><EllipseGeometry Center="23.5,19" RadiusX="1.5" RadiusY="1.5"/></GeometryDrawing.Geometry></GeometryDrawing></DrawingGroup></DrawingImage.Drawing></DrawingImage>
+        <BitmapImage x:Key="AppIcon" UriSource="/EDUFIXiarz;component/Assets/Icons/edufixiarz-icon.png"/>
     </Application.Resources>
 </Application>
