@@ -180,9 +180,6 @@
                             <Button x:Name="ExportStationSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportStationSnapshotButton_Click" ToolTip="Zapisz bieżący odczyt stacji jako CSV i HTML">
                                 <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/save-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="ZAPIS"/></StackPanel>
                             </Button>
-                            <Button x:Name="ExportBeforeSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportBeforeSnapshotButton_Click" ToolTip="Zapisz odczyt stacji wykonany przed rozpoczęciem przygotowania">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource BaseIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="PRZED STARTEM"/></StackPanel>
-                            </Button>
                             <Button x:Name="ExportStationReportBundleButton" x:FieldModifier="public" Style="{StaticResource PrimaryToolbarButton}" Click="ExportStationReportBundleButton_Click" ToolTip="Eksportuj pełny raport procesu">
                                 <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportExportIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="RAPORT PEŁNY"/></StackPanel>
                             </Button>
