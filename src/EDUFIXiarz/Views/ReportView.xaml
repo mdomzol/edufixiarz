@@ -123,10 +123,48 @@
                                     <TextBlock Text="{Binding SecureBoot}" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12,11">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="BITLOCKER" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding BitLocker}" FontSize="12" FontWeight="SemiBold" Margin="12,0,0,0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12" Margin="0,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="BITLOCKER" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                    <ItemsControl ItemsSource="{Binding BitLockerVolumes}" Margin="0,9,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,7">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <StackPanel Grid.ColumnSpan="3" Margin="0,0,0,9">
+                                                            <TextBlock Text="{Binding MountPoint}" FontSize="12" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding VolumeStatus}" FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+
+                                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+                                                            <TextBlock Text="OCHRONA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                                            <TextBlock Text="{Binding ProtectionStatus}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,8,0">
+                                                            <TextBlock Text="SZYFROWANIE" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                                            <TextBlock Text="{Binding EncryptionMethod}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="1" Grid.Column="2">
+                                                            <TextBlock Text="POSTĘP" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                                            <TextBlock Text="{Binding EncryptionPercentage}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text="Brak szczegółowych danych o woluminach BitLocker." FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0"
+                                               Visibility="{Binding BitLockerVolumes.Count, Converter={StaticResource ZeroCountToVisibilityConverter}}"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
