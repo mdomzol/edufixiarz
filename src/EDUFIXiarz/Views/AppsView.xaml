@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,24">
-                <StackPanel Margin="0,0,0,4">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,18"><Border Width="42" Height="42" Background="{StaticResource AccentBrush}" CornerRadius="10" Margin="0,0,14,0"><Image Source="/EDUFIXiarz;component/Assets/Icons/apps-wh.png" Width="22" Height="22" Stretch="Uniform"/></Border><StackPanel VerticalAlignment="Center">
                     <TextBlock Text="PAKIETY OPROGRAMOWANIA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                    <TextBlock Text="Wybierz aplikacje instalowane przez winget." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,18"/>
+                    <TextBlock Text="Wybierz aplikacje instalowane przez winget." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                    </StackPanel></StackPanel>
 
                     <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="22" Margin="0,0,0,10">
                         <StackPanel>
