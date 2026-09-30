@@ -180,8 +180,8 @@
                             <Button x:Name="ExportStationSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportStationSnapshotButton_Click" ToolTip="Zapisz bieżący odczyt stacji jako CSV i HTML">
                                 <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/save-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="ZAPIS"/></StackPanel>
                             </Button>
-                            <Button x:Name="ExportStationReportBundleButton" x:FieldModifier="public" Style="{StaticResource PrimaryToolbarButton}" Click="ExportStationReportBundleButton_Click" ToolTip="Eksportuj pełny raport procesu">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource ReportExportIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="RAPORT PEŁNY"/></StackPanel>
+                            <Button x:Name="ExportStationReportBundleButton" x:FieldModifier="public" Style="{StaticResource PrimaryToolbarButton}" Click="ExportStationReportBundleButton_Click" ToolTip="Eksportuj pełny raport stacji">
+                                <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/summary-wh.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="PEŁNY RAPORT"/></StackPanel>
                             </Button>
                         </StackPanel>
                         <Border HorizontalAlignment="Right" Margin="0,8,0,0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="9,5">
