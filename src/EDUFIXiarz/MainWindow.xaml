@@ -25,7 +25,14 @@
 
         <Style x:Key="WindowCloseButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#D94A16"/><Setter Property="Foreground" Value="White"/></Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#D92D20"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#B91C1C"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
 
@@ -82,7 +89,7 @@
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowControlButton}" Click="MinimizeWindowButton_Click"
                         ToolTip="Minimalizuj"/>
-                <Button Grid.Column="2" Content="□" FontSize="13" Padding="0" Margin="0"
+                <Button Grid.Column="2" Content="□" FontSize="16" Padding="0" Margin="0"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowControlButton}" Click="MaximizeWindowButton_Click"
                         ToolTip="Maksymalizuj"/>
