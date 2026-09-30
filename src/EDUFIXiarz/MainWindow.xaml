@@ -104,18 +104,18 @@
                                Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <Button Grid.Column="1" Content="—" FontSize="15" Padding="0" Margin="0"
+                <Button Grid.Column="1" Padding="0" Margin="0"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowControlButton}" Click="MinimizeWindowButton_Click"
-                        ToolTip="Minimalizuj"/>
-                <Button Grid.Column="2" Content="□" FontSize="16" Padding="0" Margin="0"
+                        ToolTip="Minimalizuj"><Image Source="/EDUFIXiarz;component/Assets/Icons/minimize.png" Width="14" Height="14" Stretch="Uniform"/></Button>
+                <Button Grid.Column="2" Padding="0" Margin="0"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowControlButton}" Click="MaximizeWindowButton_Click"
-                        ToolTip="Maksymalizuj"/>
-                <Button Grid.Column="3" Content="×" FontSize="18" Padding="0" Margin="0"
+                        ToolTip="Maksymalizuj"><Image Source="/EDUFIXiarz;component/Assets/Icons/maximize.png" Width="14" Height="14" Stretch="Uniform"/></Button>
+                <Button Grid.Column="3" Padding="0" Margin="0"
                         shell:WindowChrome.IsHitTestVisibleInChrome="True"
                         Style="{StaticResource WindowCloseButton}" Click="CloseWindowButton_Click"
-                        ToolTip="Zamknij"/>
+                        ToolTip="Zamknij"><Image Source="/EDUFIXiarz;component/Assets/Icons/close.png" Width="14" Height="14" Stretch="Uniform"/></Button>
             </Grid>
         </Border>
 
