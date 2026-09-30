@@ -134,37 +134,42 @@
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="Auto"/>
                                                             <RowDefinition Height="Auto"/>
                                                         </Grid.RowDefinitions>
 
-                                                        <StackPanel Grid.ColumnSpan="3" Margin="0,0,0,9">
+                                                        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,9">
                                                             <TextBlock Text="{Binding MountPoint}" FontSize="12" FontWeight="Bold"/>
                                                             <TextBlock Text="{Binding VolumeStatus}" FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0"/>
                                                         </StackPanel>
 
-                                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+                                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,8">
                                                             <TextBlock Text="OCHRONA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                                             <TextBlock Text="{Binding ProtectionStatus}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0" TextWrapping="Wrap"/>
                                                         </StackPanel>
-                                                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,8,0">
+                                                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,8">
                                                             <TextBlock Text="SZYFROWANIE" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                                             <TextBlock Text="{Binding EncryptionMethod}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0" TextWrapping="Wrap"/>
                                                         </StackPanel>
-                                                        <StackPanel Grid.Row="1" Grid.Column="2">
+                                                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,8">
                                                             <TextBlock Text="POSTĘP" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                                             <TextBlock Text="{Binding EncryptionPercentage}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,8">
+                                                            <TextBlock Text="STAN BLOKADY" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                                            <TextBlock Text="{Binding LockStatus}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                                                            <TextBlock Text="PROTECTORY KLUCZA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                                                            <TextBlock Text="{Binding KeyProtectors}" FontSize="10" FontWeight="SemiBold" Margin="0,3,0,0" TextWrapping="Wrap"/>
                                                         </StackPanel>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
-                                    <TextBlock Text="Brak szczegółowych danych o woluminach BitLocker." FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0"
-                                               Visibility="{Binding BitLockerVolumes.Count, Converter={StaticResource ZeroCountToVisibilityConverter}}"/>
                                 </StackPanel>
                             </Border>
                         </Grid>
