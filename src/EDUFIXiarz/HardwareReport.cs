@@ -29,6 +29,7 @@ public sealed class HardwareReport
     public string SecureBoot { get; set; } = "—";
     public string BitLocker { get; set; } = "—";
     public List<BitLockerVolumeReport> BitLockerVolumes { get; set; } = [];
+    public bool BitLockerDataReady { get; set; }
     public List<string> Gpus { get; set; } = [];
     public List<string> PhysicalDisks { get; set; } = [];
     public List<string> LogicalDisks { get; set; } = [];
