@@ -175,10 +175,10 @@
                     <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button x:Name="RefreshReportButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="RefreshReportButton_Click" ToolTip="Wykonaj ponowny odczyt stacji">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource RefreshIconGeometry}" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="ODŚWIEŻ"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/refresh-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="ODŚWIEŻ"/></StackPanel>
                             </Button>
                             <Button x:Name="ExportStationSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportStationSnapshotButton_Click" ToolTip="Zapisz bieżący odczyt stacji jako CSV i HTML">
-                                <StackPanel Orientation="Horizontal"><Path Data="{StaticResource SnapshotIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="ZAPIS"/></StackPanel>
+                                <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/save-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="ZAPIS"/></StackPanel>
                             </Button>
                             <Button x:Name="ExportBeforeSnapshotButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" Click="ExportBeforeSnapshotButton_Click" ToolTip="Zapisz odczyt stacji wykonany przed rozpoczęciem przygotowania">
                                 <StackPanel Orientation="Horizontal"><Path Data="{StaticResource BaseIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="PRZED STARTEM"/></StackPanel>
