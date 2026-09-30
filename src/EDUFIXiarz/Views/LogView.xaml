@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Border Width="42" Height="42" Background="{StaticResource AccentBrush}" CornerRadius="10" Margin="0,0,14,0"><Image Source="/EDUFIXiarz;component/Assets/Icons/log-wh.png" Width="22" Height="22" Stretch="Uniform"/></Border><StackPanel Margin="0,0,0,4">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Border Width="48" Height="48" Background="{StaticResource AccentBrush}" CornerRadius="11" Margin="0,0,14,0"><Image Source="/EDUFIXiarz;component/Assets/Icons/log-wh.png" Width="26" Height="26" Stretch="Uniform"/></Border><StackPanel Margin="0,0,0,4">
                     <TextBlock Text="DZIENNIK OPERACJI"
                                FontSize="11"
                                FontWeight="Bold"
