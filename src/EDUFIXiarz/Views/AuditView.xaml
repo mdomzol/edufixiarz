@@ -5,8 +5,8 @@
   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
   <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,0,18">
    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-    <StackPanel Margin="0,0,0,4"><TextBlock Text="AUDYT STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-     <TextBlock Text="Kontrola gotowości, bezpieczeństwa i podstawowych usług Windows." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/></StackPanel>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"><Border Width="42" Height="42" Background="{StaticResource AccentBrush}" CornerRadius="10" Margin="0,0,14,0"><Image Source="/EDUFIXiarz;component/Assets/Icons/audit-wh.png" Width="22" Height="22" Stretch="Uniform"/></Border><StackPanel Margin="0,0,0,4"><TextBlock Text="AUDYT STACJI" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+     <TextBlock Text="Kontrola gotowości, bezpieczeństwa i podstawowych usług Windows." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/></StackPanel></StackPanel>
     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
      <Button x:Name="RunAuditButton" x:FieldModifier="public" Style="{StaticResource PrimaryToolbarButton}" ToolTip="Uruchom pełną kontrolę stacji">
       <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditRunIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="URUCHOM AUDYT"/></StackPanel>
