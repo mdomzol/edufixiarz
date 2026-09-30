@@ -113,7 +113,6 @@ public partial class MainWindow : Window
             {
                 LogException("ZAPISU SNAPSHOTU KOŃCOWEGO", snapshotEx);
             }
-            ExportBeforeSnapshotButton.IsEnabled = _hardwareBeforePreparation is not null;
             Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
             MessageBox.Show(
