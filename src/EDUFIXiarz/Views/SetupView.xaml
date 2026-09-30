@@ -146,8 +146,11 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center" Margin="0,0,24,0">
-                        <TextBlock Text="GOTOWY DO STARTU?" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                        <TextBlock Text="Po uruchomieniu EDUFIXiarz wykona zaznaczone etapy, zapisze snapshot przed i po przygotowaniu, a następnie uruchomi audyt końcowy." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/EDUFIXiarz;component/Assets/Icons/info-or.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,9,0"/>
+                            <TextBlock Text="GOTOWY DO STARTU?" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock Text="Po uruchomieniu EDUFIXiarz wykona zaznaczone etapy, zapisze snapshot przed i po przygotowaniu, a następnie uruchomi audyt końcowy." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="27,3,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="ResetSelectionButton" x:FieldModifier="public" Content="RESETUJ" Height="40" Width="112" Padding="0" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,8,0"/>
