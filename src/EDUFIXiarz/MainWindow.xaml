@@ -94,10 +94,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
-                    <Border Width="24" Height="24" Background="{StaticResource AccentBrush}" CornerRadius="6" Margin="0,0,9,0">
-                        <TextBlock Text="EF" Foreground="White" FontSize="9" FontWeight="Bold"
-                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <Image Source="{StaticResource AppIcon}" Width="24" Height="24" Stretch="Uniform" Margin="0,0,9,0"/>
                     <TextBlock Text="EDUFIXiarz" FontSize="12" FontWeight="SemiBold"
                                Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
                     <TextBlock Text="  ·  EDU-FIX IT" FontSize="11"
