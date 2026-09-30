@@ -68,7 +68,7 @@
                                         <TextBlock Text="NAZWA DOMENY AD" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <TextBox x:Name="DomainBox" x:FieldModifier="public" Margin="0,5,0,11" ToolTip="np. firma.local"/>
                                         <TextBlock Text="UŻYTKOWNIK DOMENOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                                        <TextBox x:Name="DomainUserBox" x:FieldModifier="public" Margin="0,5,0,11" ToolTip="np. administrator lub domena\\administrator"/>
+                                        <TextBox x:Name="DomainUserBox" x:FieldModifier="public" Margin="0,5,0,11" ToolTip="np. administrator lub domena\administrator"/>
                                         <TextBlock Text="HASŁO" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <PasswordBox x:Name="DomainPasswordBox" x:FieldModifier="public" Margin="0,5,0,0" ToolTip="Hasło nie jest zapisywane w profilu"/>
                                 </StackPanel>
@@ -93,7 +93,10 @@
                         <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="13" Margin="0,0,0,8">
                             <StackPanel>
                                 <CheckBox x:Name="BloatwareCheck" x:FieldModifier="public" Content="USUŃ WYBRANE PAKIETY APPX" IsChecked="True" Style="{StaticResource SetupStepCheckBoxStyle}"/>
-                                <TextBlock Text="Czyszczenie wybranych pakietów OEM/AppX; programy Win32 nie są usuwane." FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="24,6,0,0" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="24,6,0,0">
+                                    <Image Source="/EDUFIXiarz;component/Assets/Icons/info-or.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0" VerticalAlignment="Top"/>
+                                    <TextBlock Text="Czyszczenie wybranych pakietów OEM/AppX; programy Win32 nie są usuwane." FontSize="10" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -113,7 +116,10 @@
                         <Border Background="{StaticResource InputBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="13">
                             <StackPanel>
                                 <CheckBox x:Name="OfficeCheck" x:FieldModifier="public" Content="WYCZYŚĆ MICROSOFT OFFICE / 365" Style="{StaticResource SetupStepCheckBoxStyle}"/>
-                                <TextBlock Text="Usuwa wykryte składniki Office / Microsoft 365. Po czyszczeniu zalecany jest restart." FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="24,6,0,0" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="24,6,0,0">
+                                    <Image Source="/EDUFIXiarz;component/Assets/Icons/info-or.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0" VerticalAlignment="Top"/>
+                                    <TextBlock Text="Usuwa wykryte składniki Office / Microsoft 365. Po czyszczeniu zalecany jest restart." FontSize="10" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -128,8 +134,11 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center" Margin="0,0,24,0">
-                        <TextBlock Text="KONFIGURACJA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
-                        <TextBlock Text="Profile możesz zapisać i odtworzyć. Hasło domenowe nigdy nie trafia do pliku." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/EDUFIXiarz;component/Assets/Icons/info-or.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,9,0"/>
+                            <TextBlock Text="KONFIGURACJA" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock Text="Profile możesz zapisać i odtworzyć. Hasło domenowe nigdy nie trafia do pliku." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="27,3,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="SaveProfileButton" x:FieldModifier="public" Content="ZAPISZ PROFIL" Padding="11,7" Margin="0,0,6,0" FontSize="9" ToolTip="Zapisz ustawienia bez hasła do pliku JSON"/>
@@ -146,11 +155,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center" Margin="0,0,24,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/EDUFIXiarz;component/Assets/Icons/info-or.png" Width="18" Height="18" Stretch="Uniform" Margin="0,0,9,0"/>
-                            <TextBlock Text="GOTOWY DO STARTU?" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="Po uruchomieniu EDUFIXiarz wykona zaznaczone etapy, zapisze snapshot przed i po przygotowaniu, a następnie uruchomi audyt końcowy." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="27,3,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="ROZPOCZNIJ PRZYGOTOWANIE" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/>
+                        <TextBlock Text="Uruchom przygotowanie stacji. EDUFIXiarz wykona zaznaczone etapy, zapisze snapshoty przed i po przygotowaniu, a następnie uruchomi audyt końcowy." FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="ResetSelectionButton" x:FieldModifier="public" Content="RESETUJ" Height="40" Width="112" Padding="0" Background="{StaticResource PanelAltBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Foreground="{StaticResource MutedBrush}" FontSize="10" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,8,0"/>
