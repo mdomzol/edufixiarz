@@ -28,10 +28,22 @@ public sealed class HardwareReport
     public string Tpm { get; set; } = "—";
     public string SecureBoot { get; set; } = "—";
     public string BitLocker { get; set; } = "—";
+    public List<BitLockerVolumeReport> BitLockerVolumes { get; set; } = [];
     public List<string> Gpus { get; set; } = [];
     public List<string> PhysicalDisks { get; set; } = [];
     public List<string> LogicalDisks { get; set; } = [];
     public List<string> NetworkAdapters { get; set; } = [];
     public List<string> Antivirus { get; set; } = [];
     public List<string> InstalledApplications { get; set; } = [];
+}
+
+public sealed class BitLockerVolumeReport
+{
+    public string MountPoint { get; set; } = "—";
+    public string VolumeStatus { get; set; } = "—";
+    public string ProtectionStatus { get; set; } = "—";
+    public string EncryptionMethod { get; set; } = "—";
+    public string EncryptionPercentage { get; set; } = "—";
+    public string LockStatus { get; set; } = "—";
+    public string KeyProtectors { get; set; } = "—";
 }
