@@ -88,14 +88,40 @@ try {
 } catch { $windowsUpdate = 'Niedostępne' }
 
 $bitLocker = @()
+$bitLockerVolumes = @()
 try {
-    $bitLocker = @(Get-BitLockerVolume -ErrorAction Stop | ForEach-Object {
+    $bitLockerVolumes = @(Get-BitLockerVolume -ErrorAction Stop | ForEach-Object {
         $mount = Safe $_.MountPoint
         $status = Safe $_.VolumeStatus
         $protection = Safe $_.ProtectionStatus
-        $mount + ' · ' + $status + ' · ochrona: ' + $protection
+        $method = Safe $_.EncryptionMethod
+        $percentage = if ($null -ne $_.EncryptionPercentage) { ('{0:N0}%' -f [double]$_.EncryptionPercentage) } else { '—' }
+        $lock = Safe $_.LockStatus
+        $protectors = @($_.KeyProtector | ForEach-Object {
+            if ($_.KeyProtectorType) { [string]$_.KeyProtectorType }
+        } | Sort-Object -Unique)
+        $protectorText = if ($protectors.Count -gt 0) { $protectors -join ', ' } else { '—' }
+
+        [pscustomobject]@{
+            MountPoint = $mount
+            VolumeStatus = $status
+            ProtectionStatus = $protection
+            EncryptionMethod = $method
+            EncryptionPercentage = $percentage
+            LockStatus = $lock
+            KeyProtectors = $protectorText
+        }
     })
-} catch { $bitLocker = @('Niedostępne') }
+    $bitLocker = @($bitLockerVolumes | ForEach-Object {
+        $_.MountPoint + ' · ' + $_.VolumeStatus + ' · ochrona: ' + $_.ProtectionStatus
+    })
+    if ($bitLockerVolumes.Count -eq 0) {
+        $bitLocker = @('Brak woluminów BitLocker')
+    }
+} catch {
+    $bitLocker = @('Niedostępne')
+    $bitLockerVolumes = @()
+}
 
 [pscustomobject]@{
     Hostname = Safe $env:COMPUTERNAME
@@ -123,6 +149,7 @@ try {
     Tpm = $tpm
     SecureBoot = $secureBoot
     BitLocker = $bitLocker -join ' | '
+    BitLockerVolumes = $bitLockerVolumes
     Gpus = $gpuNames
     PhysicalDisks = $physicalDisks
     LogicalDisks = $logicalDiskInfo
