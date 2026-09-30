@@ -9,19 +9,19 @@
      <TextBlock Text="Kontrola gotowości, bezpieczeństwa i podstawowych usług Windows." FontSize="13" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/></StackPanel></StackPanel>
     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
      <Button x:Name="RunAuditButton" x:FieldModifier="public" Style="{StaticResource PrimaryToolbarButton}" ToolTip="Uruchom pełną kontrolę stacji">
-      <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditRunIconGeometry}" Fill="White" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="URUCHOM AUDYT"/></StackPanel>
+      <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/start-wh.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="URUCHOM AUDYT"/></StackPanel>
      </Button>
      <Button x:Name="LoadLastAuditButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" ToolTip="Wczytaj ostatnio zapisany audyt tej stacji">
-      <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditLastIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="OSTATNI"/></StackPanel>
+      <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/last-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="OSTATNI"/></StackPanel>
      </Button>
      <Button x:Name="HistoryButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" ToolTip="Otwórz historię audytów">
-      <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditHistoryIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="HISTORIA"/></StackPanel>
+      <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/history-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="HISTORIA"/></StackPanel>
      </Button>
      <Button x:Name="CompareAuditButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" ToolTip="Porównaj bieżący audyt z poprzednim" IsEnabled="False">
-      <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditCompareIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="PORÓWNAJ"/></StackPanel>
+      <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/compare-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="PORÓWNAJ"/></StackPanel>
      </Button>
-     <Button x:Name="ExportProtocolButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" ToolTip="Zapisz protokół odbioru stacji jako HTML" IsEnabled="False">
-      <StackPanel Orientation="Horizontal"><Path Data="{StaticResource AuditExportIconGeometry}" Fill="{StaticResource MutedBrush}" Stretch="Uniform" Width="15" Height="15" Margin="0,0,7,0"/><TextBlock Text="PROTOKÓŁ"/></StackPanel>
+     <Button x:Name="ExportProtocolButton" x:FieldModifier="public" Style="{StaticResource ToolbarButton}" ToolTip="Zapisz podsumowanie audytu stacji jako HTML" IsEnabled="False">
+      <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/summary-gr.png" Width="15" Height="15" Stretch="Uniform" Margin="0,0,7,0"/><TextBlock Text="PODSUMOWANIE"/></StackPanel>
      </Button>
     </StackPanel>
    </Grid>
