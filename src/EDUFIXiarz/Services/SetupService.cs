@@ -141,7 +141,7 @@ public sealed class SetupService
         if (options.InstallApplications && selectedApplications.Count > 0)
         {
             await RunStepAsync(
-                $"Instalacja aplikacji ({selectedApplications.Count})",
+                "Instalacja aplikacji",
                 async () =>
                 {
                     output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
@@ -151,7 +151,7 @@ public sealed class SetupService
                         error,
                         (current, total, appName) =>
                             ReportProgress(
-                                $"Instalacja aplikacji ({selectedApplications.Count})",
+                                "Instalacja aplikacji",
                                 "RUNNING",
                                 $"Aplikacja {current}/{total} · {appName}"));
                 },
