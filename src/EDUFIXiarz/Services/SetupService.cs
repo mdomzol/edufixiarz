@@ -72,7 +72,6 @@ public sealed class SetupService
                     Details = successDetails,
                     CompletedAt = DateTime.Now
                 });
-                completedStages++;
                 ReportProgress(name, "DONE", successDetails);
             }
             catch (Exception ex)
