@@ -274,7 +274,7 @@
                                             <TextBlock Text="{Binding Name}" FontSize="9" FontWeight="Bold" TextWrapping="Wrap" MaxHeight="27"/>
                                             <TextBlock Text="{Binding Details}" FontSize="8" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" MaxHeight="25" Margin="0,3,0,0"/>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="2" Text="{Binding StatusLabel}" FontSize="7" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Top">
+                                        <TextBlock Grid.Column="2" Text="{Binding StatusLabel}" FontSize="7" FontWeight="Bold" VerticalAlignment="Top">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
