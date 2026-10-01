@@ -50,14 +50,8 @@ public sealed class SetupService
         if (options.JoinDomain) requestedOperations.Add("Dołączenie do domeny AD");
 
         var restartRecommended = options.ChangeHostname || options.RemoveOffice || options.JoinDomain;
-        var totalStages = requestedOperations.Count;
-        var completedStages = 0;
-
-        void ReportProgress(string label)
-        {
-            completedStages++;
-            progress?.Invoke(completedStages, totalStages, label);
-        }
+        void ReportProgress(string label, string status, string details) =>
+            progress?.Invoke(label, status, details);
 
         async Task RunStepAsync(string name, Func<Task> action, string successDetails)
         {
