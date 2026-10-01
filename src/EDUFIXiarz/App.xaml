@@ -115,7 +115,7 @@
                                     <Condition Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="True"/>
                                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="True"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter TargetName="StateIcon" Property="Source" Value="/EDUFIXiarz;component/Assets/Icons/check-wh.png"/>
+                                <Setter TargetName="StateIcon" Property="Source" Value="{StaticResource AccentBrush}"/>
                             </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
