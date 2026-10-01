@@ -26,7 +26,8 @@ public sealed class ApplicationService
     public async Task InstallAsync(
         IEnumerable<AppDefinition> applications,
         Action<string>? output = null,
-        Action<string>? error = null)
+        Action<string>? error = null,
+        Action<int, int, string>? progress = null)
     {
         var selected = applications.ToList();
         if (selected.Count == 0)
@@ -41,14 +42,18 @@ public sealed class ApplicationService
 
         output?.Invoke($"winget jest dostępny. Wybrano aplikacji: {selected.Count}.");
 
-        foreach (var app in selected)
+        for (var index = 0; index < selected.Count; index++)
         {
+            var app = selected[index];
+            var current = index + 1;
+            progress?.Invoke(current, selected.Count, app.Name);
             output?.Invoke($"Sprawdzanie: {app.Name}…");
 
             var installed = await IsInstalledAsync(app.Id, error);
             if (installed)
             {
                 output?.Invoke($"{app.Name} — już zainstalowany, pomijam.");
+                progress?.Invoke(current, selected.Count, $"{app.Name} — już zainstalowany");
                 continue;
             }
 
@@ -68,6 +73,7 @@ public sealed class ApplicationService
                 error);
 
             output?.Invoke($"Instalacja {app.Name} — OK.");
+            progress?.Invoke(current, selected.Count, $"{app.Name} — gotowe");
         }
 
         output?.Invoke("Instalacja aplikacji — zakończona.");
