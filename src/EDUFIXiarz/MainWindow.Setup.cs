@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using Microsoft.Win32;
@@ -8,6 +9,9 @@ namespace EDUFIXiarz;
 
 public partial class MainWindow : Window
 {
+    private readonly ObservableCollection<PreparationProgressStep> _preparationProgressSteps = new();
+    private bool _preparationFailed;
+
     private async void RunButton_Click(object sender, RoutedEventArgs e)
     {
         if (!IsAdministrator())
@@ -24,6 +28,7 @@ public partial class MainWindow : Window
         _sessionId = Guid.NewGuid().ToString("N");
         _currentPreparation = null;
         _currentAudit = null;
+        _preparationFailed = false;
 
         try
         {
@@ -40,6 +45,9 @@ public partial class MainWindow : Window
                 InstallApplications = SetupView.AppsCheck.IsChecked == true
             };
 
+            InitializePreparationProgress(options);
+
+            UpdatePreparationStage("ODCZYT BAZOWY", "RUNNING", "Pobieranie informacji o stacji…");
             if (_currentReport is null)
             {
                 Log("Brak aktualnego odczytu sprzętu — wykonuję odczyt bazowy przed przygotowaniem.");
@@ -50,7 +58,9 @@ public partial class MainWindow : Window
             {
                 _hardwareBeforePreparation = _currentReport;
             }
+            UpdatePreparationStage("ODCZYT BAZOWY", "DONE", "Informacje o stacji odczytane.");
 
+            UpdatePreparationStage("SNAPSHOT BAZOWY", "RUNNING", "Zapisywanie stanu przed zmianami…");
             var beforeSnapshot = new StationSnapshot
             {
                 Stage = StationSnapshot.Stages.BeforePreparation,
@@ -63,19 +73,30 @@ public partial class MainWindow : Window
             {
                 var beforePaths = _stationSnapshotStorageService.Save(beforeSnapshot, _stationSnapshotExportService);
                 Log($"Zapisano automatyczny snapshot bazowy: {beforePaths.CsvPath}");
+                UpdatePreparationStage("SNAPSHOT BAZOWY", "DONE", "Stan bazowy zapisany.");
             }
             catch (Exception snapshotEx)
             {
                 LogException("ZAPISU SNAPSHOTU BAZOWEGO", snapshotEx);
+                UpdatePreparationStage("SNAPSHOT BAZOWY", "ERROR", snapshotEx.Message);
+                throw;
             }
 
-            OperationProgressBar.Value = 0;
-            OperationProgressText.Text = "PRZYGOTOWANIE W TOKU…";
-            _currentPreparation = await _setupService.RunAsync(options, GetSelectedApps(), LogOutput, LogError, UpdateOperationProgress);
+            _currentPreparation = await _setupService.RunAsync(
+                options,
+                GetSelectedApps(),
+                LogOutput,
+                LogError,
+                UpdateOperationProgress);
+
             Log("Przygotowanie zakończone — wykonuję odczyt kontrolny stacji.");
+            UpdatePreparationStage("ODCZYT KONTROLNY", "RUNNING", "Sprawdzanie stacji po zmianach…");
             var afterPreparation = await _hardwareService.GetReportAsync(LogError);
             _currentReport = afterPreparation;
             DataContext = afterPreparation;
+            UpdatePreparationStage("ODCZYT KONTROLNY", "DONE", "Odczyt kontrolny zakończony.");
+
+            UpdatePreparationStage("SNAPSHOT KOŃCOWY", "RUNNING", "Zapisywanie stanu po przygotowaniu…");
             var afterSnapshot = new StationSnapshot
             {
                 Stage = StationSnapshot.Stages.AfterPreparation,
@@ -88,7 +109,17 @@ public partial class MainWindow : Window
             {
                 var afterPaths = _stationSnapshotStorageService.Save(afterSnapshot, _stationSnapshotExportService);
                 Log($"Zapisano automatyczny snapshot końcowy: {afterPaths.CsvPath}");
+                UpdatePreparationStage("SNAPSHOT KOŃCOWY", "DONE", "Stan końcowy zapisany.");
+            }
+            catch (Exception snapshotEx)
+            {
+                LogException("ZAPISU SNAPSHOTU KOŃCOWEGO", snapshotEx);
+                UpdatePreparationStage("SNAPSHOT KOŃCOWY", "ERROR", snapshotEx.Message);
+                throw;
+            }
+
             Log("Uruchamiam audyt końcowy po przygotowaniu stacji.");
+            UpdatePreparationStage("AUDYT KOŃCOWY", "RUNNING", "Weryfikacja gotowości stacji…");
             try
             {
                 var previousAudit = _auditHistoryService.Load();
@@ -103,26 +134,31 @@ public partial class MainWindow : Window
                 AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
                 AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
                 Log($"Audyt końcowy zakończony: OK={audit.OkCount}, WARN={audit.WarningCount}, ERROR={audit.ErrorCount}.");
+                UpdatePreparationStage(
+                    "AUDYT KOŃCOWY",
+                    "DONE",
+                    $"OK {audit.OkCount} · WARN {audit.WarningCount} · ERROR {audit.ErrorCount}");
             }
             catch (Exception auditEx)
             {
+                _preparationFailed = true;
                 LogException("AUDYTU KOŃCOWEGO", auditEx);
+                UpdatePreparationStage("AUDYT KOŃCOWY", "ERROR", auditEx.Message);
             }
-            }
-            catch (Exception snapshotEx)
-            {
-                LogException("ZAPISU SNAPSHOTU KOŃCOWEGO", snapshotEx);
-            }
+
             Log($"Zakończono wybrane operacje: {_currentPreparation.Steps.Count} etapów.");
             ShowPage(LogView);
             MessageBox.Show(
-                "Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
+                _preparationFailed
+                    ? "Przygotowanie zakończyło się z błędem. Sprawdź stan etapów i dziennik."
+                    : "Przygotowanie stanowiska zakończone. Niektóre zmiany mogą wymagać ponownego uruchomienia.",
                 "EDUFIXiarz",
                 MessageBoxButton.OK,
-                MessageBoxImage.Information);
+                _preparationFailed ? MessageBoxImage.Warning : MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
+            _preparationFailed = true;
             LogException("PRZYGOTOWANIA", ex);
             ShowPage(LogView);
             MessageBox.Show(ex.Message, "EDUFIXiarz — błąd", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -134,11 +170,94 @@ public partial class MainWindow : Window
         }
     }
 
+    private void InitializePreparationProgress(SetupOptions options)
+    {
+        _preparationProgressSteps.Clear();
+
+        AddPreparationStep("ODCZYT BAZOWY");
+        AddPreparationStep("SNAPSHOT BAZOWY");
+
+        AddPreparationStep("Zmiana nazwy stacji", options.ChangeHostname);
+        AddPreparationStep("Czyszczenie pakietów AppX", options.RemoveBloatware);
+        AddPreparationStep("Czyszczenie Office / Microsoft 365", options.RemoveOffice);
+        AddPreparationStep("Instalacja aplikacji", options.InstallApplications);
+        AddPreparationStep("Dołączenie do domeny AD", options.JoinDomain);
+
+        AddPreparationStep("ODCZYT KONTROLNY");
+        AddPreparationStep("SNAPSHOT KOŃCOWY");
+        AddPreparationStep("AUDYT KOŃCOWY");
+
+        SetupView.PreparationProgressItems.ItemsSource = _preparationProgressSteps;
+        RefreshPreparationProgress();
+    }
+
+    private void AddPreparationStep(string name, bool enabled = true)
+    {
+        var step = new PreparationProgressStep
+        {
+            Number = _preparationProgressSteps.Count + 1,
+            Name = name,
+            Status = enabled ? "WAITING" : "SKIPPED",
+            Details = enabled ? "Oczekuje" : "Etap niewybrany"
+        };
+
+        _preparationProgressSteps.Add(step);
+    }
+
+    private void UpdatePreparationStage(string name, string status, string details)
+    {
+        var step = _preparationProgressSteps.FirstOrDefault(x =>
+            string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
+
+        if (step is null)
+            return;
+
+        step.Status = status;
+        step.Details = details;
+        RefreshPreparationProgress();
+    }
+
+    private void UpdateOperationProgress(string label, string status, string details)
+    {
+        UpdatePreparationStage(label, status, details);
+    }
+
+    private void RefreshPreparationProgress()
+    {
+        var activeSteps = _preparationProgressSteps
+            .Where(x => x.Status != "SKIPPED")
+            .ToList();
+
+        var completed = activeSteps.Count(x => x.Status == "DONE");
+        var total = activeSteps.Count;
+        var percentage = total == 0 ? 0 : completed * 100.0 / total;
+
+        OperationProgressBar.Value = percentage;
+
+        var running = activeSteps.FirstOrDefault(x => x.Status == "RUNNING");
+        var error = activeSteps.FirstOrDefault(x => x.Status == "ERROR");
+
+        if (error is not null)
+        {
+            OperationProgressText.Text = $"BŁĄD · {error.Name}";
+        }
+        else if (running is not null)
+        {
+            OperationProgressText.Text = $"{completed:00} / {total:00} · {running.Name}";
+        }
+        else if (total > 0 && completed == total)
+        {
+            OperationProgressText.Text = $"ZAKOŃCZONO · {total:00} / {total:00}";
+        }
+        else
+        {
+            OperationProgressText.Text = $"GOTOWY · {completed:00} / {total:00}";
+        }
+    }
+
     private void SetSetupOperationState(bool isRunning)
     {
         SetupView.IsEnabled = !isRunning;
-        OperationProgressBar.Value = isRunning ? 0 : OperationProgressBar.Value;
-        OperationProgressText.Text = isRunning ? "PRZYGOTOWANIE W TOKU…" : "GOTOWY";
         AppsView.IsEnabled = !isRunning;
         AuditView.IsEnabled = !isRunning;
 
@@ -147,13 +266,14 @@ public partial class MainWindow : Window
         AppsMenuButton.IsEnabled = !isRunning;
         AuditMenuButton.IsEnabled = !isRunning;
         LogMenuButton.IsEnabled = !isRunning;
-    }
 
-    private void UpdateOperationProgress(int completed, int total, string label)
-    {
-        var percentage = total == 0 ? 0 : completed * 100.0 / total;
-        OperationProgressBar.Value = percentage;
-        OperationProgressText.Text = $"{completed:00} / {total:00} · {label.ToUpperInvariant()}";
+        if (!isRunning)
+            RefreshPreparationProgress();
+        else
+        {
+            OperationProgressBar.Value = 0;
+            OperationProgressText.Text = "PRZYGOTOWANIE W TOKU…";
+        }
     }
 
     private void ApplyProfile(
@@ -297,7 +417,7 @@ public partial class MainWindow : Window
         SetupView.HostnameBox.Text = Environment.MachineName;
 
         _joinDomainRequested = false;
-                SetupView.DomainCredentialsPanel.Visibility = Visibility.Collapsed;
+        SetupView.DomainCredentialsPanel.Visibility = Visibility.Collapsed;
         SetupView.DomainCheck.Content = "DOŁĄCZ DO DOMENY AD";
         SetupView.DomainCheck.Background = FindResource("InputBrush") as Brush;
         SetupView.DomainCheck.BorderBrush = FindResource("BorderBrush") as Brush;
