@@ -6,3 +6,4 @@ public partial class SetupView : UserControl
 {
     public SetupView() => InitializeComponent();
 }
+
