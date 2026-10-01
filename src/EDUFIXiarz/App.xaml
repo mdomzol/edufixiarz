@@ -108,7 +108,7 @@
                                 <Setter TargetName="StateIcon" Property="Source" Value="/EDUFIXiarz;component/Assets/Icons/cross-wh.png"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="StateIcon" Property="Source" Value="/EDUFIXiarz;component/Assets/Icons/check-gr.png"/>
+                                <Setter TargetName="StateIcon" Property="Source" Value="/EDUFIXiarz;component/Assets/Icons/check-or.png"/>
                             </Trigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>

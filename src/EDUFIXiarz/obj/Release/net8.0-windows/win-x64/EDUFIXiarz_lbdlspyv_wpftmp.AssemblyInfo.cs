@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EDUFIXiarz")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.3.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.0+ffb29e5f5e6f2b283159f369a2618580f9104c15")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.0+85ea018ff6afe23f07b8030df129aad364ea64b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("EDUFIXiarz")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EDUFIXiarz")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.3.0.0")]
