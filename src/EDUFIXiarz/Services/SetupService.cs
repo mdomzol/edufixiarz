@@ -30,7 +30,7 @@ public sealed class SetupService
         IEnumerable<AppDefinition> applications,
         Action<string>? output = null,
         Action<string>? error = null,
-        Action<int, int, string>? progress = null)
+        Action<string, string, string>? progress = null)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(applications);
@@ -63,6 +63,7 @@ public sealed class SetupService
         {
             try
             {
+                ReportProgress(name, "RUNNING", "Rozpoczynanie etapu…");
                 await action();
                 steps.Add(new PreparationStep
                 {
@@ -71,7 +72,8 @@ public sealed class SetupService
                     Details = successDetails,
                     CompletedAt = DateTime.Now
                 });
-                ReportProgress(name);
+                completedStages++;
+                ReportProgress(name, "DONE", successDetails);
             }
             catch (Exception ex)
             {
@@ -82,6 +84,7 @@ public sealed class SetupService
                     Details = ex.Message,
                     CompletedAt = DateTime.Now
                 });
+                ReportProgress(name, "ERROR", ex.Message);
                 throw;
             }
         }
@@ -143,7 +146,15 @@ public sealed class SetupService
                 async () =>
                 {
                     output?.Invoke($"Instalacja wybranych aplikacji ({selectedApplications.Count})…");
-                    await _applications.InstallAsync(selectedApplications, output, error);
+                    await _applications.InstallAsync(
+                        selectedApplications,
+                        output,
+                        error,
+                        (current, total, appName) =>
+                            ReportProgress(
+                                $"Instalacja aplikacji ({selectedApplications.Count})",
+                                "RUNNING",
+                                $"Aplikacja {current}/{total} · {appName}"));
                 },
                 $"Wybrano {selectedApplications.Count} aplikacji.");
         }
