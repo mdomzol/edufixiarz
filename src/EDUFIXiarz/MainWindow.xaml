@@ -239,7 +239,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Width="188" Height="62" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Margin="0,0,8,8" Padding="9">
+                                <Border Width="188" Height="62" BorderThickness="1" CornerRadius="7" Margin="0,0,8,8" Padding="9">
                                     <Border.Style>
                                         <Style TargetType="Border">
                                             <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
@@ -274,7 +274,24 @@
                                             <TextBlock Text="{Binding Name}" FontSize="9" FontWeight="Bold" TextWrapping="Wrap" MaxHeight="27"/>
                                             <TextBlock Text="{Binding Details}" FontSize="8" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" MaxHeight="25" Margin="0,3,0,0"/>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="2" Text="{Binding StatusLabel}" FontSize="7" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding StatusLabel}" FontSize="7" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Top">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="RUNNING">
+                                                            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="DONE">
+                                                            <Setter Property="Foreground" Value="#74C69D"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="ERROR">
+                                                            <Setter Property="Foreground" Value="#FF6B6B"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
