@@ -68,17 +68,29 @@
                                         <TextBlock Text="NAZWA DOMENY AD" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <Grid Margin="0,5,0,11">
                                             <TextBox x:Name="DomainBox" x:FieldModifier="public" Padding="40,10,12,10" ToolTip="np. firma.local"/>
-                                            <Image Source="/EDUFIXiarz;component/Assets/Icons/globe-or.png" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                            <Image Source="/EDUFIXiarz;component/Assets/Icons/globe-or.png" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" IsHitTestVisible="False"/>
                                         </Grid>
                                         <TextBlock Text="UŻYTKOWNIK DOMENOWY" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <Grid Margin="0,5,0,11">
                                             <TextBox x:Name="DomainUserBox" x:FieldModifier="public" Padding="40,10,12,10" ToolTip="np. administrator lub domena\administrator"/>
-                                            <Image Source="/EDUFIXiarz;component/Assets/Icons/user-or.png" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                            <Image Source="/EDUFIXiarz;component/Assets/Icons/user-or.png" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" IsHitTestVisible="False"/>
                                         </Grid>
                                         <TextBlock Text="HASŁO" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                                         <Grid Margin="0,5,0,0">
-                                            <PasswordBox x:Name="DomainPasswordBox" x:FieldModifier="public" Padding="40,10,12,10" ToolTip="Hasło nie jest zapisywane w profilu"/>
-                                            <Image Source="/EDUFIXiarz;component/Assets/Icons/password-or.png" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                            <PasswordBox x:Name="DomainPasswordBox" x:FieldModifier="public" Padding="40,10,42,10" ToolTip="Hasło nie jest zapisywane w profilu"
+                                                         PasswordChanged="DomainPasswordBox_PasswordChanged"/>
+                                            <TextBox x:Name="DomainPasswordPreviewBox" x:FieldModifier="public" Padding="40,10,42,10"
+                                                     Visibility="Collapsed" ToolTip="Hasło nie jest zapisywane w profilu"
+                                                     TextChanged="DomainPasswordPreviewBox_TextChanged"/>
+                                            <Image Source="/EDUFIXiarz;component/Assets/Icons/password-or.png" Width="16" Height="16" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0" IsHitTestVisible="False"/>
+                                            <Button x:Name="TogglePasswordVisibilityButton" x:FieldModifier="public"
+                                                    Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    Margin="0,0,7,0" Padding="0" Background="Transparent" BorderThickness="0"
+                                                    Focusable="False" Click="TogglePasswordVisibilityButton_Click"
+                                                    ToolTip="Pokaż hasło">
+                                                <Image x:Name="PasswordVisibilityIcon" Width="16" Height="16" Stretch="Uniform"
+                                                       Source="/EDUFIXiarz;component/Assets/Icons/eye-nolook-or.png"/>
+                                            </Button>
                                         </Grid>
                                 </StackPanel>
                             </StackPanel>
