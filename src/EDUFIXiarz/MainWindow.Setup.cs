@@ -187,7 +187,7 @@ public partial class MainWindow : Window
         AddPreparationStep("SNAPSHOT KOŃCOWY");
         AddPreparationStep("AUDYT KOŃCOWY");
 
-        SetupView.PreparationProgressItems.ItemsSource = _preparationProgressSteps;
+        PreparationProgressItems.ItemsSource = _preparationProgressSteps;
         RefreshPreparationProgress();
     }
 
