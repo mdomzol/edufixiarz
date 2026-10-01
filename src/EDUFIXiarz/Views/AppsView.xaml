@@ -48,6 +48,15 @@
                             </Border>
                     <UniformGrid Columns="3">
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=AdobeReaderCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="AdobeReaderCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -60,6 +69,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,0,5,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=EverythingCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="EverythingCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -72,6 +90,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,0,0,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=ChromeCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="ChromeCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -84,6 +111,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=FirefoxCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="FirefoxCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -96,6 +132,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=SevenZipCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="SevenZipCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -108,6 +153,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=VscodeCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="VscodeCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -120,6 +174,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=VlcCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="VlcCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -132,6 +195,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=NotepadPlusPlusCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="NotepadPlusPlusCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" IsChecked="True" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -144,6 +216,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="10,5,0,10" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=LibreOfficeCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="LibreOfficeCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -156,6 +237,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,5,10,0" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=PuttyCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="PuttyCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -168,6 +258,15 @@
                             </CheckBox>
                         </Border>
                         <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="5,5,5,0" Padding="14">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=GimpCheck}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <CheckBox x:Name="GimpCheck" x:FieldModifier="public" Style="{StaticResource AppSelectionCheckBoxStyle}" VerticalContentAlignment="Center">
                                 <Grid Margin="4,0,0,0">
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="44"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
