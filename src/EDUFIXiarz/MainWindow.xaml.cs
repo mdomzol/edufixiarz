@@ -36,6 +36,7 @@ public partial class MainWindow : Window
     private StationAudit? _previousAudit;
     private HardwareReport? _currentReport;
     private bool _joinDomainRequested;
+    private bool _sidebarCollapsed;
 
     private static readonly Dictionary<string, string> AppSelectionAliases = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -112,6 +113,16 @@ public partial class MainWindow : Window
 
         ShowPage(ReportView);
         Loaded += async (_, _) => await LoadHardwareReportAsync();
+    }
+
+    private void SidebarToggleButton_Click(object sender, RoutedEventArgs e)
+    {
+        _sidebarCollapsed = !_sidebarCollapsed;
+        SidebarColumn.Width = new GridLength(_sidebarCollapsed ? 48 : 252);
+        SidebarContent.Visibility = _sidebarCollapsed ? Visibility.Collapsed : Visibility.Visible;
+
+        SidebarToggleGlyph.Text = _sidebarCollapsed ? "›" : "‹";
+        SidebarToggleButton.ToolTip = _sidebarCollapsed ? "Rozwiń menu boczne" : "Zwiń menu boczne";
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
