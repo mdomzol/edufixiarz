@@ -106,10 +106,11 @@
                                    Margin="0,7,0,0"
                                    TextWrapping="Wrap"
                                    MaxHeight="42"/>
-                        <TextBlock FontSize="10"
-                                   Foreground="{StaticResource MutedBrush}"
-                                   Margin="0,4,0,0"
-                                   Text="{Binding CpuCores, StringFormat={}{0} rdzeni · {1} wątków}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="{Binding CpuCores, StringFormat={}{0} rdzeni}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBlock Text=" · " FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBlock Text="{Binding CpuThreads, StringFormat={}{0} wątków}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
@@ -256,8 +257,11 @@
                     <StackPanel>
                         <TextBlock Text="PROCESOR / GRAFIKA" Style="{StaticResource FieldLabel}"/>
                         <TextBlock Text="{Binding Cpu}" Style="{StaticResource FieldValue}" Margin="0,10,0,0"/>
-                        <TextBlock Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,10"
-                                   Text="{Binding CpuCores, StringFormat={}{0} rdzeni · {1} wątków}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,3,0,10">
+                            <TextBlock Text="{Binding CpuCores, StringFormat={}{0} rdzeni}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBlock Text=" · " FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBlock Text="{Binding CpuThreads, StringFormat={}{0} wątków}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
+                        </StackPanel>
 
                         <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,0">
                             <StackPanel>
