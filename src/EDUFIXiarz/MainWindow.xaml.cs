@@ -163,10 +163,16 @@ public partial class MainWindow : Window
                     var monitorArea = monitorInfo.rcMonitor;
                     var info = Marshal.PtrToStructure<MINMAXINFO>(lParam);
 
-                    info.ptMaxPosition.X = workArea.Left - monitorArea.Left;
-                    info.ptMaxPosition.Y = workArea.Top - monitorArea.Top;
-                    info.ptMaxSize.X = workArea.Right - workArea.Left;
-                    info.ptMaxSize.Y = workArea.Bottom - workArea.Top;
+                    // WindowChrome adds a resize frame around the client area. Keep the
+                    // maximized bounds inside the monitor work area instead of letting
+                    // that frame push the custom window past the screen edge.
+                    var border = GetSystemMetrics(SM_CXSIZEFRAME);
+                    var borderY = GetSystemMetrics(SM_CYSIZEFRAME);
+
+                    info.ptMaxPosition.X = workArea.Left - monitorArea.Left + border;
+                    info.ptMaxPosition.Y = workArea.Top - monitorArea.Top + borderY;
+                    info.ptMaxSize.X = Math.Max(0, workArea.Right - workArea.Left - (border * 2));
+                    info.ptMaxSize.Y = Math.Max(0, workArea.Bottom - workArea.Top - (borderY * 2));
 
                     Marshal.StructureToPtr(info, lParam, false);
                     handled = true;
@@ -185,6 +191,11 @@ public partial class MainWindow : Window
     private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
 
     private const uint MONITOR_DEFAULTTONEAREST = 2;
+    private const int SM_CXSIZEFRAME = 32;
+    private const int SM_CYSIZEFRAME = 33;
+
+    [DllImport("user32.dll")]
+    private static extern int GetSystemMetrics(int nIndex);
 
     [StructLayout(LayoutKind.Sequential)]
     private struct POINT
