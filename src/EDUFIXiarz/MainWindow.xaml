@@ -154,6 +154,48 @@
             </Setter>
         </Style>
 
+        <Style x:Key="CollapsedNavButton" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,3"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CollapsedNavSurface"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CollapsedNavSurface" Property="Background" Value="{StaticResource PanelAltBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="CollapsedNavSurface" Property="Background" Value="{StaticResource PanelAltBrush}"/>
+                                <Setter TargetName="CollapsedNavSurface" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                                <Setter TargetName="CollapsedNavSurface" Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Tag" Value="Active">
+                    <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="NavButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -317,6 +359,42 @@
                                TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
+            <StackPanel x:Name="CollapsedSidebarContent"
+                        Visibility="Collapsed"
+                        HorizontalAlignment="Center"
+                        Margin="0,118,0,0"
+                        Panel.ZIndex="2">
+                <Button x:Name="CollapsedReportMenuButton"
+                        Style="{StaticResource CollapsedNavButton}"
+                        Click="ReportMenuButton_Click"
+                        ToolTip="Raport stacji">
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/report-gr.png" Width="20" Height="20" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="CollapsedAuditMenuButton"
+                        Style="{StaticResource CollapsedNavButton}"
+                        Click="AuditMenuButton_Click"
+                        ToolTip="Audyt">
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/audit-gr.png" Width="20" Height="20" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="CollapsedSetupMenuButton"
+                        Style="{StaticResource CollapsedNavButton}"
+                        Click="SetupMenuButton_Click"
+                        ToolTip="Przygotowanie">
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/setup-gr.png" Width="20" Height="20" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="CollapsedAppsMenuButton"
+                        Style="{StaticResource CollapsedNavButton}"
+                        Click="AppsMenuButton_Click"
+                        ToolTip="Aplikacje">
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/apps-gr.png" Width="20" Height="20" Stretch="Uniform"/>
+                </Button>
+                <Button x:Name="CollapsedLogMenuButton"
+                        Style="{StaticResource CollapsedNavButton}"
+                        Click="LogMenuButton_Click"
+                        ToolTip="Dziennik">
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/log-gr.png" Width="20" Height="20" Stretch="Uniform"/>
+                </Button>
+            </StackPanel>
             <Button x:Name="SidebarToggleButton"
                     Width="30" Height="30"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
