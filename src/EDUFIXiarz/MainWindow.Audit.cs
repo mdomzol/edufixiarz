@@ -14,18 +14,7 @@ public partial class MainWindow : Window
         AuditView.CompareAuditButton.IsEnabled = false;
         try
         {
-            var previousAudit = _auditHistoryService.Load();
-            var audit = await _auditService.RunAsync(LogOutput);
-            _previousAudit = previousAudit;
-            _currentAudit = audit;
-            _auditHistoryService.Save(audit);
-            AuditView.AuditGrid.ItemsSource = audit.Items;
-            AuditView.OkCountText.Text = audit.OkCount.ToString();
-            AuditView.WarningCountText.Text = audit.WarningCount.ToString();
-            AuditView.ErrorCountText.Text = audit.ErrorCount.ToString();
-            AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
-            AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
-            Log($"Audyt stacji zakończony: OK={audit.OkCount}, WARN={audit.WarningCount}, ERROR={audit.ErrorCount}.");
+            await RunAuditAsync("START");
         }
         catch (Exception ex)
         {
@@ -39,6 +28,22 @@ public partial class MainWindow : Window
             AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
             AuditView.ExportProtocolButton.IsEnabled = _currentAudit is not null && _currentReport is not null;
         }
+    }
+
+    private async Task RunAuditAsync(string source)
+    {
+        var previousAudit = _auditHistoryService.Load();
+        var audit = await _auditService.RunAsync(LogOutput);
+        _previousAudit = previousAudit;
+        _currentAudit = audit;
+        _auditHistoryService.Save(audit);
+        AuditView.AuditGrid.ItemsSource = audit.Items;
+        AuditView.OkCountText.Text = audit.OkCount.ToString();
+        AuditView.WarningCountText.Text = audit.WarningCount.ToString();
+        AuditView.ErrorCountText.Text = audit.ErrorCount.ToString();
+        AuditView.AuditTimeText.Text = audit.CheckedAt.ToString("HH:mm:ss");
+        AuditView.CompareAuditButton.IsEnabled = _previousAudit is not null;
+        Log($"Audyt stacji zakończony ({source}): OK={audit.OkCount}, WARN={audit.WarningCount}, ERROR={audit.ErrorCount}.");
     }
 
     private void LoadLastAuditButton_Click(object sender, RoutedEventArgs e)
