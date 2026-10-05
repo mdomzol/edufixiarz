@@ -2,7 +2,7 @@ namespace EDUFIXiarz.Models;
 
 public sealed class StationReport
 {
-    public const int CurrentFormatVersion = 3;
+    public const int CurrentFormatVersion = 4;
 
     public string ReportId { get; init; } = Guid.NewGuid().ToString("N");
     public int FormatVersion { get; init; } = CurrentFormatVersion;
