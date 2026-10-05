@@ -121,6 +121,11 @@ public partial class MainWindow : Window
         SidebarColumn.Width = new GridLength(_sidebarCollapsed ? 48 : 252);
         SidebarContent.Visibility = _sidebarCollapsed ? Visibility.Collapsed : Visibility.Visible;
 
+        // Keep both content edges inside the viewport on narrow/portrait displays.
+        MainContent.Margin = _sidebarCollapsed
+            ? new Thickness(18, 24, 18, 20)
+            : new Thickness(34, 30, 34, 24);
+
         SidebarToggleGlyph.Text = _sidebarCollapsed ? "›" : "‹";
         SidebarToggleButton.ToolTip = _sidebarCollapsed ? "Rozwiń menu boczne" : "Zwiń menu boczne";
     }
