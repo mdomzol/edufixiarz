@@ -107,7 +107,9 @@ public partial class MainWindow : Window
         PrivilegeText.Text = isAdministrator
             ? "UPRAWNIENIA ADMINISTRATORA AKTYWNE"
             : "WYMAGANY ADMINISTRATOR";
-        PrivilegeText.Foreground = isAdministrator ? Brushes.LightGreen : Brushes.Orange;
+        PrivilegeText.Foreground = isAdministrator
+            ? (System.Windows.Media.Brush)FindResource("TextBrush")
+            : Brushes.Orange;
         PrivilegeStatusCard.BorderBrush = isAdministrator
             ? (System.Windows.Media.Brush)FindResource("AccentBrush")
             : Brushes.DarkOrange;
