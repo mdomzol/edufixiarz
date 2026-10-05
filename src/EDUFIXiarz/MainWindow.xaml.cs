@@ -102,8 +102,15 @@ public partial class MainWindow : Window
 
         SetupView.HostnameBox.Text = Environment.MachineName;
 
-        PrivilegeText.Text = IsAdministrator() ? "UPRAWNIENIA ADMINISTRATORA" : "WYMAGANY ADMINISTRATOR";
-        PrivilegeText.Foreground = IsAdministrator() ? Brushes.LightGreen : Brushes.Orange;
+        var isAdministrator = IsAdministrator();
+        PrivilegeTitle.Text = isAdministrator ? "TRYB ADMINISTRATORA" : "TRYB UŻYTKOWNIKA";
+        PrivilegeText.Text = isAdministrator
+            ? "UPRAWNIENIA ADMINISTRATORA AKTYWNE"
+            : "WYMAGANY ADMINISTRATOR";
+        PrivilegeText.Foreground = isAdministrator ? Brushes.LightGreen : Brushes.Orange;
+        PrivilegeStatusCard.BorderBrush = isAdministrator
+            ? (System.Windows.Media.Brush)FindResource("AccentBrush")
+            : Brushes.DarkOrange;
 
         Log("EDUFIXiarz uruchomiony.");
         Log($"Stacja: {Environment.MachineName}");
