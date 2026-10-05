@@ -127,8 +127,9 @@ public partial class MainWindow : Window
     private void SidebarToggleButton_Click(object sender, RoutedEventArgs e)
     {
         _sidebarCollapsed = !_sidebarCollapsed;
-        SidebarColumn.Width = new GridLength(_sidebarCollapsed ? 48 : 252);
+        SidebarColumn.Width = new GridLength(_sidebarCollapsed ? 48 : 276);
         SidebarContent.Visibility = _sidebarCollapsed ? Visibility.Collapsed : Visibility.Visible;
+        CollapsedSidebarContent.Visibility = _sidebarCollapsed ? Visibility.Visible : Visibility.Collapsed;
 
         // Keep both content edges inside the viewport on narrow/portrait displays.
         MainContent.Margin = _sidebarCollapsed
