@@ -583,6 +583,90 @@
                 </Grid>
             </Grid>
 
+            <Grid x:Name="ReportLoadingOverlay"
+                  Grid.Row="1"
+                  Panel.ZIndex="100"
+                  Background="#E6111417"
+                  Visibility="Visible"
+                  Opacity="1">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="360" Height="220">
+                    <Border Background="{StaticResource PanelBrush}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="14"
+                            Padding="28">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid Width="58" Height="58" HorizontalAlignment="Center" Margin="0,0,0,18">
+                                <Ellipse Width="58" Height="58"
+                                         Stroke="{StaticResource InputBrush}"
+                                         StrokeThickness="5"/>
+                                <Ellipse Width="58" Height="58"
+                                         Stroke="{StaticResource AccentBrush}"
+                                         StrokeThickness="5"
+                                         StrokeDashArray="18 82"
+                                         StrokeDashCap="Round"
+                                         RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <RotateTransform x:Name="ReportLoadingSpinnerRotation"/>
+                                    </Ellipse.RenderTransform>
+                                    <Ellipse.Triggers>
+                                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="ReportLoadingSpinnerRotation"
+                                                                     Storyboard.TargetProperty="Angle"
+                                                                     From="0" To="360"
+                                                                     Duration="0:0:1.05"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Ellipse.Triggers>
+                                </Ellipse>
+                            </Grid>
+                            <TextBlock Text="ODCZYTYWANIE STACJI"
+                                       FontSize="13"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource TextBrush}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Zbieram informacje o sprzęcie i konfiguracji systemu…"
+                                       FontSize="11"
+                                       Foreground="{StaticResource MutedBrush}"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,7,0,0"/>
+                            <Border Height="2"
+                                    Width="150"
+                                    Background="{StaticResource InputBrush}"
+                                    CornerRadius="1"
+                                    Margin="0,18,0,0"
+                                    ClipToBounds="True">
+                                <Border Width="55"
+                                        HorizontalAlignment="Left"
+                                        Background="{StaticResource AccentBrush}"
+                                        CornerRadius="1">
+                                    <Border.RenderTransform>
+                                        <TranslateTransform x:Name="ReportLoadingProgressTransform" X="-55"/>
+                                    </Border.RenderTransform>
+                                    <Border.Triggers>
+                                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="ReportLoadingProgressTransform"
+                                                                     Storyboard.TargetProperty="X"
+                                                                     From="-55" To="150"
+                                                                     Duration="0:0:1.15"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Border.Triggers>
+                                </Border>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
             <views:ReportView x:Name="ReportView" Grid.Row="1"/>
             <views:AuditView x:Name="AuditView" Grid.Row="1" Visibility="Collapsed"/>
             <views:SetupView x:Name="SetupView" Grid.Row="1" Visibility="Collapsed"/>
