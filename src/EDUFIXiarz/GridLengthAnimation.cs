@@ -12,6 +12,13 @@ public sealed class GridLengthAnimation : AnimationTimeline
             typeof(GridLengthAnimation),
             new PropertyMetadata(new GridLength(0)));
 
+    public static readonly DependencyProperty EasingFunctionProperty =
+        DependencyProperty.Register(
+            nameof(EasingFunction),
+            typeof(IEasingFunction),
+            typeof(GridLengthAnimation),
+            new PropertyMetadata(null));
+
     public static readonly DependencyProperty ToProperty =
         DependencyProperty.Register(
             nameof(To),
@@ -23,6 +30,12 @@ public sealed class GridLengthAnimation : AnimationTimeline
     {
         get => (GridLength)GetValue(FromProperty);
         set => SetValue(FromProperty, value);
+    }
+
+    public IEasingFunction? EasingFunction
+    {
+        get => (IEasingFunction?)GetValue(EasingFunctionProperty);
+        set => SetValue(EasingFunctionProperty, value);
     }
 
     public GridLength To
@@ -43,6 +56,8 @@ public sealed class GridLengthAnimation : AnimationTimeline
         var from = From.IsAbsolute ? From.Value : ((GridLength)defaultOriginValue).Value;
         var to = To.IsAbsolute ? To.Value : ((GridLength)defaultDestinationValue).Value;
         var progress = animationClock.CurrentProgress ?? 0;
+        if (EasingFunction is not null)
+            progress = EasingFunction.Ease(progress);
 
         return new GridLength(from + ((to - from) * progress), GridUnitType.Pixel);
     }
