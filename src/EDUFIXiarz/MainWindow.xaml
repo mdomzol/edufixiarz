@@ -287,7 +287,7 @@
         </Border>
 
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions><ColumnDefinition x:Name="SidebarColumn" Width="276"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions><ColumnDefinition x:Name="SidebarColumn" Width="252"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
             <Border x:Name="Sidebar" Grid.Column="0" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,1,0">
             <Grid>
             <Grid x:Name="SidebarContent" Margin="20,22,18,20">
@@ -395,45 +395,6 @@
                     <Image Source="/EDUFIXiarz;component/Assets/Icons/log-gr.png" Width="20" Height="20" Stretch="Uniform"/>
                 </Button>
             </StackPanel>
-            <Button x:Name="SidebarToggleButton"
-                    Width="30" Height="30"
-                    HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Margin="0,52,8,0"
-                    Padding="0"
-                    Panel.ZIndex="10"
-                    Style="{StaticResource SidebarToggleButtonStyle}"
-                    Click="SidebarToggleButton_Click"
-                    ToolTip="Zwiń menu boczne"
-                    Tag="False">
-                <Grid Width="18" Height="18">
-                    <Image Source="/EDUFIXiarz;component/Assets/Icons/sort-left-gr.png"
-                           Width="18" Height="18" Stretch="Uniform">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Image Source="/EDUFIXiarz;component/Assets/Icons/sort-right-gr.png"
-                           Width="18" Height="18" Stretch="Uniform">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                </Grid>
-            </Button>
             </Grid>
             </Border>
 
