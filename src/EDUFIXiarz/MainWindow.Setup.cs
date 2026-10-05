@@ -295,7 +295,19 @@ public partial class MainWindow : Window
         var total = activeSteps.Count;
         var percentage = total == 0 ? 0 : completed * 100.0 / total;
 
-        OperationProgressBar.Value = percentage;
+        var progressAnimation = new System.Windows.Media.Animation.DoubleAnimation
+        {
+            To = percentage,
+            Duration = TimeSpan.FromMilliseconds(320),
+            EasingFunction = new System.Windows.Media.Animation.CubicEase
+            {
+                EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut
+            }
+        };
+
+        OperationProgressBar.BeginAnimation(
+            System.Windows.Controls.ProgressBar.ValueProperty,
+            progressAnimation);
 
         var running = activeSteps.FirstOrDefault(x => x.Status == "RUNNING");
         var error = activeSteps.FirstOrDefault(x => x.Status == "ERROR");
