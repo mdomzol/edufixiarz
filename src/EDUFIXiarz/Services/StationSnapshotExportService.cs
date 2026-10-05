@@ -61,7 +61,7 @@ footer{{margin-top:35px;color:#777;font-size:12px}}@media(max-width:700px){{body
 ("CPU",h.Cpu),("Rdzenie / wątki",$"{h.CpuCores} / {h.CpuThreads}"),("RAM",$"{h.Ram} · sloty {h.RamUsedSlots}/{h.RamSlots}"),
 ("Płyta główna",h.Motherboard),("BIOS",h.Bios),("GPU",List(h.Gpus)),("Dyski fizyczne",List(h.PhysicalDisks)),("Dyski logiczne",List(h.LogicalDisks))})}</table>
 <h2>Sieć i bezpieczeństwo</h2><table><tr><th>Parametr</th><th>Wartość</th></tr>{Rows(new[] {
-("Adaptery sieciowe",List(h.NetworkAdapters)),("Antywirus",List(h.Antivirus)),("TPM",h.Tpm),("Secure Boot",h.SecureBoot),("BitLocker",h.BitLocker)})}</table>
+("Adaptery sieciowe",List(h.NetworkAdapters)),("Antywirus",List(h.Antivirus)),("TPM",h.Tpm),("Secure Boot",h.SecureBoot)})}</table>
 <h2>Oprogramowanie</h2><table><tr><th>Aplikacje</th></tr>{string.Join("",h.InstalledApplications.Select(x=>$"<tr><td>{E(x)}</td></tr>"))}</table>
 <footer>EDUFIXiarz · EDU-FIX IT · snapshot: {E(snapshot.SnapshotId)} · stacja: {E(snapshot.StationId)}</footer></main></body></html>";
     }
