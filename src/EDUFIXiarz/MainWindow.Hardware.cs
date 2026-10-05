@@ -16,6 +16,7 @@ public partial class MainWindow : Window
     private async Task LoadHardwareReportAsync()
     {
         RefreshReportButton.IsEnabled = false;
+        ShowReportLoadingOverlay();
         HardwareStatusText.Text = "ODCZYTYWANIE…";
 
         try
@@ -54,7 +55,29 @@ public partial class MainWindow : Window
         finally
         {
             RefreshReportButton.IsEnabled = true;
+            HideReportLoadingOverlay();
         }
+    }
+
+    private void ShowReportLoadingOverlay()
+    {
+        ReportLoadingOverlay.Visibility = Visibility.Visible;
+        ReportLoadingOverlay.Opacity = 1;
+    }
+
+    private void HideReportLoadingOverlay()
+    {
+        var fade = new System.Windows.Media.Animation.DoubleAnimation
+        {
+            To = 0,
+            Duration = TimeSpan.FromMilliseconds(180),
+            EasingFunction = new System.Windows.Media.Animation.QuadraticEase
+            {
+                EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut
+            }
+        };
+        fade.Completed += (_, _) => ReportLoadingOverlay.Visibility = Visibility.Collapsed;
+        ReportLoadingOverlay.BeginAnimation(OpacityProperty, fade);
     }
 
     private StationSnapshot CreateSnapshot(HardwareReport report, string stage, string? sessionId = null) => new()
