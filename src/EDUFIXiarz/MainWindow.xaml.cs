@@ -139,8 +139,8 @@ public partial class MainWindow : Window
         SidebarToggleButton.ToolTip = _sidebarCollapsed ? "Rozwiń menu boczne" : "Zwiń menu boczne";
         SidebarToggleButton.Tag = _sidebarCollapsed;
         SidebarToggleButton.Margin = _sidebarCollapsed
-            ? new Thickness(7, 106, 0, 0)
-            : new Thickness(20, 106, 0, 0);
+            ? new Thickness(7, 124, 0, 0)
+            : new Thickness(20, 124, 0, 0);
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
