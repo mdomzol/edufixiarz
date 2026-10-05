@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using EDUFIXiarz.Models;
 using EDUFIXiarz.Services;
 
@@ -127,20 +128,95 @@ public partial class MainWindow : Window
     private void SidebarToggleButton_Click(object sender, RoutedEventArgs e)
     {
         _sidebarCollapsed = !_sidebarCollapsed;
-        SidebarColumn.Width = new GridLength(_sidebarCollapsed ? 48 : 252);
-        SidebarContent.Visibility = _sidebarCollapsed ? Visibility.Collapsed : Visibility.Visible;
-        CollapsedSidebarContent.Visibility = _sidebarCollapsed ? Visibility.Visible : Visibility.Collapsed;
 
-        // Keep both content edges inside the viewport on narrow/portrait displays.
-        MainContent.Margin = _sidebarCollapsed
+        var targetWidth = _sidebarCollapsed ? 48 : 252;
+        var targetMargin = _sidebarCollapsed
             ? new Thickness(18, 24, 18, 20)
             : new Thickness(34, 30, 34, 24);
+        var targetToggleMargin = _sidebarCollapsed
+            ? new Thickness(7, 124, 0, 0)
+            : new Thickness(20, 124, 0, 0);
+
+        SidebarColumn.BeginAnimation(
+            ColumnDefinition.WidthProperty,
+            new GridLengthAnimation
+            {
+                From = SidebarColumn.Width,
+                To = new GridLength(targetWidth),
+                Duration = TimeSpan.FromMilliseconds(220),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            });
+
+        MainContent.BeginAnimation(
+            MarginProperty,
+            new ThicknessAnimation
+            {
+                To = targetMargin,
+                Duration = TimeSpan.FromMilliseconds(220),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            });
+
+        SidebarToggleButton.BeginAnimation(
+            MarginProperty,
+            new ThicknessAnimation
+            {
+                To = targetToggleMargin,
+                Duration = TimeSpan.FromMilliseconds(220),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            });
 
         SidebarToggleButton.ToolTip = _sidebarCollapsed ? "Rozwiń menu boczne" : "Zwiń menu boczne";
         SidebarToggleButton.Tag = _sidebarCollapsed;
-        SidebarToggleButton.Margin = _sidebarCollapsed
-            ? new Thickness(7, 124, 0, 0)
-            : new Thickness(20, 124, 0, 0);
+
+        if (_sidebarCollapsed)
+        {
+            SidebarContent.BeginAnimation(
+                OpacityProperty,
+                new DoubleAnimation
+                {
+                    To = 0,
+                    Duration = TimeSpan.FromMilliseconds(130),
+                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+                });
+
+            CollapsedSidebarContent.Visibility = Visibility.Visible;
+            CollapsedSidebarContent.Opacity = 0;
+            CollapsedSidebarContent.BeginAnimation(
+                OpacityProperty,
+                new DoubleAnimation
+                {
+                    From = 0,
+                    To = 1,
+                    BeginTime = TimeSpan.FromMilliseconds(120),
+                    Duration = TimeSpan.FromMilliseconds(140),
+                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+                });
+        }
+        else
+        {
+            SidebarContent.Visibility = Visibility.Visible;
+            SidebarContent.Opacity = 0;
+            SidebarContent.BeginAnimation(
+                OpacityProperty,
+                new DoubleAnimation
+                {
+                    From = 0,
+                    To = 1,
+                    BeginTime = TimeSpan.FromMilliseconds(100),
+                    Duration = TimeSpan.FromMilliseconds(150),
+                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+                });
+
+            CollapsedSidebarContent.BeginAnimation(
+                OpacityProperty,
+                new DoubleAnimation
+                {
+                    To = 0,
+                    Duration = TimeSpan.FromMilliseconds(100),
+                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut },
+                    Completed = (_, _) => CollapsedSidebarContent.Visibility = Visibility.Collapsed
+                });
+        }
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
