@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Diagnostics;
 using System.Windows;
 using Microsoft.Win32;
 using System.Windows.Media;
@@ -32,6 +33,8 @@ public partial class MainWindow : Window
 
         try
         {
+            ApplyPreparationPowerSettings();
+
             var options = new SetupOptions
             {
                 ChangeHostname = SetupView.HostnameCheck.IsChecked == true,
@@ -167,6 +170,66 @@ public partial class MainWindow : Window
         {
             SetupView.DomainPasswordBox.Clear();
             SetSetupOperationState(false);
+        }
+    }
+
+
+    private void ApplyPreparationPowerSettings()
+    {
+        try
+        {
+            using (var powerKey = Registry.LocalMachine.OpenSubKey(
+                @"SYSTEM\CurrentControlSet\Control\Session Manager\Power",
+                writable: true))
+            {
+                if (powerKey is null)
+                    throw new InvalidOperationException("Nie można otworzyć ustawień zasilania systemu Windows.");
+
+                powerKey.SetValue("HiberbootEnabled", 0, RegistryValueKind.DWord);
+            }
+
+            RunPowerCfg("/change standby-timeout-ac 0");
+            RunPowerCfg("/change standby-timeout-dc 0");
+            RunPowerCfg("/change disk-timeout-ac 90");
+            RunPowerCfg("/change disk-timeout-dc 90");
+
+            Log("Ustawienia zasilania przygotowania: Szybkie uruchamianie WYŁĄCZONE · Uśpienie NIGDY (AC/DC) · Dysk 90 min (AC/DC).");
+        }
+        catch (Exception ex)
+        {
+            LogException("USTAWIEŃ ZASILANIA", ex);
+            throw new InvalidOperationException(
+                "Nie udało się zastosować wymaganych ustawień zasilania. Przygotowanie stacji zostało przerwane. " + ex.Message,
+                ex);
+        }
+    }
+
+    private static void RunPowerCfg(string arguments)
+    {
+        using var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "powercfg.exe",
+                Arguments = arguments,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            }
+        };
+
+        process.Start();
+        process.WaitForExit();
+
+        if (process.ExitCode != 0)
+        {
+            var error = process.StandardError.ReadToEnd().Trim();
+            throw new InvalidOperationException(
+                string.IsNullOrWhiteSpace(error)
+                    ? $"powercfg.exe zakończył działanie kodem {process.ExitCode}."
+                    : error);
         }
     }
 
