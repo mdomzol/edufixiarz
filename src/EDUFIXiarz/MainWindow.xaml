@@ -290,14 +290,14 @@
 
                     <Grid Grid.Row="1" Margin="0,14,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="POSTĘP PRZYGOTOWANIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                             <TextBlock x:Name="OperationProgressText" Text="GOTOWY · 00 / 00" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" Margin="0,3,0,0"/>
                         </StackPanel>
-                        <ProgressBar x:Name="OperationProgressBar" Grid.Column="1" Width="300" Minimum="0" Maximum="100" Value="0" Height="9" VerticalAlignment="Center" Margin="24,0,0,0" Style="{StaticResource PreparationProgressBar}"/>
+                        <ProgressBar x:Name="OperationProgressBar" Grid.Column="1" Width="300" Minimum="0" Maximum="100" Value="0" Height="9" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="24,0,0,0" Style="{StaticResource PreparationProgressBar}"/>
                     </Grid>
 
                     <ItemsControl x:Name="PreparationProgressItems" Grid.Row="2" Margin="0,12,0,0">
