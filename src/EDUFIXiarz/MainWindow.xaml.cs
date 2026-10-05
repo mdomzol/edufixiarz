@@ -1,6 +1,7 @@
 using System.Security.Principal;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using EDUFIXiarz.Models;
@@ -54,6 +55,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        SourceInitialized += MainWindow_SourceInitialized;
 
         AuditView.RunAuditButton.Click += RunAuditButton_Click;
         AuditView.ExportProtocolButton.Click += ExportProtocolButton_Click;
@@ -134,6 +137,88 @@ public partial class MainWindow : Window
         WindowState = WindowState == WindowState.Maximized
             ? WindowState.Normal
             : WindowState.Maximized;
+    }
+
+    private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+    {
+        if (PresentationSource.FromVisual(this) is not System.Windows.Interop.HwndSource source)
+            return;
+
+        source.AddHook(WindowProc);
+    }
+
+    private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        const int WM_GETMINMAXINFO = 0x0024;
+
+        if (msg == WM_GETMINMAXINFO)
+        {
+            var monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+            if (monitor != IntPtr.Zero)
+            {
+                var monitorInfo = new MONITORINFO { cbSize = Marshal.SizeOf<MONITORINFO>() };
+                if (GetMonitorInfo(monitor, ref monitorInfo))
+                {
+                    var workArea = monitorInfo.rcWork;
+                    var monitorArea = monitorInfo.rcMonitor;
+                    var info = Marshal.PtrToStructure<MINMAXINFO>(lParam);
+
+                    info.ptMaxPosition.X = workArea.Left - monitorArea.Left;
+                    info.ptMaxPosition.Y = workArea.Top - monitorArea.Top;
+                    info.ptMaxSize.X = workArea.Right - workArea.Left;
+                    info.ptMaxSize.Y = workArea.Bottom - workArea.Top;
+
+                    Marshal.StructureToPtr(info, lParam, false);
+                    handled = true;
+                }
+            }
+        }
+
+        return IntPtr.Zero;
+    }
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+    private const uint MONITOR_DEFAULTTONEAREST = 2;
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct POINT
+    {
+        public int X;
+        public int Y;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct MINMAXINFO
+    {
+        public POINT ptReserved;
+        public POINT ptMaxSize;
+        public POINT ptMaxPosition;
+        public POINT ptMinTrackSize;
+        public POINT ptMaxTrackSize;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct MONITORINFO
+    {
+        public int cbSize;
+        public RECT rcMonitor;
+        public RECT rcWork;
+        public uint dwFlags;
     }
 
     private static bool IsAdministrator()
