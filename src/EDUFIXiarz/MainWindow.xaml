@@ -133,25 +133,25 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="SidebarToggleSurface"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="1"
                                 CornerRadius="6">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="SidebarToggleSurface" Property="Background" Value="#24292E"/>
+                                <Setter TargetName="SidebarToggleSurface" Property="BorderBrush" Value="#3A4047"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="SidebarToggleSurface" Property="Background" Value="#30363D"/>
+                                <Setter TargetName="SidebarToggleSurface" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource InputBrush}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <Style x:Key="NavButton" TargetType="Button">
@@ -320,7 +320,7 @@
             <Button x:Name="SidebarToggleButton"
                     Width="30" Height="30"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Margin="0,43,8,0"
+                    Margin="0,52,8,0"
                     Padding="0"
                     Panel.ZIndex="10"
                     Style="{StaticResource SidebarToggleButtonStyle}"
