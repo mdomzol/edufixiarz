@@ -2,7 +2,7 @@ namespace EDUFIXiarz.Models;
 
 public sealed class StationSnapshot
 {
-    public const int CurrentFormatVersion = 2;
+    public const int CurrentFormatVersion = 3;
 
     public static class Stages
     {
