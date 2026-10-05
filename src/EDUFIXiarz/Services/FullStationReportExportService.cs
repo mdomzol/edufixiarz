@@ -58,7 +58,7 @@ public sealed class FullStationReportExportService
         AddRow(prefix,"Użytkownik",h.UserName); AddRow(prefix,"Domena",h.Domain); AddRow(prefix,"Producent",h.Manufacturer); AddRow(prefix,"Model",h.Model);
         AddRow(prefix,"Numer seryjny",h.SerialNumber); AddRow(prefix,"System operacyjny",h.OperatingSystem); AddRow(prefix,"Wersja",h.OsVersion);
         AddRow(prefix,"Aktywacja Windows",h.Activation); AddRow(prefix,"Windows Update",h.WindowsUpdate); AddRow(prefix,"CPU",h.Cpu); AddRow(prefix,"RAM",h.Ram);
-        AddRow(prefix,"TPM",h.Tpm); AddRow(prefix,"Secure Boot",h.SecureBoot); AddRow(prefix,"BitLocker",h.BitLocker);
+        AddRow(prefix,"TPM",h.Tpm); AddRow(prefix,"Secure Boot",h.SecureBoot);
         foreach(var x in h.InstalledApplications) AddRow(prefix,"Aplikacja",x);
     }
 
