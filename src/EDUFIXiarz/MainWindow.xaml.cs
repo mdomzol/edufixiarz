@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using EDUFIXiarz.Models;
@@ -207,15 +208,15 @@ public partial class MainWindow : Window
                     EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
                 });
 
-            CollapsedSidebarContent.BeginAnimation(
-                OpacityProperty,
-                new DoubleAnimation
-                {
-                    To = 0,
-                    Duration = TimeSpan.FromMilliseconds(100),
-                    EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut },
-                    Completed = (_, _) => CollapsedSidebarContent.Visibility = Visibility.Collapsed
-                });
+            var collapseAnimation = new DoubleAnimation
+            {
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(100),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+            collapseAnimation.Completed += (_, _) =>
+                CollapsedSidebarContent.Visibility = Visibility.Collapsed;
+            CollapsedSidebarContent.BeginAnimation(OpacityProperty, collapseAnimation);
         }
     }
 
