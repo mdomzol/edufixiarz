@@ -296,7 +296,7 @@
                 <StackPanel>
                     <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="14,13,14,13" Margin="0,0,0,6"><StackPanel><TextBlock Text="EDU-FIX IT" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"/><TextBlock Text="EDUFIXiarz" FontSize="23" FontWeight="SemiBold" Margin="0,3,0,0"/><TextBlock Text="ADMINISTRACJA STACJI" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="0,5,0,0"/></StackPanel></Border>
                 </StackPanel>
-                <StackPanel Grid.Row="1" Margin="0,82,0,0">
+                <StackPanel Grid.Row="1" Margin="0,42,0,0">
                     <TextBlock Text="STACJA" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}" Margin="12,0,0,10"/>
                     <Button x:Name="ReportMenuButton" Style="{StaticResource NavButton}" Click="ReportMenuButton_Click">
                         <StackPanel Orientation="Horizontal"><Image Source="/EDUFIXiarz;component/Assets/Icons/report-gr.png" Width="20" Height="20" Stretch="Uniform" Margin="0,0,12,0"/><TextBlock Text="RAPORT STACJI"/></StackPanel>
