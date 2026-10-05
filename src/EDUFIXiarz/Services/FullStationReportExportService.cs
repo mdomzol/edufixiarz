@@ -108,7 +108,7 @@ public sealed class FullStationReportExportService
         var details = parts.Skip(1).ToList();
 
         var detailHtml = details.Count == 0
-            ? "<div class=""network-detail"">Brak dodatkowych informacji</div>"
+            ? "<div class=\"network-detail\">Brak dodatkowych informacji</div>"
             : string.Join("", details.Select(x => $@"<div class=""network-detail"">{E(x)}</div>"));
 
         return $@"<article class=""network-card""><div class=""network-name"">{E(name)}</div>{detailHtml}</article>";
