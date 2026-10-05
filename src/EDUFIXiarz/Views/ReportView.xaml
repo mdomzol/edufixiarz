@@ -310,47 +310,6 @@
                 </Border>
             </Grid>
 
-            <!-- SOFTWARE -->
-            <TextBlock Text="OPROGRAMOWANIE" Style="{StaticResource SectionTitle}"/>
-            <Border Style="{StaticResource ReportCard}" Margin="0,0,0,20">
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="ZAINSTALOWANE APLIKACJE" Style="{StaticResource FieldLabel}"/>
-                        <TextBlock Grid.Column="1"
-                                   Text="{Binding InstalledApplications.Count, StringFormat={}{0} aplikacji}"
-                                   FontSize="10"
-                                   Foreground="{StaticResource MutedBrush}"/>
-                    </Grid>
-
-                    <ItemsControl ItemsSource="{Binding InstalledApplications}" Margin="0,12,0,0">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Background="{StaticResource InputBrush}"
-                                        BorderBrush="{StaticResource BorderBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="6"
-                                        Padding="11,8"
-                                        Margin="0,0,7,7">
-                                    <TextBlock Text="{Binding}"
-                                               FontSize="11"
-                                               TextWrapping="Wrap"
-                                               MaxWidth="260"/>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
-
         </StackPanel>
     </ScrollViewer>
 </UserControl>
