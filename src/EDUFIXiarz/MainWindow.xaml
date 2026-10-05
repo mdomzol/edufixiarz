@@ -288,16 +288,43 @@
                 </StackPanel>
             </Grid>
             <Button x:Name="SidebarToggleButton"
-                    Width="34" Height="34"
+                    Width="30" Height="30"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Margin="0,8,8,0"
+                    Margin="0,100,8,0"
                     Padding="0"
                     Panel.ZIndex="10"
                     Style="{StaticResource WindowControlButton}"
                     Click="SidebarToggleButton_Click"
-                    ToolTip="Zwiń menu boczne">
-                <TextBlock x:Name="SidebarToggleGlyph" Text="‹" FontSize="24" FontWeight="Light"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    ToolTip="Zwiń menu boczne"
+                    Tag="False">
+                <Grid Width="18" Height="18">
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/sort-left-gr.png"
+                           Width="18" Height="18" Stretch="Uniform">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCollapsed, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <Image Source="/EDUFIXiarz;component/Assets/Icons/sort-right-gr.png"
+                           Width="18" Height="18" Stretch="Uniform">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCollapsed, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Grid>
             </Button>
             </Grid>
             </Border>
