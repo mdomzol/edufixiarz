@@ -34,6 +34,12 @@ public partial class MainWindow : Window
         AppsMenuButton.Tag = null;
         LogMenuButton.Tag = null;
 
+        CollapsedReportMenuButton.Tag = null;
+        CollapsedAuditMenuButton.Tag = null;
+        CollapsedSetupMenuButton.Tag = null;
+        CollapsedAppsMenuButton.Tag = null;
+        CollapsedLogMenuButton.Tag = null;
+
         page.Visibility = Visibility.Visible;
 
         var reportVisible = page == ReportView;
@@ -48,5 +54,13 @@ public partial class MainWindow : Window
             : LogMenuButton;
 
         active.Tag = "Active";
+
+        var collapsedActive = page == ReportView ? CollapsedReportMenuButton
+            : page == AuditView ? CollapsedAuditMenuButton
+            : page == SetupView ? CollapsedSetupMenuButton
+            : page == AppsView ? CollapsedAppsMenuButton
+            : CollapsedLogMenuButton;
+
+        collapsedActive.Tag = "Active";
     }
 }
