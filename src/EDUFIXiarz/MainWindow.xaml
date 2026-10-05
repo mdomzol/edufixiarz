@@ -126,19 +126,24 @@
 
         <Style x:Key="SidebarToggleButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="12,11"/>
-            <Setter Property="Margin" Value="0,3,0,3"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True"><Setter Property="Foreground" Value="{StaticResource TextBrush}"/></Trigger>
-                <Trigger Property="Tag" Value="Active">
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Background" Value="{StaticResource PanelAltBrush}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
-                    <Setter Property="BorderThickness" Value="1,0,0,0"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
