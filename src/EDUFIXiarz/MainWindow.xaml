@@ -5,7 +5,7 @@
         xmlns:views="clr-namespace:EDUFIXiarz.Views"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="EDUFIXiarz · EDU-FIX IT"
-        WindowStyle="None" ResizeMode="CanResize" WindowState="Maximized" Width="1440" Height="900" MinWidth="1180" MinHeight="760"
+        WindowStyle="None" ResizeMode="CanResize" WindowState="Maximized" Width="1440" Height="900" MinWidth="760" MinHeight="600"
         Background="{StaticResource BackgroundBrush}" Foreground="{StaticResource TextBrush}"
         WindowStartupLocation="CenterScreen" Icon="{StaticResource AppIcon}">
     <Window.Resources>
