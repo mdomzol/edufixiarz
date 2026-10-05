@@ -55,6 +55,75 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="PreparationProgressBar" TargetType="ProgressBar">
+            <Setter Property="Background" Value="#15191D"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid ClipToBounds="True">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4"/>
+                            <Grid Margin="1">
+                                <Border x:Name="PART_Indicator"
+                                        HorizontalAlignment="Left"
+                                        Background="{TemplateBinding Foreground}"
+                                        CornerRadius="3">
+                                    <Grid ClipToBounds="True">
+                                        <Rectangle Opacity="0.18">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <GradientStop Color="#00FFFFFF" Offset="0"/>
+                                                    <GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+                                                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                            <Rectangle.RenderTransform>
+                                                <TranslateTransform x:Name="ProgressShimmerTransform" X="-180"/>
+                                            </Rectangle.RenderTransform>
+                                        </Rectangle>
+                                        <Border Background="#30FFFFFF" CornerRadius="3" Height="1"
+                                                VerticalAlignment="Top" Margin="2,1,2,0"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsIndeterminate" Value="True">
+                                <Setter TargetName="PART_Indicator" Property="Width" Value="Auto"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="ProgressShimmerTransform"
+                                                             Storyboard.TargetProperty="X"
+                                                             From="-180" To="420"
+                                                             Duration="0:0:1.15"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetName="ProgressShimmerTransform"
+                                                             Storyboard.TargetProperty="X"
+                                                             From="-180" To="420"
+                                                             Duration="0:0:1.35"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="NavButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -228,7 +297,7 @@
                             <TextBlock Text="POSTĘP PRZYGOTOWANIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
                             <TextBlock x:Name="OperationProgressText" Text="GOTOWY · 00 / 00" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" Margin="0,3,0,0"/>
                         </StackPanel>
-                        <ProgressBar x:Name="OperationProgressBar" Grid.Column="1" Width="300" Minimum="0" Maximum="100" Value="0" Height="7" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                        <ProgressBar x:Name="OperationProgressBar" Grid.Column="1" Width="300" Minimum="0" Maximum="100" Value="0" Height="9" VerticalAlignment="Center" Margin="24,0,0,0" Style="{StaticResource PreparationProgressBar}"/>
                     </Grid>
 
                     <ItemsControl x:Name="PreparationProgressItems" Grid.Row="2" Margin="0,12,0,0">
