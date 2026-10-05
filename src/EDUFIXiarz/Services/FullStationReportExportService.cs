@@ -67,7 +67,7 @@ public sealed class FullStationReportExportService
         var audit = report.Audit is null ? "<p>Audyt nie został wykonany.</p>" :
             "<table><tr><th>Kontrola</th><th>Status</th><th>Szczegóły</th></tr>"+string.Join("",report.Audit.Items.Select(x=>$"<tr><td>{E(x.Name)}</td><td>{E(x.Status)}</td><td>{E(x.Details)}</td></tr>"))+"</table>";
         return $@"<!doctype html><html lang=""pl""><head><meta charset=""utf-8""><meta name=""viewport"" content=""width=device-width,initial-scale=1"">
-<title>EDUFIXiarz — raport stacji</title><style>body{{font-family:Segoe UI,Arial,sans-serif;background:#f4f5f6;color:#17191c;margin:0;padding:32px}}main{{max-width:1100px;margin:auto;background:#fff;padding:40px;border:1px solid #ddd}}h1{{margin:0}}h2{{margin-top:32px;border-bottom:2px solid #f36b21;padding-bottom:8px}}table{{width:100%;border-collapse:collapse}}th,td{{text-align:left;padding:9px;border-bottom:1px solid #ddd;vertical-align:top}}th{{background:#f7f7f7}}.meta{{color:#666;margin:8px 0 24px}}footer{{margin-top:35px;color:#777;font-size:12px}}</style></head><body><main>
+<title>EDUFIXiarz — raport stacji</title><style>body{{font-family:Segoe UI,Arial,sans-serif;background:#f4f5f6;color:#17191c;margin:0;padding:32px}}main{{max-width:1100px;margin:auto;background:#fff;padding:40px;border:1px solid #ddd}}h1{{margin:0}}h2{{margin-top:32px;border-bottom:2px solid #f36b21;padding-bottom:8px}}table{{width:100%;border-collapse:collapse}}th,td{{text-align:left;padding:9px;border-bottom:1px solid #ddd;vertical-align:top}}th{{background:#f7f7f7}}.meta{{color:#666;margin:8px 0 24px}}.network-grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 8px}}.network-card{{background:#f7f7f7;border:1px solid #ddd;border-radius:8px;padding:13px 14px}}.network-name{{font-weight:700;margin-bottom:6px}}.network-detail{{font-size:13px;color:#666;line-height:1.45}}@media(max-width:720px){{.network-grid{{grid-template-columns:1fr}}}}footer{{margin-top:35px;color:#777;font-size:12px}}</style></head><body><main>
 <h1>RAPORT STACJI</h1><div class=""meta"">EDUFIXiarz · format {report.FormatVersion} · raport {E(report.ReportId)} · {report.GeneratedAt:yyyy-MM-dd HH:mm:ss}</div>
 {SnapshotHtml("STAN PRZED PRZYGOTOWANIEM",report.BeforeSnapshot)}
 {ComparisonHtml(report.Comparison)}
@@ -84,7 +84,34 @@ public sealed class FullStationReportExportService
         var rows=new[]{("StationId",h.StationId),("UUID",h.DeviceUuid),("Hostname",h.Hostname),("Użytkownik",h.UserName),("Domena",h.Domain),
             ("Producent",h.Manufacturer),("Model",h.Model),("Numer seryjny",h.SerialNumber),("System",h.OperatingSystem),("Wersja",h.OsVersion),
             ("Aktywacja",h.Activation),("Windows Update",h.WindowsUpdate),("CPU",h.Cpu),("RAM",h.Ram),("TPM",h.Tpm),("Secure Boot",h.SecureBoot),("BitLocker",h.BitLocker)};
-        return $"<h2>{E(title)}</h2><table><tr><th>Parametr</th><th>Wartość</th></tr>{string.Join("",rows.Select(x=>$"<tr><td>{E(x.Item1)}</td><td>{E(x.Item2)}</td></tr>"))}</table>";
+        var network = NetworkAdaptersHtml(h.NetworkAdapters);
+        return $"<h2>{E(title)}</h2><table><tr><th>Parametr</th><th>Wartość</th></tr>{string.Join("",rows.Select(x=>$"<tr><td>{E(x.Item1)}</td><td>{E(x.Item2)}</td></tr>"))}</table>{network}";
+    }
+
+    private static string NetworkAdaptersHtml(List<string> adapters)
+    {
+        var cards = adapters
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Select(NetworkAdapterCardHtml)
+            .ToList();
+
+        if (cards.Count == 0)
+            cards.Add(NetworkAdapterCardHtml("—"));
+
+        return $@"<h3>INTERFEJSY SIECIOWE</h3><div class=""network-grid"">{string.Join("", cards)}</div>";
+    }
+
+    private static string NetworkAdapterCardHtml(string value)
+    {
+        var parts = value.Split(" · ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var name = parts.FirstOrDefault() ?? "—";
+        var details = parts.Skip(1).ToList();
+
+        var detailHtml = details.Count == 0
+            ? "<div class=""network-detail"">Brak dodatkowych informacji</div>"
+            : string.Join("", details.Select(x => $@"<div class=""network-detail"">{E(x)}</div>"));
+
+        return $@"<article class=""network-card""><div class=""network-name"">{E(name)}</div>{detailHtml}</article>";
     }
 
     private static string ComparisonHtml(SnapshotComparison? comparison)
