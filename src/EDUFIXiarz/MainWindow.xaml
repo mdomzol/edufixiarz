@@ -245,10 +245,46 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Grid.Row="2">
-                    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,14,0,0">
-                        <TextBlock x:Name="PrivilegeText" Text="SPRAWDZANIE…" FontSize="10" FontWeight="Bold" TextWrapping="Wrap"/>
+                    <Border x:Name="PrivilegeStatusCard"
+                            Background="{StaticResource PanelAltBrush}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="9"
+                            Padding="11,10"
+                            Margin="0,0,0,9">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Width="28" Height="28"
+                                    Background="{StaticResource InputBrush}"
+                                    BorderBrush="{StaticResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="7"
+                                    VerticalAlignment="Top">
+                                <Image Source="/EDUFIXiarz;component/Assets/Icons/admin-or.png"
+                                       Width="17" Height="17" Stretch="Uniform"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="9,0,0,0">
+                                <TextBlock x:Name="PrivilegeTitle"
+                                           Text="SPRAWDZANIE…"
+                                           FontSize="9"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource MutedBrush}"/>
+                                <TextBlock x:Name="PrivilegeText"
+                                           Text="SPRAWDZANIE…"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
-                    <TextBlock Text="EDUFIXiarz · narzędzie administracyjne" FontSize="8" Foreground="{StaticResource MutedBrush}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Text="EDUFIXiarz · narzędzie administracyjne"
+                               FontSize="8"
+                               Foreground="{StaticResource MutedBrush}"
+                               TextWrapping="Wrap"/>
                 </StackPanel>
             </Grid>
             <Button x:Name="SidebarToggleButton"
