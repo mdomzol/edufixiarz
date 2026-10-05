@@ -22,7 +22,6 @@ public sealed class SnapshotComparisonService
         Add(result, "Windows Update", b.WindowsUpdate, a.WindowsUpdate);
         Add(result, "TPM", b.Tpm, a.Tpm);
         Add(result, "Secure Boot", b.SecureBoot, a.SecureBoot);
-        Add(result, "BitLocker", b.BitLocker, a.BitLocker);
         Add(result, "Pamięć RAM", b.Ram, a.Ram);
         Add(result, "Aplikacje", string.Join(" · ", b.InstalledApplications), string.Join(" · ", a.InstalledApplications));
         Add(result, "Dyski logiczne", string.Join(" · ", b.LogicalDisks), string.Join(" · ", a.LogicalDisks));
