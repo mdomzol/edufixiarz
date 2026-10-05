@@ -4,153 +4,349 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="ReportCard" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Margin" Value="2,0,0,8"/>
+        </Style>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="9"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+        </Style>
+
+        <Style x:Key="FieldValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="ListValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <DataTemplate x:Key="ListItemTemplate">
+            <Border Background="{StaticResource InputBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="10,8"
+                    Margin="0,0,0,7">
+                <TextBlock Text="{Binding}"
+                           FontSize="12"
+                           TextWrapping="Wrap"/>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,8,28">
         <StackPanel>
-            <Grid Margin="0,0,0,18">
+
+            <!-- OVERVIEW -->
+            <Grid Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,0,6,0">
+
+                <Border Grid.Column="0" Style="{StaticResource ReportCard}" Margin="0,0,6,0">
                     <StackPanel>
-                        <TextBlock Text="STACJA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <TextBlock Text="{Binding Hostname}" FontSize="18" FontWeight="SemiBold" Margin="0,7,0,0" TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="{Binding StationId}" FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="STACJA" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding Hostname}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Margin="0,7,0,0"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding StationId}"
+                                   FontSize="10"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,4,0,0"
+                                   TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18" Margin="6,0">
+
+                <Border Grid.Column="1" Style="{StaticResource ReportCard}" Margin="6,0">
                     <StackPanel>
-                        <TextBlock Text="SYSTEM" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <TextBlock Text="{Binding OperatingSystem}" FontSize="15" FontWeight="SemiBold" Margin="0,7,0,0" TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="{Binding OsVersion}" FontSize="10" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0"/>
+                        <TextBlock Text="SYSTEM" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding OperatingSystem}"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Margin="0,7,0,0"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding OsVersion}"
+                                   FontSize="10"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,4,0,0"
+                                   TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18" Margin="6,0">
+
+                <Border Grid.Column="2" Style="{StaticResource ReportCard}" Margin="6,0">
                     <StackPanel>
-                        <TextBlock Text="PROCESOR" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <TextBlock Text="{Binding Cpu}" FontSize="15" FontWeight="SemiBold" Margin="0,7,0,0" TextWrapping="Wrap" MaxHeight="42"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0"><TextBlock Text="{Binding CpuCores, StringFormat={}{0} rdzeni}" FontSize="10" Foreground="{StaticResource MutedBrush}"/><TextBlock Text=" · " FontSize="10" Foreground="{StaticResource MutedBrush}"/><TextBlock Text="{Binding CpuThreads, StringFormat={}{0} wątków}" FontSize="10" Foreground="{StaticResource MutedBrush}"/></StackPanel>
+                        <TextBlock Text="PROCESOR" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding Cpu}"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Margin="0,7,0,0"
+                                   TextWrapping="Wrap"
+                                   MaxHeight="42"/>
+                        <TextBlock FontSize="10"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,4,0,0"
+                                   Text="{Binding CpuCores, StringFormat={}{0} rdzeni · {1} wątków}"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="3" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="18" Margin="6,0,0,0">
+
+                <Border Grid.Column="3" Style="{StaticResource ReportCard}" Margin="6,0,0,0">
                     <StackPanel>
-                        <TextBlock Text="PAMIĘĆ RAM" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <TextBlock Text="{Binding Ram}" FontSize="20" FontWeight="SemiBold" Margin="0,5,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                            <TextBlock Text="{Binding RamUsedSlots, StringFormat=Zajęte: {0}}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
-                            <TextBlock Text=" · " FontSize="10" Foreground="{StaticResource MutedBrush}"/>
-                            <TextBlock Text="{Binding RamFreeSlots, StringFormat=Wolne: {0}}" FontSize="10" Foreground="{StaticResource MutedBrush}"/>
-                        </StackPanel>
+                        <TextBlock Text="PAMIĘĆ RAM" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding Ram}"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Margin="0,5,0,0"/>
+                        <TextBlock FontSize="10"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Margin="0,4,0,0"
+                                   Text="{Binding RamUsedSlots, StringFormat=Zajęte sloty: {0}}"/>
+                        <TextBlock FontSize="10"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   Text="{Binding RamFreeSlots, StringFormat=Wolne sloty: {0}}"/>
                     </StackPanel>
                 </Border>
             </Grid>
 
-            <TextBlock Text="IDENTYFIKACJA" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" Margin="2,0,0,8"/>
-            <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,0,20">
+            <!-- IDENTYFIKACJA -->
+            <TextBlock Text="IDENTYFIKACJA" Style="{StaticResource SectionTitle}"/>
+            <Border Style="{StaticResource ReportCard}" Margin="0,0,0,20">
                 <Grid>
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="1.15*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.15*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
                     <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                        <TextBlock Text="URZĄDZENIE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
+                        <TextBlock Text="URZĄDZENIE" Style="{StaticResource FieldLabel}"/>
                         <TextBlock Text="{Binding Hostname}" FontSize="23" FontWeight="SemiBold" Margin="0,5,0,0"/>
                         <TextBlock Text="{Binding Manufacturer}" FontSize="12" Foreground="{StaticResource MutedBrush}" Margin="0,5,0,0"/>
+                        <TextBlock Text="{Binding UserName, StringFormat=Użytkownik: {0}}" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,7,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Domain, StringFormat=Domena / grupa robocza: {0}}" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,3,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
+
                     <StackPanel Grid.Column="1" Margin="0,0,24,0">
-                        <TextBlock Text="MODEL" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <TextBlock Text="{Binding Model}" FontSize="14" FontWeight="SemiBold" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                        <TextBlock Text="{Binding SerialNumber, StringFormat=SN: {0}}" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="MODEL I IDENTYFIKATORY" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding Model}" Style="{StaticResource FieldValue}" Margin="0,6,0,0"/>
+                        <TextBlock Text="{Binding SerialNumber, StringFormat=SN: {0}}" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding DeviceUuid, StringFormat=UUID: {0}}" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
+
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="PŁYTA / BIOS" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <TextBlock Text="{Binding Motherboard}" FontSize="13" FontWeight="SemiBold" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                        <TextBlock Text="{Binding Bios}" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="PŁYTA / BIOS" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding Motherboard}" Style="{StaticResource FieldValue}" Margin="0,6,0,0"/>
+                        <TextBlock Text="{Binding Bios, StringFormat=BIOS: {0}}" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,6,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <TextBlock Text="SYSTEM I BEZPIECZEŃSTWO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" Margin="2,0,0,8"/>
-            <StackPanel Margin="0,0,0,20">
-                <Grid>
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="1.15*"/><ColumnDefinition Width="0.85*"/></Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,7,0">
-                        <StackPanel>
-                            <TextBlock Text="SYSTEM WINDOWS" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                            <Grid Margin="0,14,0,0">
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="105"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Edycja" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,0,0,10"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OperatingSystem}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,10" TextWrapping="Wrap"/>
-                                <TextBlock Grid.Row="1" Text="Wersja" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,0,0,10"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding OsVersion}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,10" TextWrapping="Wrap"/>
-                                <TextBlock Grid.Row="2" Text="Architektura" FontSize="11" Foreground="{StaticResource MutedBrush}" Margin="0,0,0,10"/>
-                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Architecture}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                                <TextBlock Grid.Row="3" Text="Czas pracy" FontSize="11" Foreground="{StaticResource MutedBrush}"/>
-                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Uptime}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                    <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="7,0,0,0">
-                        <StackPanel>
-                            <TextBlock Text="ZABEZPIECZENIA SYSTEMU" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                            <Grid Margin="0,14,0,0">
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12" Margin="0,0,4,0">
-                                    <StackPanel><TextBlock Text="TPM" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock Text="{Binding Tpm}" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel>
-                                </Border>
-                                <Border Grid.Column="1" Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12" Margin="4,0,0,0">
-                                    <StackPanel><TextBlock Text="SECURE BOOT" FontSize="8" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/><TextBlock Text="{Binding SecureBoot}" FontSize="12" FontWeight="SemiBold" Margin="0,4,0,0" TextWrapping="Wrap"/></StackPanel>
-                                </Border>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            <TextBlock Text="PODZESPOŁY I MAGAZYN" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" Margin="2,0,0,8"/>
+            <!-- SYSTEM -->
+            <TextBlock Text="SYSTEM I BEZPIECZEŃSTWO" Style="{StaticResource SectionTitle}"/>
             <Grid Margin="0,0,0,20">
-                <Grid.ColumnDefinitions><ColumnDefinition Width="1.15*"/><ColumnDefinition Width="0.85*"/></Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,7,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.15*"/>
+                    <ColumnDefinition Width="0.85*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource ReportCard}" Margin="0,0,7,0">
                     <StackPanel>
-                        <TextBlock Text="GRAFIKA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <ItemsControl ItemsSource="{Binding Gpus}" Margin="0,12,0,0">
-                            <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8"/></DataTemplate></ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Margin="0,4,0,0" Padding="0,12,0,0">
+                        <TextBlock Text="SYSTEM WINDOWS" Style="{StaticResource FieldLabel}"/>
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="115"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Edycja" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OperatingSystem}" Style="{StaticResource FieldValue}" Margin="0,0,0,10"/>
+
+                            <TextBlock Grid.Row="1" Text="Wersja / build" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding OsVersion}" Style="{StaticResource FieldValue}" Margin="0,0,0,10"/>
+
+                            <TextBlock Grid.Row="2" Text="Architektura" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Architecture}" Style="{StaticResource FieldValue}" Margin="0,0,0,10"/>
+
+                            <TextBlock Grid.Row="3" Text="Czas pracy" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Uptime}" Style="{StaticResource FieldValue}" Margin="0,0,0,10"/>
+
+                            <TextBlock Grid.Row="4" Text="Aktywacja" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Activation}" Style="{StaticResource FieldValue}" Margin="0,0,0,10"/>
+
+                            <TextBlock Grid.Row="5" Text="Windows Update" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding WindowsUpdate}" Style="{StaticResource FieldValue}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource ReportCard}" Margin="7,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="ZABEZPIECZENIA SYSTEMU" Style="{StaticResource FieldLabel}"/>
+                        <Grid Margin="0,14,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12" Margin="0,0,4,0">
+                                <StackPanel>
+                                    <TextBlock Text="TPM" Style="{StaticResource FieldLabel}"/>
+                                    <TextBlock Text="{Binding Tpm}" Style="{StaticResource FieldValue}" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12" Margin="4,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="SECURE BOOT" Style="{StaticResource FieldLabel}"/>
+                                    <TextBlock Text="{Binding SecureBoot}" Style="{StaticResource FieldValue}" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Background="{StaticResource InputBrush}" CornerRadius="7" Padding="12" Margin="0,10,0,0">
                             <StackPanel>
-                                <TextBlock Text="DYSKI FIZYCZNE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                                <ItemsControl ItemsSource="{Binding PhysicalDisks}" Margin="0,9,0,0">
-                                    <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,7"/></DataTemplate></ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                <TextBlock Text="BITLOCKER" Style="{StaticResource FieldLabel}"/>
+                                <TextBlock Text="{Binding BitLocker}" Style="{StaticResource FieldValue}" Margin="0,4,0,0"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="7,0,0,0">
+            </Grid>
+
+            <!-- HARDWARE -->
+            <TextBlock Text="PODZESPOŁY I MAGAZYN" Style="{StaticResource SectionTitle}"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.15*"/>
+                    <ColumnDefinition Width="0.85*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource ReportCard}" Margin="0,0,7,0">
                     <StackPanel>
-                        <TextBlock Text="DYSKI LOGICZNE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <ItemsControl ItemsSource="{Binding LogicalDisks}" Margin="0,12,0,0">
-                            <ItemsControl.ItemTemplate><DataTemplate><Border Background="{StaticResource InputBrush}" CornerRadius="6" Padding="10,8" Margin="0,0,0,7"><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap"/></Border></DataTemplate></ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <TextBlock Text="PROCESOR / GRAFIKA" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Text="{Binding Cpu}" Style="{StaticResource FieldValue}" Margin="0,10,0,0"/>
+                        <TextBlock Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,10"
+                                   Text="{Binding CpuCores, StringFormat={}{0} rdzeni · {1} wątków}"/>
+
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,0">
+                            <StackPanel>
+                                <TextBlock Text="GPU" Style="{StaticResource FieldLabel}"/>
+                                <ItemsControl ItemsSource="{Binding Gpus}" ItemTemplate="{StaticResource ListItemTemplate}" Margin="0,9,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource ReportCard}" Margin="7,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="DYSKI FIZYCZNE" Style="{StaticResource FieldLabel}"/>
+                        <ItemsControl ItemsSource="{Binding PhysicalDisks}" ItemTemplate="{StaticResource ListItemTemplate}" Margin="0,10,0,0"/>
+
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,0" Margin="0,3,0,0">
+                            <StackPanel>
+                                <TextBlock Text="DYSKI LOGICZNE" Style="{StaticResource FieldLabel}"/>
+                                <ItemsControl ItemsSource="{Binding LogicalDisks}" ItemTemplate="{StaticResource ListItemTemplate}" Margin="0,9,0,0"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Border>
             </Grid>
 
-            <TextBlock Text="SIEĆ I OPROGRAMOWANIE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource AccentBrush}" Margin="2,0,0,8"/>
-            <Grid>
-                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,7,0">
+            <!-- NETWORK / SECURITY -->
+            <TextBlock Text="SIEĆ I OCHRONA" Style="{StaticResource SectionTitle}"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource ReportCard}" Margin="0,0,7,0">
                     <StackPanel>
-                        <TextBlock Text="INTERFEJSY SIECIOWE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <ItemsControl ItemsSource="{Binding NetworkAdapters}" Margin="0,12,0,0">
-                            <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8"/></DataTemplate></ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <TextBlock Text="INTERFEJSY SIECIOWE" Style="{StaticResource FieldLabel}"/>
+                        <ItemsControl ItemsSource="{Binding NetworkAdapters}" ItemTemplate="{StaticResource ListItemTemplate}" Margin="0,10,0,0"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="20" Margin="7,0,0,0">
+
+                <Border Grid.Column="1" Style="{StaticResource ReportCard}" Margin="7,0,0,0">
                     <StackPanel>
-                        <TextBlock Text="ZABEZPIECZENIA" FontSize="9" FontWeight="Bold" Foreground="{StaticResource MutedBrush}"/>
-                        <ItemsControl ItemsSource="{Binding Antivirus}" Margin="0,12,0,0">
-                            <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8"/></DataTemplate></ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <TextBlock Text="ZAREJESTROWANE ZABEZPIECZENIA" Style="{StaticResource FieldLabel}"/>
+                        <ItemsControl ItemsSource="{Binding Antivirus}" ItemTemplate="{StaticResource ListItemTemplate}" Margin="0,10,0,0"/>
                     </StackPanel>
                 </Border>
             </Grid>
+
+            <!-- SOFTWARE -->
+            <TextBlock Text="OPROGRAMOWANIE" Style="{StaticResource SectionTitle}"/>
+            <Border Style="{StaticResource ReportCard}" Margin="0,0,0,20">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="ZAINSTALOWANE APLIKACJE" Style="{StaticResource FieldLabel}"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding InstalledApplications.Count, StringFormat={}{0} aplikacji}"
+                                   FontSize="10"
+                                   Foreground="{StaticResource MutedBrush}"/>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding InstalledApplications}" Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource InputBrush}"
+                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="11,8"
+                                        Margin="0,0,7,7">
+                                    <TextBlock Text="{Binding}"
+                                               FontSize="11"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="260"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>
