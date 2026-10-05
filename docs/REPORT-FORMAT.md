@@ -34,7 +34,7 @@ Snapshot zawiera:
 - GPU,
 - dyski fizyczne i logiczne,
 - adaptery sieciowe,
-- TPM, Secure Boot i BitLocker,
+- TPM i Secure Boot (BitLocker pozostaje dostępny wyłącznie w danych audytu),
 - zarejestrowany antywirus,
 - listę zainstalowanych aplikacji.
 
@@ -48,9 +48,9 @@ StationReport nie jest źródłem pojedynczego stanu stacji. Snapshoty pozostaj�
 
 ## Wersjonowanie
 
-SnapshotFormatVersion: 2
+SnapshotFormatVersion: 3
 
-ReportFormatVersion: 3
+ReportFormatVersion: 4
 
 ApplicationVersion opisuje wersję programu, który wygenerował dane. Nie należy używać jej do wyboru parsera.
 
@@ -111,3 +111,43 @@ Reader nie powinien wymagać uruchomionego EDUFIXiarz ani dostępu do jego lokal
 9. RAPORT — zawiera stan przed, wykonanie, stan po, wykryte zmiany i audyt.
 
 Snapshoty pozostają niezależnymi artefaktami. Reader może analizować pojedynczy odczyt bez uruchamiania procesu przygotowania.
+
+
+## Kontrakt snapshotu dla EDUFIX Reader
+
+Snapshot CSV jest podstawowym, stabilnym formatem wymiany danych między EDUFIXiarzem a przyszłym EDUFIX Readerem.
+
+### Nagłówek CSV
+
+`SnapshotFormatVersion;ApplicationVersion;SnapshotId;SessionId;CapturedAt;Stage;StationId;Hostname;Sekcja;Pole;Wartość`
+
+### Zasady parsowania
+
+- separator pól: `;`,
+- każda wartość jest cytowana zgodnie z CSV i może zawierać średniki lub znaki nowej linii,
+- kodowanie: UTF-8 z BOM,
+- kolejność rekordów nie ma znaczenia,
+- rekord identyfikujemy przez `Sekcja + Pole`,
+- pola wielowartościowe (np. aplikacje, dyski, GPU, sieć) występują jako wiele rekordów z tym samym `Pole`,
+- `SnapshotId` identyfikuje pojedynczy plik/odczyt,
+- `SessionId` służy do grupowania odczytów z jednego procesu,
+- `StationId` służy do grupowania tej samej stacji niezależnie od sesji,
+- `Stage` określa charakter odczytu: `ODCZYT`, `PRZED-PRZYGOTOWANIEM`, `PO-PRZYGOTOWANIU`.
+
+### Zasada kompatybilności
+
+Reader powinien najpierw sprawdzić `SnapshotFormatVersion`. Nie powinien zgadywać znaczenia pól na podstawie wersji aplikacji ani nazwy pliku.
+
+Usunięcie pola z kontraktu powoduje zwiększenie wersji formatu. Dlatego bieżący brak BitLockera w snapshotach jest częścią **formatu 3**. Informacja o BitLockerze pozostaje elementem audytu EDUFIXiarza i nie jest częścią danych snapshotu.
+
+### Dane do tabeli zbiorczej
+
+Reader powinien normalizować snapshot do jednego rekordu stacji/odczytu oraz tabel szczegółowych dla danych wielowartościowych. Dzięki temu można później wygenerować jednocześnie:
+
+1. tabelę zbiorczą wszystkich stanowisk,
+2. PDF do przeglądu,
+3. raport HTML,
+4. porównanie BEFORE/AFTER,
+5. filtrowanie po stacji, sesji, etapie i wybranym polu.
+
+HTML snapshotu pozostaje prezentacją. Reader nie powinien go parsować.
