@@ -28,7 +28,7 @@ public sealed class StationSnapshotExportService
         Add("CPU", "Wątki", h.CpuThreads.ToString(CultureInfo.InvariantCulture)); Add("RAM", "Pamięć", h.Ram);
         Add("RAM", "Sloty", $"{h.RamUsedSlots}/{h.RamSlots}"); Add("PŁYTA", "Płyta główna", h.Motherboard);
         Add("PŁYTA", "BIOS", h.Bios); Add("BEZPIECZEŃSTWO", "TPM", h.Tpm);
-        Add("BEZPIECZEŃSTWO", "Secure Boot", h.SecureBoot); Add("BEZPIECZEŃSTWO", "BitLocker", h.BitLocker);
+        Add("BEZPIECZEŃSTWO", "Secure Boot", h.SecureBoot);
         foreach (var v in h.Gpus) Add("GPU", "Karta graficzna", v);
         foreach (var v in h.PhysicalDisks) Add("DYSK_FIZYCZNY", "Dysk", v);
         foreach (var v in h.LogicalDisks) Add("DYSK_LOGICZNY", "Dysk", v);
