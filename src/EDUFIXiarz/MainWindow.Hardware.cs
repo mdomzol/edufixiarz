@@ -28,6 +28,8 @@ public partial class MainWindow : Window
             HardwareStatusText.Text = $"GOTOWY · {DateTime.Now:HH:mm:ss}";
             Log("Raport sprzętowy został odczytany.");
 
+            await RunAuditAsync("START");
+
             var readSnapshot = new StationSnapshot
             {
                 Stage = StationSnapshot.Stages.Read,
