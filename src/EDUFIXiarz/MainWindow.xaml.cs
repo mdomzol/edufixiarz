@@ -138,8 +138,8 @@ public partial class MainWindow : Window
         // In the expanded sidebar the control sits directly below the hero card,
         // while the collapsed sidebar keeps it near the top of the compact rail.
         SidebarToggleButton.Margin = _sidebarCollapsed
-            ? new Thickness(0, 8, 7, 0)
-            : new Thickness(0, 100, 8, 0);
+            ? new Thickness(0, 8, 4, 0)
+            : new Thickness(0, 96, 4, 0);
 
         SidebarToggleButton.ToolTip = _sidebarCollapsed ? "Rozwiń menu boczne" : "Zwiń menu boczne";
         SidebarToggleButton.Tag = _sidebarCollapsed;
